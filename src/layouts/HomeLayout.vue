@@ -1,9 +1,11 @@
 <template>
-	<div class="min-h-screen flex flex-col max-w-[1440px] mx-auto">
-		<TopNav />
-		<main class="flex-grow">
-			<router-view />
-		</main>
+	<div class="min-h-screen flex flex-col">
+		<div class="max-w-[1440px] mx-auto w-full">
+			<TopNav />
+			<main class="flex-grow">
+				<router-view />
+			</main>
+		</div>
 		<Footer />
 	</div>
 </template>

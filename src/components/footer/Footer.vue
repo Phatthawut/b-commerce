@@ -1,76 +1,81 @@
 <template>
-	<footer class="footer p-10 bg-base-200 text-base-content">
-		<div
-			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 container mx-auto px-4"
-		>
-			<aside>
-				<h2 class="text-2xl font-bold text-primary">B-Commerce</h2>
-				<p>
-					Your Trusted Shopping Destination<br />Providing reliable products
-					since 2024
-				</p>
-			</aside>
-			<nav>
-				<header class="footer-title">Services</header>
-				<router-link to="/products" class="link link-hover"
-					>Products</router-link
+	<div class="w-full bg-blue-50 mx-auto">
+		<footer class="footer py-8">
+			<div class="grid grid-cols-2 md:grid-cols-2 gap-6 mx-auto px-6">
+				<div
+					class="flex items-start pt-4 cursor-pointer"
+					@click="navigateTo('/')"
 				>
-				<router-link to="/new-arrivals" class="link link-hover"
-					>New Arrivals</router-link
-				>
-				<router-link to="/best-sellers" class="link link-hover"
-					>Best Sellers</router-link
-				>
-				<router-link to="/deals" class="link link-hover"
-					>Special Deals</router-link
-				>
-			</nav>
-			<nav>
-				<header class="footer-title">Company</header>
-				<router-link to="/about" class="link link-hover">About us</router-link>
-				<router-link to="/contact" class="link link-hover">Contact</router-link>
-				<router-link to="/careers" class="link link-hover">Careers</router-link>
-				<router-link to="/press" class="link link-hover">Press kit</router-link>
-			</nav>
-			<nav>
-				<header class="footer-title">Legal</header>
-				<router-link to="/terms" class="link link-hover"
-					>Terms of use</router-link
-				>
-				<router-link to="/privacy" class="link link-hover"
-					>Privacy policy</router-link
-				>
-				<router-link to="/cookie" class="link link-hover"
-					>Cookie policy</router-link
-				>
-			</nav>
-		</div>
-	</footer>
-	<footer
-		class="footer px-10 py-4 border-t bg-base-200 text-base-content border-base-300"
-	>
-		<aside class="items-center grid-flow-col">
-			<p>© 2024 B-Commerce. All rights reserved.</p>
-		</aside>
-		<nav class="md:place-self-center md:justify-self-end">
-			<div class="grid grid-flow-col gap-4">
-				<a href="#" class="hover:text-primary">
-					<i class="fab fa-twitter text-xl"></i>
-				</a>
-				<a href="#" class="hover:text-primary">
-					<i class="fab fa-youtube text-xl"></i>
-				</a>
-				<a href="#" class="hover:text-primary">
-					<i class="fab fa-facebook text-xl"></i>
-				</a>
-				<a href="#" class="hover:text-primary">
-					<i class="fab fa-instagram text-xl"></i>
-				</a>
+					<img
+						src="../../assets/images/logo-woody-prieb.webp"
+						alt="Woody Prieb Logo"
+						class="w-2/3 lg:w-1/2 mx-auto"
+					/>
+				</div>
+				<div class="flex flex-col md:flex-row gap-2 md:gap-8">
+					<nav>
+						<header class="footer-title font-bold py-2">Quick Links</header>
+						<div class="flex flex-col gap-2">
+							<router-link to="/" class="link link-hover">Home</router-link>
+							<router-link to="/about" class="link link-hover"
+								>About</router-link
+							>
+							<router-link to="/books" class="link link-hover"
+								>Our Book</router-link
+							>
+							<router-link to="/service" class="link link-hover"
+								>Our Service</router-link
+							>
+							<router-link to="/donation" class="link link-hover"
+								>Donation Campaign</router-link
+							>
+						</div>
+					</nav>
+					<nav>
+						<header class="footer-title font-bold py-2">Get in touch</header>
+						<div class="flex flex-col gap-2">
+							<a
+								href="mailto:knowledgesquare.woodyprieb@gmail.com"
+								class="link link-hover"
+							>
+								Email Us
+							</a>
+							<div class="flex gap-2">
+								<a
+									href="https://line.me/R/ti/p/%401234567890"
+									class="link link-hover"
+								>
+									<i class="fab fa-line text-2xl text-green-600"></i>
+								</a>
+								<a
+									href="https://www.facebook.com/profile.php?id=1000889188889188889"
+									class="link link-hover"
+								>
+									<i class="fab fa-facebook text-2xl text-blue-600"></i>
+								</a>
+							</div>
+						</div>
+					</nav>
+				</div>
 			</div>
-		</nav>
-	</footer>
+		</footer>
+		<footer
+			class="footer px-10 py-4 border-t border-base-300 max-w-[1440px] mx-auto"
+		>
+			<aside class="">
+				<p>© {{ currentYear }} By Woody Prieb. All rights reserved.</p>
+			</aside>
+		</footer>
+	</div>
 </template>
 
 <script setup>
-// No additional logic needed for now
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const currentYear = new Date().getFullYear();
+
+const navigateTo = (path) => {
+	router.push(path);
+};
 </script>

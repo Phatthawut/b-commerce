@@ -14,17 +14,32 @@ const router = createRouter({
 				{
 					path: "",
 					name: "home",
-					component: () => import("../views/user/Home.vue"),
+					component: () => import("../views/user/HomeView.vue"),
 				},
 				{
-					path: "/products",
-					name: "products",
-					component: () => import("../views/user/Products.vue"),
+					path: "about",
+					name: "about",
+					component: () => import("../views/user/AboutView.vue"),
 				},
 				{
-					path: "/cart",
-					name: "cart",
-					component: () => import("../views/user/Cart.vue"),
+					path: "books",
+					name: "books",
+					component: () => import("../views/user/BooksView.vue"),
+				},
+				{
+					path: "service",
+					name: "service",
+					component: () => import("../views/user/ServiceView.vue"),
+				},
+				{
+					path: "donation",
+					name: "donation",
+					component: () => import("../views/user/DonationView.vue"),
+				},
+				{
+					path: "contact",
+					name: "contact",
+					component: () => import("../views/user/ContactView.vue"),
 				},
 			],
 		},
@@ -35,7 +50,7 @@ const router = createRouter({
 				{
 					path: "",
 					name: "admin-dashboard",
-					component: () => import("../views/admin/Dashboard.vue"),
+					component: () => import("../views/admin/DashboardView.vue"),
 				},
 			],
 		},
