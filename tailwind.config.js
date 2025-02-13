@@ -8,7 +8,11 @@ export default {
 				secondary: "#2ecc71",
 				accent: "#e74c3c",
 			},
+			fontFamily: {
+				thai: ["Noto Sans Thai", "sans-serif"],
+				playfair: ["Playfair Display", "serif"],
+			},
 		},
 	},
-	plugins: [],
+	plugins: [require("daisyui")],
 };

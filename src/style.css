@@ -1,3 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@theme {
+	--font-thai: "Noto Sans Thai", "sans-serif";
+	--font-playfair: "Playfair Display", "serif";
+	/* ... */
+}
