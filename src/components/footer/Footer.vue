@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full bg-blue-50 mx-auto">
+	<div class="w-full bg-[#f3feff] mx-auto">
 		<footer class="footer py-8">
 			<div class="grid grid-cols-2 md:grid-cols-2 gap-6 mx-auto px-6">
 				<div

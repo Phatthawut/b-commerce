@@ -46,7 +46,7 @@
 				<div class="flex flex-col md:flex-row md:gap-0 p-4 md:p-0 items-center">
 					<div class="bg-red-200 shadow-md w-full md:w-1/2 p-6">
 						<img
-							src="../../assets/images/dharmoscience-series.webp"
+							src="@/assets/images/dharmoscience-series.webp"
 							alt="Products image"
 							class="w-[80%] lg:w-[50%] mx-auto py-4 object-cover"
 						/>
@@ -75,7 +75,7 @@
 				>
 					<div class="bg-purple-300 shadow-md w-full md:w-1/2 p-6">
 						<img
-							src="../../assets/images/draw-your-thoughts.webp"
+							src="@/assets/images/draw-your-thoughts.webp"
 							alt="Products image"
 							class="w-[80%] lg:w-[50%] mx-auto py-4 object-contain md:h-[400px]"
 						/>
@@ -100,7 +100,7 @@
 				<div class="flex flex-col md:flex-row md:gap-0 p-4 md:p-0 items-center">
 					<div class="bg-blue-300 shadow-md w-full md:w-1/2 p-6">
 						<img
-							src="../../assets/images/politics-public-policy-series.webp"
+							src="@/assets/images/politics-public-policy-series.webp"
 							alt="Products image"
 							class="w-[80%] lg:w-[50%] mx-auto py-4 object-contain md:h-[400px]"
 						/>
@@ -135,7 +135,7 @@
 					</div>
 					<div class="pt-4 pb-6 px-8 mx-auto">
 						<img
-							src="../../assets/images/Dr-Vuthiphong-Priebjrivat.webp"
+							src="@/assets/images/Dr-Vuthiphong-Priebjrivat.webp"
 							alt="Dr.Vuthiphong Priebjrivat"
 							class="h-48 object-cover object-right-bottom"
 						/>
@@ -187,6 +187,6 @@
 </template>
 
 <script setup>
-import Hero from "../../components/hero/Hero.vue";
-import heroImage from "../../assets/images/hero-image.webp";
+import Hero from "@/components/hero/Hero.vue";
+import heroImage from "@/assets/images/hero-image.webp";
 </script>

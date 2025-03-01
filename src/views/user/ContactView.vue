@@ -105,27 +105,27 @@
 			<h3 class="text-3xl font-bold">Buy / Download at</h3>
 			<div class="flex flex-col md:flex-row gap-4 items-center">
 				<img
-					src="../../assets/images/buy-01.webp"
+					src="@/assets/images/buy-01.webp"
 					alt="buy-01"
 					class="w-12 h-12"
 				/>
 				<img
-					src="../../assets/images/buy-02.webp"
+					src="@/assets/images/buy-02.webp"
 					alt="buy-02"
 					class="w-12 h-12"
 				/>
 				<img
-					src="../../assets/images/buy-03.webp"
+					src="@/assets/images/buy-03.webp"
 					alt="buy-03"
 					class="w-12 h-12"
 				/>
 				<img
-					src="../../assets/images/buy-04.webp"
+					src="@/assets/images/buy-04.webp"
 					alt="buy-04"
 					class="w-12 h-12"
 				/>
 				<img
-					src="../../assets/images/buy-05.webp"
+					src="@/assets/images/buy-05.webp"
 					alt="buy-05"
 					class="w-12 h-12"
 				/>

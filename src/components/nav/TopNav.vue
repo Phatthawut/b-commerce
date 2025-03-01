@@ -1,9 +1,9 @@
 <template>
-	<nav class="mx-auto w-full bg-emerald-50">
+	<nav class="mx-auto w-full bg-[#f3feff] uppercase">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 			<!-- Mobile Menu Button -->
 			<div
-				class="md:hidden bg-emerald-50 w-full fixed top-0 left-0 px-4 py-2 z-50"
+				class="md:hidden bg-[#f3feff] w-full fixed top-0 left-0 px-4 py-2 z-50"
 			>
 				<button
 					@click="toggleMenu"
@@ -19,7 +19,7 @@
 			>
 				<!-- Logo -->
 				<div
-					class="flex items-center cursor-pointer bg-emerald-50 h-20 md:h-36"
+					class="flex items-center cursor-pointer bg-[#f3feff] h-20 md:h-36"
 					@click="navigateTo('/')"
 				>
 					<img
@@ -31,7 +31,7 @@
 
 				<!-- Desktop Menu -->
 				<div class="hidden md:flex md:items-center md:space-x-4">
-					<ul class="flex space-x-4">
+					<ul class="flex space-x-4 md:space-x-8 lg:space-x-12 xl:space-x-16">
 						<li>
 							<router-link
 								to="/"
@@ -88,7 +88,7 @@
 		<!-- Mobile Menu -->
 		<div
 			v-if="isMenuOpen"
-			class="md:hidden fixed top-12 left-0 w-[80%] bg-emerald-50 z-40"
+			class="md:hidden fixed top-12 left-0 w-[80%] bg-[#f3feff] z-40"
 		>
 			<ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
 				<li>

@@ -44,16 +44,16 @@
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-0">
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-01.webp" alt="Service 1" />
+						<img src="@/assets/images/service-01.webp" alt="Service 1" />
 					</div>
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-02.webp" alt="Service 2" />
+						<img src="@/assets/images/service-02.webp" alt="Service 2" />
 					</div>
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-03.webp" alt="Service 3" />
+						<img src="@/assets/images/service-03.webp" alt="Service 3" />
 					</div>
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-04.webp" alt="Service 4" />
+						<img src="@/assets/images/service-04.webp" alt="Service 4" />
 					</div>
 				</div>
 			</div>
@@ -96,16 +96,16 @@
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-0">
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-05.webp" alt="Service 5" />
+						<img src="@/assets/images/service-05.webp" alt="Service 5" />
 					</div>
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-06.webp" alt="Service 6" />
+						<img src="@/assets/images/service-06.webp" alt="Service 6" />
 					</div>
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-07.webp" alt="Service 7" />
+						<img src="@/assets/images/service-07.webp" alt="Service 7" />
 					</div>
 					<div class="w-full h-full">
-						<img src="../../assets/images/service-08.webp" alt="Service 8" />
+						<img src="@/assets/images/service-08.webp" alt="Service 8" />
 					</div>
 				</div>
 			</div>
