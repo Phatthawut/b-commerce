@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @theme {
-	--font-thai: "Noto Sans Thai", "sans-serif";
-	--font-playfair: "Playfair Display", "serif";
-	--font-merriweather: "Merriweather", "serif";
-	--font-montserrat: "Montserrat", "sans-serif";
-	/* ... */
+  --font-thai: "Noto Sans Thai", "sans-serif";
+  --font-playfair: "Playfair Display", "serif";
+  --font-merriweather: "Merriweather", "serif";
+  --font-montserrat: "Montserrat", "sans-serif";
+  --color-mainbg: #f3feff;
+  --color-borderline: #90bec4;
 }
