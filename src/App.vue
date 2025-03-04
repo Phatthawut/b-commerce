@@ -1,22 +1,22 @@
 <script setup>
-// Component logic will go here
+import { onMounted } from "vue";
+import { useUserStore } from "@/stores/userStore";
+import { useCartStore } from "@/stores/cartStore";
+import CartSidebar from "@/components/cart/CartSidebar.vue";
+
+const userStore = useUserStore();
+const cartStore = useCartStore();
+
+onMounted(async () => {
+  // Check if user is authenticated
+  await userStore.checkAuth();
+
+  // Load cart from localStorage
+  cartStore.loadCart();
+});
 </script>
 
 <template>
-	<router-view />
+  <router-view />
+  <CartSidebar />
 </template>
-
-<style scoped>
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
-}
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-	filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>

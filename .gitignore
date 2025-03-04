@@ -12,6 +12,20 @@ dist
 dist-ssr
 *.local
 
+.env*
+.env.development
+.env.production
+.env.test
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+.env.development.local
+.env.production.local
+.env.test.local
+.env.development.local
+.env.production.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +36,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+firebase-export
+.firebase/
+.firebaserc
+firebase-export-*
+firebase-debug.log  # Added Firebase debug log
