@@ -37,8 +37,17 @@ dist-ssr
 *.sln
 *.sw?
 
+# Firebase files
 firebase-export
 .firebase/
 .firebaserc
 firebase-export-*
 firebase-debug.log  # Added Firebase debug log
+
+# IDE specific files
+*.code-workspace
+*.sublime-workspace
+*.sublime-project
+.idea/  # Added to ignore JetBrains IDE project files
+.vscode/
+

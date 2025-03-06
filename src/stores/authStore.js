@@ -21,7 +21,7 @@ export const useAuthStore = defineStore("auth", {
 
   getters: {
     isAuthenticated: (state) => !!state.user,
-    isAdmin: (state) => state.user?.email === "admin@example.com", // Replace with your admin logic
+    isAdmin: (state) => state.user?.email === "phatthawut.cnx@gmail.com", // Replace with your admin logic
   },
 
   actions: {

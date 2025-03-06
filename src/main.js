@@ -4,7 +4,7 @@ import "@/style.css";
 import App from "@/App.vue";
 import router from "@/router/index";
 import "@fortawesome/fontawesome-free/css/all.css";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 import { createHead } from "@vueuse/head";
 
 const app = createApp(App);

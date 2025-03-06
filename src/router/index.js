@@ -81,6 +81,11 @@ const router = createRouter({
           meta: { requiresAuth: true },
         },
         {
+          path: "products",
+          name: "products",
+          component: () => import("../views/user/ProductsView.vue"),
+        },
+        {
           path: "product/:id",
           name: "product",
           component: () => import("../views/user/ProductDetailView.vue"),
@@ -102,7 +107,7 @@ const router = createRouter({
     {
       path: "/admin",
       component: AdminLayout,
-      meta: { requiresAuth: true, reaquiresAdmin: true },
+      meta: { requiresAuth: true, requiresAdmin: true },
       children: [
         {
           path: "",
@@ -160,7 +165,7 @@ router.beforeEach(async (to, from, next) => {
   // You'll need to check if the user is admin in your Firestore database
   if (
     requiresAdmin &&
-    (!currentUser || currentUser.email !== "admin@example.com")
+    (!currentUser || currentUser.email !== "phatthawut.cnx@gmail.com")
   ) {
     next({ name: "home" });
     return;

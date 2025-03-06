@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Book Store Dashboard</h1>
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -18,7 +18,7 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
               />
             </svg>
           </div>
@@ -90,12 +90,12 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
               />
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-600">Products</p>
+            <p class="text-sm text-gray-600">Books</p>
             <p class="text-2xl font-semibold text-gray-900">
               {{ stats.totalProducts }}
             </p>
@@ -103,7 +103,7 @@
         </div>
         <div class="mt-4">
           <span class="text-sm text-gray-600"
-            >{{ stats.lowStockProducts }} low in stock</span
+            >{{ stats.lowStockProducts }} out of stock</span
           >
         </div>
       </div>
@@ -150,7 +150,7 @@
           to="/admin/products/new"
           class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 text-center"
         >
-          Add New Product
+          Add New Book
         </router-link>
         <router-link
           to="/admin/orders"
@@ -284,7 +284,7 @@
     <!-- Low Stock Products -->
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">Low Stock Products</h2>
+        <h2 class="text-xl font-semibold text-gray-900">Low Stock Books</h2>
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
@@ -297,7 +297,7 @@
         v-else-if="lowStockProducts.length === 0"
         class="p-6 text-center text-gray-600"
       >
-        No low stock products found.
+        No low stock books found.
       </div>
 
       <div v-else class="overflow-x-auto">
@@ -308,13 +308,13 @@
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Product
+                Book Title
               </th>
               <th
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Category
+                Genre
               </th>
               <th
                 scope="col"
@@ -393,7 +393,7 @@
           to="/admin/products"
           class="text-blue-600 hover:text-blue-900 text-sm font-medium"
         >
-          View All Products
+          View All Books
         </router-link>
       </div>
     </div>
