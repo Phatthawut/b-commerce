@@ -2,7 +2,7 @@
   <div class="font-thai -mt-2">
     <Hero :imageSrc="heroImage" imageAlt="Home Hero Image" />
     <div
-      class="container relative mx-auto md:w-[95%] md:my-6 bg-gradient-to-r from-teal-50 from-10% to-teal-200 to-90%"
+      class="container relative mx-auto md:w-[95%] md:my-6 gradient-background-teal"
     >
       <blockquote
         class="text-xl font-semibold text-gray-900 py-12 flex flex-col items-center px-8 md:w-[50%] mx-auto"
@@ -44,7 +44,7 @@
     <section class="container mx-auto">
       <div class="flex flex-col gap-8">
         <div class="flex flex-col md:flex-row md:gap-0 p-4 md:p-0 items-center">
-          <div class="bg-red-200 shadow-md w-full md:w-1/2 p-6">
+          <div class="gradient-background-red shadow-md w-full md:w-1/2 p-6">
             <img
               src="@/assets/images/dharmoscience-series.webp"
               alt="Products image"
@@ -52,7 +52,7 @@
             />
           </div>
           <div
-            class="flex flex-col items-start bg-blue-200 shadow-md px-4 py-8 -mt-2 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
+            class="flex flex-col items-start gradient-background-blue shadow-md px-4 py-8 -mt-2 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
           >
             <p class="text-gray-600">15 May 2020</p>
             <h2 class="text-2xl font-bold mb-4">The Dharmoscience Series</h2>
@@ -81,7 +81,7 @@
             />
           </div>
           <div
-            class="flex flex-col items-start justify-center bg-blue-200 shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-mr-8 lg:-mr-16 z-10"
+            class="flex flex-col items-start justify-center text-background-blue shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-mr-8 lg:-mr-16 z-10"
           >
             <p class="text-gray-600">15 May 2020</p>
             <h2 class="text-2xl font-bold mb-4">Draw Your Thought</h2>
@@ -92,13 +92,13 @@
               book offers fresh perspectives, enhancing decision-making and
               enriching both work and life.
             </p>
-            <button class="bg-blue-500 text-white px-6 py-2 mt-4">
+            <button class="button-blue text-white px-6 py-2 mt-4">
               Learn More
             </button>
           </div>
         </div>
         <div class="flex flex-col md:flex-row md:gap-0 p-4 md:p-0 items-center">
-          <div class="bg-blue-300 shadow-md w-full md:w-1/2 p-6">
+          <div class="gradient-background-blue shadow-md w-full md:w-1/2 p-6">
             <img
               src="@/assets/images/politics-public-policy-series.webp"
               alt="Products image"
@@ -106,18 +106,18 @@
             />
           </div>
           <div
-            class="flex flex-col items-start justify-center bg-blue-200 shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
+            class="flex flex-col items-start justify-center text-background-blue shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
           >
             <p class="text-gray-600">15 May 2020</p>
             <h2 class="text-2xl font-bold mb-4">Products description</h2>
-            <hr class="w-full px-4 text-blue-400 pt-4" />
+            <div class="divider w-full px-4 line-blue pt-4"></div>
             <p class="text-gray-600">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
               quos. Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Quisquam,
             </p>
-            <button class="bg-blue-500 text-white px-6 py-2 mt-4">
+            <button class="button-blue text-white px-6 py-2 mt-4">
               Learn More
             </button>
           </div>
@@ -146,7 +146,7 @@
             <p class="text-gray-600 font-merriweather text-center">
               Woody Wisdom
             </p>
-            <button class="bg-blue-500 text-white px-6 py-2 mt-4">
+            <button class="button-blue text-white px-6 py-2 mt-4">
               Learn More
             </button>
           </div>
@@ -190,3 +190,27 @@
 import Hero from "@/components/hero/Hero.vue";
 import heroImage from "@/assets/images/hero-image.webp";
 </script>
+
+<style scoped>
+.gradient-background-teal {
+  background: linear-gradient(to right, #e8f7f9, #8ab9bb);
+}
+.gradient-background-red {
+  background: linear-gradient(to right, #f2dddd, #f2c7c7);
+}
+.gradient-background-purple {
+  background: linear-gradient(to right, #e8d9e7, #ceb6cc);
+}
+.gradient-background-blue {
+  background: linear-gradient(to right, #d3e4ea, #9fcadd);
+}
+.text-background-blue {
+  background: #e8f7f9;
+}
+.button-blue {
+  background: #81c1c6;
+}
+.line-blue {
+  background: #81c1c6;
+}
+</style>
