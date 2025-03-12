@@ -1,6 +1,8 @@
 <template>
   <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Book Store Dashboard</h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">
+      Book Donation Dashboard
+    </h1>
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -18,23 +20,25 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
               />
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-600">Total Orders</p>
+            <p class="text-sm text-gray-600">Total Donations</p>
             <p class="text-2xl font-semibold text-gray-900">
-              {{ stats.totalOrders }}
+              {{ stats.totalDonations }}
             </p>
           </div>
         </div>
         <div class="mt-4">
           <span
-            :class="stats.ordersTrend > 0 ? 'text-green-600' : 'text-red-600'"
+            :class="
+              stats.donationsTrend > 0 ? 'text-green-600' : 'text-red-600'
+            "
             class="text-sm font-medium"
           >
-            {{ stats.ordersTrend > 0 ? "+" : "" }}{{ stats.ordersTrend }}%
+            {{ stats.donationsTrend > 0 ? "+" : "" }}{{ stats.donationsTrend }}%
           </span>
           <span class="text-sm text-gray-600 ml-2">from last month</span>
         </div>
@@ -59,18 +63,18 @@
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-600">Revenue</p>
+            <p class="text-sm text-gray-600">Total Amount</p>
             <p class="text-2xl font-semibold text-gray-900">
-              ${{ stats.revenue.toFixed(2) }}
+              {{ stats.totalAmount.toLocaleString() }} THB
             </p>
           </div>
         </div>
         <div class="mt-4">
           <span
-            :class="stats.revenueTrend > 0 ? 'text-green-600' : 'text-red-600'"
+            :class="stats.amountTrend > 0 ? 'text-green-600' : 'text-red-600'"
             class="text-sm font-medium"
           >
-            {{ stats.revenueTrend > 0 ? "+" : "" }}{{ stats.revenueTrend }}%
+            {{ stats.amountTrend > 0 ? "+" : "" }}{{ stats.amountTrend }}%
           </span>
           <span class="text-sm text-gray-600 ml-2">from last month</span>
         </div>
@@ -90,21 +94,22 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
               />
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-600">Books</p>
+            <p class="text-sm text-gray-600">Total Donors</p>
             <p class="text-2xl font-semibold text-gray-900">
-              {{ stats.totalProducts }}
+              {{ stats.totalDonors }}
             </p>
           </div>
         </div>
         <div class="mt-4">
-          <span class="text-sm text-gray-600"
-            >{{ stats.lowStockProducts }} out of stock</span
+          <span class="text-green-600 text-sm font-medium"
+            >+{{ stats.newDonors }}</span
           >
+          <span class="text-sm text-gray-600 ml-2">new this month</span>
         </div>
       </div>
 
@@ -122,22 +127,21 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-600">Customers</p>
+            <p class="text-sm text-gray-600">Completed Donations</p>
             <p class="text-2xl font-semibold text-gray-900">
-              {{ stats.totalCustomers }}
+              {{ stats.completedDonations }}
             </p>
           </div>
         </div>
         <div class="mt-4">
-          <span class="text-green-600 text-sm font-medium"
-            >+{{ stats.newCustomers }}</span
-          >
-          <span class="text-sm text-gray-600 ml-2">new this month</span>
+          <span class="text-sm text-gray-600">
+            {{ stats.pendingDonations }} pending approval
+          </span>
         </div>
       </div>
     </div>
@@ -145,18 +149,12 @@
     <!-- Quick Actions -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
       <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <router-link
-          to="/admin/products/new"
+          to="/admin/donations"
           class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 text-center"
         >
-          Add New Book
-        </router-link>
-        <router-link
-          to="/admin/orders"
-          class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 text-center"
-        >
-          Manage Orders
+          Manage Donations
         </router-link>
         <button
           @click="refreshStats"
@@ -167,10 +165,10 @@
       </div>
     </div>
 
-    <!-- Recent Orders -->
+    <!-- Recent Donations -->
     <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">Recent Orders</h2>
+        <h2 class="text-xl font-semibold text-gray-900">Recent Donations</h2>
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
@@ -180,10 +178,10 @@
       </div>
 
       <div
-        v-else-if="recentOrders.length === 0"
+        v-else-if="recentDonations.length === 0"
         class="p-6 text-center text-gray-600"
       >
-        No recent orders found.
+        No recent donations found.
       </div>
 
       <div v-else class="overflow-x-auto">
@@ -194,13 +192,19 @@
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Order ID
+                Donation ID
               </th>
               <th
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Customer
+                Donor
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Recipient
               </th>
               <th
                 scope="col"
@@ -212,7 +216,7 @@
                 scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Total
+                Amount
               </th>
               <th
                 scope="col"
@@ -229,42 +233,48 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="order in recentOrders" :key="order.id">
+            <tr v-for="donation in recentDonations" :key="donation.id">
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
               >
-                #{{ order.id.substring(0, 8) }}
+                #{{ donation.id.substring(0, 8) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ order.customerName }}
+                {{ donation.donorName }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ formatDate(order.createdAt) }}
+                {{ donation.recipientName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ formatDate(donation.createdAt) }}
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                ${{ order.total.toFixed(2) }}
+                {{ donation.amount.toLocaleString() }} THB
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   :class="{
-                    'bg-yellow-100 text-yellow-800': order.status === 'pending',
-                    'bg-blue-100 text-blue-800': order.status === 'processing',
-                    'bg-purple-100 text-purple-800': order.status === 'shipped',
-                    'bg-green-100 text-green-800': order.status === 'delivered',
-                    'bg-red-100 text-red-800': order.status === 'cancelled',
+                    'bg-yellow-100 text-yellow-800':
+                      donation.paymentStatus === 'pending',
+                    'bg-blue-100 text-blue-800':
+                      donation.paymentStatus === 'processing',
+                    'bg-green-100 text-green-800':
+                      donation.paymentStatus === 'completed',
+                    'bg-red-100 text-red-800':
+                      donation.paymentStatus === 'failed',
                   }"
                   class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
                 >
-                  {{ capitalizeFirstLetter(order.status) }}
+                  {{ capitalizeFirstLetter(donation.paymentStatus) }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <router-link
-                  :to="`/admin/orders/${order.id}`"
+                <button
+                  @click="viewDonationDetails(donation)"
                   class="text-blue-600 hover:text-blue-900"
                 >
                   View
-                </router-link>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -273,18 +283,20 @@
 
       <div class="px-6 py-4 border-t border-gray-200">
         <router-link
-          to="/admin/orders"
+          to="/admin/donations"
           class="text-blue-600 hover:text-blue-900 text-sm font-medium"
         >
-          View All Orders
+          View All Donations
         </router-link>
       </div>
     </div>
 
-    <!-- Low Stock Products -->
+    <!-- Donation Distribution -->
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">Low Stock Books</h2>
+        <h2 class="text-xl font-semibold text-gray-900">
+          Donation Distribution
+        </h2>
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
@@ -293,108 +305,56 @@
         ></div>
       </div>
 
-      <div
-        v-else-if="lowStockProducts.length === 0"
-        class="p-6 text-center text-gray-600"
-      >
-        No low stock books found.
-      </div>
+      <div v-else class="p-6">
+        <div class="mb-8">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">By Category</h3>
+          <div class="space-y-4">
+            <div v-for="(category, index) in donationCategories" :key="index">
+              <div class="flex justify-between mb-1">
+                <span class="text-sm font-medium text-gray-700">{{
+                  category.name
+                }}</span>
+                <span class="text-sm font-medium text-gray-700"
+                  >{{ category.percentage }}%</span
+                >
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  class="h-2.5 rounded-full"
+                  :style="{
+                    width: `${category.percentage}%`,
+                    backgroundColor: category.color,
+                  }"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div v-else class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Book Title
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Genre
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Price
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Stock
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="product in lowStockProducts" :key="product.id">
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex items-center">
-                  <div class="h-10 w-10 flex-shrink-0">
-                    <img
-                      class="h-10 w-10 rounded-full object-cover"
-                      :src="product.imageUrl"
-                      alt=""
-                    />
-                  </div>
-                  <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
-                      {{ product.name }}
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ product.category }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                <span v-if="product.salePrice" class="text-red-600 font-bold"
-                  >${{ product.salePrice.toFixed(2) }}</span
+        <div>
+          <h3 class="text-lg font-medium text-gray-900 mb-4">By Region</h3>
+          <div class="space-y-4">
+            <div v-for="(region, index) in donationRegions" :key="index">
+              <div class="flex justify-between mb-1">
+                <span class="text-sm font-medium text-gray-700">{{
+                  region.name
+                }}</span>
+                <span class="text-sm font-medium text-gray-700"
+                  >{{ region.percentage }}%</span
                 >
-                <span
-                  v-if="product.salePrice"
-                  class="text-gray-500 line-through ml-2"
-                  >${{ product.price.toFixed(2) }}</span
-                >
-                <span v-else>${{ product.price.toFixed(2) }}</span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span
-                  class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800"
-                >
-                  {{ product.stock }} left
-                </span>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <router-link
-                  :to="`/admin/products/${product.id}/edit`"
-                  class="text-blue-600 hover:text-blue-900"
-                >
-                  Edit
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="px-6 py-4 border-t border-gray-200">
-        <router-link
-          to="/admin/products"
-          class="text-blue-600 hover:text-blue-900 text-sm font-medium"
-        >
-          View All Books
-        </router-link>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  class="h-2.5 rounded-full"
+                  :style="{
+                    width: `${region.percentage}%`,
+                    backgroundColor: region.color,
+                  }"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -402,6 +362,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import {
   collection,
   query,
@@ -409,24 +370,45 @@ import {
   orderBy,
   limit,
   getDocs,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { useDonationStore } from "@/stores/donationStore";
+import { useDonorStore } from "@/stores/donorStore";
+
+const router = useRouter();
+const donationStore = useDonationStore();
+const donorStore = useDonorStore();
 
 const loading = ref(true);
-const recentOrders = ref([]);
-const lowStockProducts = ref([]);
+const recentDonations = ref([]);
 
 // Dashboard statistics
 const stats = ref({
-  totalOrders: 0,
-  ordersTrend: 12,
-  revenue: 0,
-  revenueTrend: 8,
-  totalProducts: 0,
-  lowStockProducts: 0,
-  totalCustomers: 0,
-  newCustomers: 0,
+  totalDonations: 0,
+  donationsTrend: 15,
+  totalAmount: 0,
+  amountTrend: 12,
+  totalDonors: 0,
+  newDonors: 0,
+  completedDonations: 0,
+  pendingDonations: 0,
 });
+
+// Donation categories
+const donationCategories = ref([
+  { name: "Universities", percentage: 45, color: "#4F46E5" },
+  { name: "Libraries", percentage: 30, color: "#10B981" },
+  { name: "Non-Profits", percentage: 25, color: "#F59E0B" },
+]);
+
+// Donation regions
+const donationRegions = ref([
+  { name: "Northern Thailand", percentage: 35, color: "#3B82F6" },
+  { name: "Central Thailand", percentage: 40, color: "#EC4899" },
+  { name: "Southern Thailand", percentage: 15, color: "#8B5CF6" },
+  { name: "Eastern Thailand", percentage: 10, color: "#F97316" },
+]);
 
 // Format date
 const formatDate = (timestamp) => {
@@ -446,58 +428,84 @@ const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+// View donation details
+const viewDonationDetails = (donation) => {
+  // Navigate to donation details or open a modal
+  router.push({
+    path: "/admin/donations",
+    query: { id: donation.id },
+  });
+};
+
 // Fetch dashboard data
 const fetchDashboardData = async () => {
   loading.value = true;
 
   try {
-    // Fetch recent orders
-    const ordersQuery = query(
-      collection(db, "orders"),
+    // Fetch recent donations
+    const donationsQuery = query(
+      collection(db, "donations"),
       orderBy("createdAt", "desc"),
       limit(5)
     );
 
-    const ordersSnapshot = await getDocs(ordersQuery);
-    recentOrders.value = ordersSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      customerName: doc.data().shippingInfo?.name || "Unknown",
-    }));
+    const donationsSnapshot = await getDocs(donationsQuery);
+    recentDonations.value = donationsSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        donorName: data.donorName || "Anonymous",
+        recipientName: data.recipientName || data.recipient?.name || "Unknown",
+        amount: data.amount || 0,
+        paymentStatus: data.paymentStatus || "pending",
+      };
+    });
 
-    // Fetch low stock products
-    const productsQuery = query(
-      collection(db, "products"),
-      where("stock", "<", 10),
-      limit(5)
+    // Count donations by status
+    const allDonationsQuery = query(collection(db, "donations"));
+    const allDonationsSnapshot = await getDocs(allDonationsQuery);
+
+    stats.value.totalDonations = allDonationsSnapshot.size;
+
+    let totalAmount = 0;
+    let completedCount = 0;
+    let pendingCount = 0;
+
+    allDonationsSnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      totalAmount += data.amount || 0;
+
+      if (data.paymentStatus === "completed") {
+        completedCount++;
+      } else if (data.paymentStatus === "pending") {
+        pendingCount++;
+      }
+    });
+
+    stats.value.totalAmount = totalAmount;
+    stats.value.completedDonations = completedCount;
+    stats.value.pendingDonations = pendingCount;
+
+    // Count donors
+    const donorsQuery = query(collection(db, "donors"));
+    const donorsSnapshot = await getDocs(donorsQuery);
+    stats.value.totalDonors = donorsSnapshot.size;
+
+    // Count new donors (donors from the last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const newDonorsQuery = query(
+      collection(db, "donors"),
+      where("createdAt", ">=", Timestamp.fromDate(thirtyDaysAgo))
     );
 
-    const productsSnapshot = await getDocs(productsQuery);
-    lowStockProducts.value = productsSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const newDonorsSnapshot = await getDocs(newDonorsQuery);
+    stats.value.newDonors = newDonorsSnapshot.size;
 
-    // Update stats
-    const allOrdersQuery = query(collection(db, "orders"));
-    const allOrdersSnapshot = await getDocs(allOrdersQuery);
-
-    stats.value.totalOrders = allOrdersSnapshot.size;
-    stats.value.revenue = allOrdersSnapshot.docs.reduce((total, doc) => {
-      return total + (doc.data().total || 0);
-    }, 0);
-
-    const allProductsQuery = query(collection(db, "products"));
-    const allProductsSnapshot = await getDocs(allProductsQuery);
-
-    stats.value.totalProducts = allProductsSnapshot.size;
-    stats.value.lowStockProducts = productsSnapshot.size;
-
-    const allUsersQuery = query(collection(db, "users"));
-    const allUsersSnapshot = await getDocs(allUsersQuery);
-
-    stats.value.totalCustomers = allUsersSnapshot.size;
-    stats.value.newCustomers = Math.floor(allUsersSnapshot.size * 0.1); // Placeholder for demo
+    // Calculate donation distribution (in a real app, this would be based on actual data)
+    // For now, we'll use the static data defined above
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
   } finally {

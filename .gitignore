@@ -51,3 +51,4 @@ firebase-debug.log  # Added Firebase debug log
 .idea/  # Added to ignore JetBrains IDE project files
 .vscode/
 
+service-account.json

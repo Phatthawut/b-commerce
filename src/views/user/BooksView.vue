@@ -1,5 +1,5 @@
 <template>
-  <div class="container relative mx-auto p-8 font-thai">
+  <div class="container relative mx-auto p-8 font-thai bg-white">
     <h1 class="text-4xl font-bold py-4">Our Books</h1>
     <div class="">
       <div class="mb-8 flex flex-wrap gap-4">

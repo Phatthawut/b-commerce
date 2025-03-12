@@ -6,4 +6,16 @@
   --font-montserrat: "Montserrat", "sans-serif";
   --color-mainbg: #f3feff;
   --color-borderline: #90bec4;
+  --color-button-blue: #81c1c6;
+  --color-button-blue-hover: #61a1a6;
+  --color-border-blue: #81c1c6;
+  --color-quote-blue: #83ccca;
+}
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "mytheme";
+  default: true; /* set as default */
+  prefersdark: true; /* disable dark mode preference */
+  color-scheme: dark;
+  --color-info: #81c1c6;
 }

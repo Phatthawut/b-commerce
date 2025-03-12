@@ -1,5 +1,5 @@
 <template>
-  <div class="font-thai -mt-2">
+  <div class="font-thai -mt-2 bg-white text-black">
     <Hero :imageSrc="heroImage" imageAlt="About Hero Image" />
     <div class="container relative mx-auto px-4 font-thai">
       <div class="flex flex-col items-center gap-8 mx-auto px-4">

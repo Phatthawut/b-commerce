@@ -204,7 +204,7 @@
 
             <button
               type="submit"
-              class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mb-4"
               :disabled="loading"
             >
               <span v-if="loading" class="flex items-center justify-center">
@@ -232,6 +232,13 @@
               </span>
               <span v-else>Place Order</span>
             </button>
+
+            <router-link
+              to="/payment"
+              class="block w-full text-center bg-[#7ECAD1] text-white py-3 px-4 rounded-lg hover:bg-[#6BB8BF] focus:outline-none focus:ring-2 focus:ring-[#7ECAD1] focus:ring-opacity-50"
+            >
+              Proceed to Payment
+            </router-link>
           </form>
         </div>
       </div>
