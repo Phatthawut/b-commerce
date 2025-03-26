@@ -64,7 +64,7 @@
             </li>
             <li>
               <router-link
-                to="/donation"
+                to="/donate"
                 class="btn btn-ghost text-gray-600 hover:text-primary"
               >
                 Donation Campaign
@@ -123,7 +123,7 @@
         </li>
         <li>
           <router-link
-            to="/donation"
+            to="/donate"
             class="block text-gray-600 hover:text-primary p-2"
           >
             Donation Campaign

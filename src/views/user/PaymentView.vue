@@ -18,18 +18,6 @@
           </div>
 
           <div class="flex justify-between py-2 border-b border-gray-200">
-            <span class="text-gray-600">Recipient:</span>
-            <span class="font-medium">{{ donationData.recipientName }}</span>
-          </div>
-
-          <div class="flex justify-between py-2 border-b border-gray-200">
-            <span class="text-gray-600">Category:</span>
-            <span class="font-medium capitalize">{{
-              donationData.recipientCategory
-            }}</span>
-          </div>
-
-          <div class="flex justify-between py-2 border-b border-gray-200">
             <span class="text-gray-600">Quantity:</span>
             <span class="font-medium">{{ donationData.quantity }} sets</span>
           </div>
@@ -38,6 +26,50 @@
             <span class="text-gray-600 font-semibold">Total Amount:</span>
             <span class="font-bold text-[#7ECAD1]">{{
               donationData.formattedTotal
+            }}</span>
+          </div>
+        </div>
+
+        <!-- Recipients List -->
+        <div
+          v-if="donationData.recipients && donationData.recipients.length > 0"
+        >
+          <h3 class="text-lg font-semibold mb-2">Recipients</h3>
+          <div
+            v-for="(recipient, index) in donationData.recipients"
+            :key="index"
+            class="bg-gray-50 p-3 rounded mb-2"
+          >
+            <div class="flex justify-between py-1 border-b border-gray-200">
+              <span class="text-gray-600">Recipient #{{ index + 1 }}:</span>
+              <span class="font-medium">{{ recipient.recipientName }}</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-gray-200">
+              <span class="text-gray-600">Category:</span>
+              <span class="font-medium capitalize">{{
+                recipient.recipientCategory
+              }}</span>
+            </div>
+            <div class="flex justify-between py-1">
+              <span class="text-gray-600">Region:</span>
+              <span class="font-medium">{{ recipient.recipientRegion }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- Legacy single recipient display (for backward compatibility) -->
+        <div
+          v-else-if="donationData.recipientName"
+          class="bg-gray-50 p-4 rounded mb-2"
+        >
+          <div class="flex justify-between py-2 border-b border-gray-200">
+            <span class="text-gray-600">Recipient:</span>
+            <span class="font-medium">{{ donationData.recipientName }}</span>
+          </div>
+
+          <div class="flex justify-between py-2 border-b border-gray-200">
+            <span class="text-gray-600">Category:</span>
+            <span class="font-medium capitalize">{{
+              donationData.recipientCategory
             }}</span>
           </div>
         </div>
@@ -214,7 +246,7 @@
 
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { serverTimestamp } from "firebase/firestore";
 import {
   getStorage,
@@ -226,6 +258,7 @@ import { useDonationStore } from "@/stores/donationStore";
 import { loadStripe } from "@stripe/stripe-js";
 
 const router = useRouter();
+const route = useRoute();
 const donationStore = useDonationStore();
 const paymentMethod = ref("");
 const paymentSlip = ref(null);
@@ -300,27 +333,130 @@ const initializeStripe = async () => {
   }
 };
 
-// Load donation data from localStorage on component mount
-onMounted(() => {
-  const storedDonation = localStorage.getItem("pendingDonation");
-  const storedDonationId = localStorage.getItem("pendingDonationId");
+// Load donation data from localStorage or URL query parameter on component mount
+onMounted(async () => {
+  // Check if we have a donationId in the URL query parameters
+  const queryDonationId = route.query.donationId;
 
-  if (storedDonation && storedDonationId) {
+  if (queryDonationId) {
+    // We have a donationId in the URL, fetch the donation from Firestore
+    loading.value = true;
     try {
-      donationData.value = JSON.parse(storedDonation);
-      donationId.value = storedDonationId;
+      await donationStore.fetchDonationById(queryDonationId);
 
-      // Pre-fill cardholder name if donor name is available
-      if (donationData.value && donationData.value.name) {
-        cardDetails.value.name = donationData.value.name;
+      if (donationStore.currentDonation) {
+        // We found the donation, use it
+        donationId.value = queryDonationId;
+
+        // Check if the donation has already been paid for
+        const paymentStatus = donationStore.currentDonation.paymentStatus;
+        const donationStatus = donationStore.currentDonation.status;
+
+        // If payment is already completed or processing, redirect to thank you page
+        if (
+          (paymentStatus === "completed" || paymentStatus === "processing") &&
+          (donationStatus === "completed" ||
+            donationStatus === "processing" ||
+            donationStatus === "received")
+        ) {
+          console.log(
+            "Payment already processed. Redirecting to thank you page."
+          );
+          // Store the donationId in localStorage for the thank you page
+          localStorage.setItem("donationId", donationId.value);
+          // Redirect to thank you page
+          router.push("/thank-you");
+          return;
+        }
+
+        // Create a simplified version of the donation data for the UI
+        donationData.value = {
+          name: donationStore.currentDonation.donorName,
+          quantity: donationStore.currentDonation.quantity || 1,
+          formattedTotal: formatCurrency(donationStore.currentDonation.amount),
+          recipients: donationStore.currentDonation.recipients || [],
+        };
+
+        // Pre-fill cardholder name if donor name is available
+        if (donationStore.currentDonation.donorName) {
+          cardDetails.value.name = donationStore.currentDonation.donorName;
+        }
+
+        // Initialize Stripe if needed
+        if (!stripe.value) {
+          initializeStripe();
+        }
+      } else {
+        // Donation not found, show error
+        alert("Donation not found. Please try again.");
+        router.push("/donation");
       }
     } catch (error) {
-      console.error("Error parsing donation data:", error);
+      console.error("Error fetching donation:", error);
+      alert("Error loading donation data. Please try again.");
+      router.push("/donation");
+    } finally {
+      loading.value = false;
     }
   } else {
-    // No donation data found, redirect back to donation form
-    console.warn("No donation data found. Redirecting to donation form.");
-    router.push("/donation");
+    // No donationId in URL, check localStorage
+    const storedDonation = localStorage.getItem("pendingDonation");
+    const storedDonationId = localStorage.getItem("pendingDonationId");
+    const completedDonationId = localStorage.getItem("donationId");
+
+    // If there's a completed donation ID, redirect to thank you page
+    if (completedDonationId) {
+      console.log("Completed donation found. Redirecting to thank you page.");
+      router.push("/thank-you");
+      return;
+    }
+
+    if (storedDonation && storedDonationId) {
+      try {
+        // First, set the local data from localStorage
+        donationData.value = JSON.parse(storedDonation);
+        donationId.value = storedDonationId;
+
+        // Pre-fill cardholder name if donor name is available
+        if (donationData.value && donationData.value.name) {
+          cardDetails.value.name = donationData.value.name;
+        }
+
+        // Also fetch the donation from Firestore to ensure we have complete data
+        loading.value = true;
+        await donationStore.fetchDonationById(storedDonationId);
+
+        if (!donationStore.currentDonation) {
+          console.error(
+            "Could not find donation in Firestore:",
+            storedDonationId
+          );
+          alert("Error loading donation data. Please try again.");
+          router.push("/donation");
+          return;
+        }
+
+        console.log(
+          "Fetched donation from Firestore:",
+          donationStore.currentDonation
+        );
+
+        // Initialize Stripe
+        if (!stripe.value) {
+          initializeStripe();
+        }
+      } catch (error) {
+        console.error("Error loading donation data:", error);
+        alert("Error loading donation data. Please try again.");
+        router.push("/donation");
+      } finally {
+        loading.value = false;
+      }
+    } else {
+      // No donation data found, redirect to donation page
+      alert("No donation data found. Please complete the donation form first.");
+      router.push("/donation");
+    }
   }
 
   // Initialize Stripe when payment method is set to credit card
@@ -422,6 +558,54 @@ const processStripePayment = async () => {
   loading.value = true;
 
   try {
+    // Get the donation amount from the store or from local data
+    let donationAmount;
+
+    if (donationStore.currentDonation && donationStore.currentDonation.amount) {
+      // Use amount from Firestore
+      donationAmount = donationStore.currentDonation.amount;
+      console.log("Using donation amount from Firestore:", donationAmount);
+    } else if (donationData.value && donationData.value.rawTotal) {
+      // Try to get amount from local data
+      donationAmount = donationData.value.rawTotal;
+      console.log(
+        "Using donation amount from local data (rawTotal):",
+        donationAmount
+      );
+    } else if (donationData.value && donationData.value.formattedTotal) {
+      // Try to parse from formatted total
+      try {
+        const formattedTotal = donationData.value.formattedTotal;
+        // Extract numeric value from formatted string (e.g., "1,500 THB" -> 1500)
+        const numericValue = formattedTotal.replace(/[^0-9]/g, "");
+        donationAmount = parseInt(numericValue);
+        console.log(
+          "Parsed donation amount from formatted total:",
+          donationAmount
+        );
+      } catch (parseError) {
+        console.error("Error parsing amount from formatted total:", parseError);
+      }
+    }
+
+    // If we still don't have an amount, try to calculate it from quantity
+    if (!donationAmount && donationData.value && donationData.value.quantity) {
+      const quantity = parseInt(donationData.value.quantity);
+      if (!isNaN(quantity) && quantity > 0) {
+        donationAmount = quantity * 1500; // Using the standard price per set
+        console.log(
+          "Calculated donation amount from quantity:",
+          donationAmount
+        );
+      }
+    }
+
+    if (!donationAmount) {
+      throw new Error(
+        "Donation amount not found. Please try again or contact support."
+      );
+    }
+
     // Step 1: Create a PaymentIntent on the server
     const response = await fetch(
       "http://localhost:3000/api/create-payment-intent",
@@ -431,13 +615,27 @@ const processStripePayment = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: donationData.value.amount,
+          amount: donationAmount,
           currency: "thb", // Thai Baht
           donationId: donationId.value,
           metadata: {
-            donorName: donationData.value.name,
-            donorEmail: donationData.value.email,
-            recipientName: donationData.value.recipientName,
+            donorName:
+              donationData.value?.name ||
+              (donationStore.currentDonation
+                ? donationStore.currentDonation.donorName
+                : ""),
+            donorEmail:
+              donationData.value?.email ||
+              (donationStore.currentDonation
+                ? donationStore.currentDonation.donorEmail
+                : ""),
+            recipientCount:
+              donationStore.currentDonation &&
+              donationStore.currentDonation.recipients
+                ? donationStore.currentDonation.recipients.length
+                : donationData.value && donationData.value.recipients
+                ? donationData.value.recipients.length
+                : 0,
           },
         }),
       }
@@ -458,7 +656,10 @@ const processStripePayment = async () => {
           card: cardElement.value,
           billing_details: {
             name: cardDetails.value.name,
-            email: donationData.value.email || "",
+            email:
+              donationData.value?.email ||
+              donationStore.currentDonation.donorEmail ||
+              "",
           },
         },
       }
@@ -516,50 +717,177 @@ const confirmPayment = async () => {
       const paymentResult = await processStripePayment();
 
       if (!paymentResult) {
-        // Payment failed, error is already set
-        loading.value = false;
-        return;
+        return; // Error already handled in processStripePayment
       }
 
-      // For credit card payments, the webhook will update the status
-      // We just need to store the payment intent ID
+      // Update payment data with Stripe payment intent ID
       paymentData.stripePaymentIntentId = paymentResult.paymentIntentId;
-    } else if (paymentSlip.value) {
-      // Upload payment slip for bank transfers
-      try {
-        const slipURL = await uploadPaymentSlip(
-          paymentSlip.value,
-          donationId.value
-        );
-        if (slipURL) {
-          paymentData.paymentSlipURL = slipURL;
+
+      // For credit card payments, we can immediately create a shipment since payment is verified
+      paymentData.paymentStatus = "completed";
+      paymentData.status = "completed";
+    } else if (paymentMethod.value === "bank-transfer") {
+      // Upload payment slip
+      if (paymentSlip.value) {
+        try {
+          const slipUrl = await uploadPaymentSlip(
+            paymentSlip.value,
+            donationId.value
+          );
+          paymentData.paymentSlipUrl = slipUrl;
+        } catch (error) {
+          console.error("Error uploading payment slip:", error);
+          alert("Failed to upload payment slip. Please try again.");
+          loading.value = false;
+          return;
         }
-      } catch (uploadError) {
-        console.error("Error uploading payment slip:", uploadError);
-        alert(
-          "There was an error uploading your payment slip. Please try again."
-        );
-        loading.value = false;
-        return;
       }
     }
 
-    // Use the donation store to update payment information
+    // Update donation with payment information
     const success = await donationStore.updateDonationPayment(
       donationId.value,
       paymentData
     );
 
     if (!success) {
-      throw new Error("Failed to update payment information");
+      throw new Error("Failed to update donation payment information");
     }
 
-    // Store the donation ID in localStorage for reference on the thank you page
-    localStorage.setItem("donationId", donationId.value);
+    // Create a shipment for the donation if payment is completed (credit card)
+    // or if it's a bank transfer (admin will verify later)
+    try {
+      // Import the shipment store
+      const { useShipmentStore } = await import("@/stores/shipmentStore");
+      const shipmentStore = useShipmentStore();
 
-    // Clear the pending donation from localStorage
+      // Fetch the latest donation data to ensure we have all the information
+      await donationStore.fetchDonationById(donationId.value);
+
+      if (donationStore.currentDonation) {
+        console.log(
+          "Creating shipment for donation:",
+          donationStore.currentDonation
+        );
+
+        // Make sure we have the recipients data
+        if (
+          !donationStore.currentDonation.recipients ||
+          donationStore.currentDonation.recipients.length === 0
+        ) {
+          console.log(
+            "No recipients array in donation, creating one from available data"
+          );
+
+          // If we have recipient data in the donation form, create a recipients array
+          if (
+            donationData.value &&
+            donationData.value.recipients &&
+            donationData.value.recipients.length > 0
+          ) {
+            console.log(
+              "Using recipients from donationData:",
+              donationData.value.recipients
+            );
+            donationStore.currentDonation.recipients =
+              donationData.value.recipients.map((recipient) => ({
+                recipientName: recipient.recipientName || "",
+                address: recipient.address || "",
+                phone: recipient.phone || "",
+                recipientCategory: recipient.recipientCategory || "individual",
+                recipientRegion: recipient.recipientRegion || "",
+              }));
+          } else if (donationData.value && donationData.value.recipientName) {
+            // Create a recipients array from the single recipient
+            console.log(
+              "Creating recipients array from single recipient in donationData"
+            );
+            donationStore.currentDonation.recipients = [
+              {
+                recipientName: donationData.value.recipientName || "",
+                address: donationData.value.recipientAddress || "",
+                phone: donationData.value.recipientPhone || "",
+                recipientCategory:
+                  donationData.value.recipientCategory || "individual",
+                recipientRegion: donationData.value.recipientRegion || "",
+              },
+            ];
+          } else if (donationStore.currentDonation.recipientName) {
+            // Create a recipients array from direct properties in the donation
+            console.log(
+              "Creating recipients array from direct properties in donation"
+            );
+            donationStore.currentDonation.recipients = [
+              {
+                recipientName:
+                  donationStore.currentDonation.recipientName || "",
+                address: donationStore.currentDonation.recipientAddress || "",
+                phone: donationStore.currentDonation.recipientPhone || "",
+                recipientCategory:
+                  donationStore.currentDonation.recipientCategory ||
+                  "individual",
+                recipientRegion:
+                  donationStore.currentDonation.recipientRegion || "",
+              },
+            ];
+          } else {
+            // Last resort: create a recipient using donor information
+            console.log("Creating recipients array from donor information");
+            donationStore.currentDonation.recipients = [
+              {
+                recipientName: donationStore.currentDonation.donorName || "",
+                address: donationStore.currentDonation.donorAddress || "",
+                phone: donationStore.currentDonation.donorPhone || "",
+                recipientCategory: "individual",
+                recipientRegion: "",
+              },
+            ];
+          }
+
+          console.log(
+            "Created recipients array:",
+            donationStore.currentDonation.recipients
+          );
+        } else {
+          console.log(
+            "Donation already has recipients:",
+            donationStore.currentDonation.recipients
+          );
+        }
+
+        // Create a shipment from the donation
+        const shipmentResult = await shipmentStore.createShipmentFromDonation(
+          donationStore.currentDonation
+        );
+
+        if (shipmentResult) {
+          // Handle both single ID and array of IDs
+          const shipmentIds = Array.isArray(shipmentResult)
+            ? shipmentResult
+            : [shipmentResult];
+          console.log(
+            "Shipment(s) created successfully with IDs:",
+            shipmentIds
+          );
+        } else {
+          console.error(
+            "Failed to create shipment for donation:",
+            donationId.value
+          );
+        }
+      }
+    } catch (shipmentError) {
+      console.error("Error creating shipment:", shipmentError);
+      // Don't throw error here, as we still want to proceed to thank you page
+      // even if shipment creation fails
+    }
+
+    // Clear localStorage after successful payment
     localStorage.removeItem("pendingDonation");
     localStorage.removeItem("pendingDonationId");
+
+    // Set the donationId in localStorage for the Thank You page
+    localStorage.setItem("donationId", donationId.value);
 
     // Show success message
     if (paymentMethod.value === "credit-card") {
@@ -580,6 +908,14 @@ const confirmPayment = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+// Helper function to format currency
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("th-TH", {
+    style: "currency",
+    currency: "THB",
+  }).format(amount || 0);
 };
 </script>
 

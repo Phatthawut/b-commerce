@@ -11,8 +11,10 @@ import {
   where,
   serverTimestamp,
   setDoc,
+  limit,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { useAuthStore } from "./authStore";
 
 export const useDonorStore = defineStore("donor", () => {
   // State
@@ -103,26 +105,39 @@ export const useDonorStore = defineStore("donor", () => {
     error.value = "";
 
     try {
-      // In Firestore, we're using the phone number as the document ID
-      const donorRef = doc(db, "donors", phone);
-      const donorSnapshot = await getDoc(donorRef);
+      // Query donors by phone number
+      const donorsQuery = query(
+        collection(db, "donors"),
+        where("telephone", "==", phone)
+      );
 
-      if (donorSnapshot.exists()) {
-        currentDonor.value = {
-          id: donorSnapshot.id,
-          ...donorSnapshot.data(),
-        };
-        return currentDonor.value;
+      const querySnapshot = await getDocs(donorsQuery);
+
+      if (!querySnapshot.empty) {
+        // Return all donors with this phone number
+        const donorsWithPhone = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // If there's only one donor, set it as current
+        if (donorsWithPhone.length === 1) {
+          currentDonor.value = donorsWithPhone[0];
+        } else {
+          currentDonor.value = null; // Multiple donors found, don't set a specific one
+        }
+
+        return donorsWithPhone;
       } else {
         error.value = "Donor not found";
         currentDonor.value = null;
-        return null;
+        return [];
       }
     } catch (err) {
       console.error("Error fetching donor by phone:", err);
       error.value = "Failed to load donor. Please try again.";
       currentDonor.value = null;
-      return null;
+      return [];
     } finally {
       loading.value = false;
     }
@@ -137,7 +152,7 @@ export const useDonorStore = defineStore("donor", () => {
 
       await updateDoc(donorRef, {
         ...donorData,
-        lastUpdated: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
 
       // Update local state
@@ -146,7 +161,7 @@ export const useDonorStore = defineStore("donor", () => {
         donors.value[index] = {
           ...donors.value[index],
           ...donorData,
-          lastUpdated: new Date(),
+          updatedAt: new Date(),
         };
       }
 
@@ -165,11 +180,53 @@ export const useDonorStore = defineStore("donor", () => {
     error.value = "";
 
     try {
+      let donorId;
+
+      // Validate required fields
       if (!donorData.telephone) {
-        throw new Error("Donor telephone is required");
+        throw new Error("Phone number is required");
+      }
+      if (!donorData.name) {
+        throw new Error("Name is required");
       }
 
-      const donorId = donorData.telephone;
+      // Try to find existing donor by phone AND name
+      const donorsQuery = query(
+        collection(db, "donors"),
+        where("telephone", "==", donorData.telephone),
+        limit(10) // Get multiple donors with the same phone to check names
+      );
+
+      const querySnapshot = await getDocs(donorsQuery);
+      let existingDonor = null;
+
+      // Check if there's a donor with the same name AND phone
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          const donor = doc.data();
+          // Only consider it a match if both name and phone match
+          if (donor.name.toLowerCase() === donorData.name.toLowerCase()) {
+            existingDonor = {
+              id: doc.id,
+              ...donor,
+            };
+          }
+        });
+      }
+
+      if (existingDonor) {
+        // Use existing donor ID if we found an exact match
+        donorId = existingDonor.id;
+        console.log(
+          `Found existing donor with matching name and phone: ${donorId}`
+        );
+      } else {
+        // Create a new donor document with auto-generated ID
+        const newDonorRef = doc(collection(db, "donors"));
+        donorId = newDonorRef.id;
+        console.log(`Creating new donor with ID: ${donorId}`);
+      }
+
       const donorRef = doc(db, "donors", donorId);
 
       // Check if donor already exists
@@ -184,10 +241,30 @@ export const useDonorStore = defineStore("donor", () => {
           totalAmount:
             (existingData.totalAmount || 0) + (donorData.totalAmount || 0),
           lastDonation: serverTimestamp(),
-          lastUpdated: serverTimestamp(),
+          updatedAt: serverTimestamp(),
         };
 
         await setDoc(donorRef, updatedData, { merge: true });
+
+        // Update the donor in the local state if it exists
+        const donorIndex = donors.value.findIndex((d) => d.id === donorId);
+        if (donorIndex !== -1) {
+          // Update existing donor in the array
+          donors.value[donorIndex] = {
+            ...donors.value[donorIndex],
+            ...updatedData,
+            lastDonation: new Date(),
+            updatedAt: new Date(),
+          };
+        } else {
+          // Add the donor to the local state if it's not already there
+          donors.value.push({
+            id: donorId,
+            ...updatedData,
+            lastDonation: new Date(),
+            updatedAt: new Date(),
+          });
+        }
 
         return {
           id: donorId,
@@ -201,10 +278,19 @@ export const useDonorStore = defineStore("donor", () => {
           totalDonations: 1,
           createdAt: serverTimestamp(),
           lastDonation: serverTimestamp(),
-          lastUpdated: serverTimestamp(),
+          updatedAt: serverTimestamp(),
         };
 
         await setDoc(donorRef, newDonorData);
+
+        // Add the new donor to the local state
+        donors.value.push({
+          id: donorId,
+          ...newDonorData,
+          createdAt: new Date(),
+          lastDonation: new Date(),
+          updatedAt: new Date(),
+        });
 
         return {
           id: donorId,

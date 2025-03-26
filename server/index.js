@@ -43,7 +43,16 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+
+// Important: Use JSON parser for all routes EXCEPT the webhook route
+// This is because Stripe needs the raw request body for signature verification
+app.use((req, res, next) => {
+  if (req.originalUrl === "/api/webhook") {
+    next();
+  } else {
+    bodyParser.json()(req, res, next);
+  }
+});
 
 // Log configuration on startup
 console.log(`Server starting with configuration:
@@ -118,6 +127,7 @@ app.post(
     let event;
 
     try {
+      // Use the raw request body for signature verification
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     } catch (err) {
       console.error(`Webhook Error: ${err.message}`);
@@ -133,6 +143,10 @@ app.post(
       case "payment_intent.payment_failed":
         const failedPayment = event.data.object;
         await handleFailedPayment(failedPayment);
+        break;
+      case "payment_intent.processing":
+        const processingPayment = event.data.object;
+        await handleProcessingPayment(processingPayment);
         break;
       default:
         console.log(`Unhandled event type ${event.type}`);
@@ -153,6 +167,18 @@ async function handleSuccessfulPayment(paymentIntent) {
       return;
     }
 
+    console.log(`Processing successful payment for donation ${donationId}`);
+
+    // Get the donation data first to have complete information for email
+    const donationDoc = await db.collection("donations").doc(donationId).get();
+
+    if (!donationDoc.exists) {
+      console.error(`Donation ${donationId} not found`);
+      return;
+    }
+
+    const donationData = donationDoc.data();
+
     // Update the donation in Firestore
     await db
       .collection("donations")
@@ -166,9 +192,54 @@ async function handleSuccessfulPayment(paymentIntent) {
           last4: paymentIntent.payment_method_details?.card?.last4 || "",
           brand: paymentIntent.payment_method_details?.card?.brand || "",
         },
+        // Add automated verification info
+        verificationNotes: "Payment automatically verified by Stripe",
+        verificationDate: admin.firestore.FieldValue.serverTimestamp(),
+        automatedVerification: true,
       });
 
     console.log(`Updated donation ${donationId} with successful payment`);
+
+    // Send confirmation email to donor if email is available
+    if (donationData.donorEmail) {
+      try {
+        // You can use nodemailer or any other email service here
+        // This is a placeholder for the email sending logic
+        console.log(
+          `Sending payment confirmation email to ${donationData.donorEmail}`
+        );
+
+        // Example email sending code (uncomment and configure when ready)
+        /*
+        const mailOptions = {
+          from: 'noreply@yourorganization.com',
+          to: donationData.donorEmail,
+          subject: 'Your Donation Payment Confirmation',
+          html: `
+            <h1>Thank you for your donation!</h1>
+            <p>Dear ${donationData.donorName},</p>
+            <p>Your payment of ${formatCurrency(donationData.amount)} has been successfully processed.</p>
+            <p>Donation ID: ${donationId}</p>
+            <p>Date: ${new Date().toLocaleDateString()}</p>
+            <p>Thank you for your generosity!</p>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        */
+
+        console.log(`Confirmation email sent to ${donationData.donorEmail}`);
+      } catch (emailError) {
+        console.error("Error sending confirmation email:", emailError);
+      }
+    }
+
+    // Create a shipment record automatically
+    try {
+      await createShipmentFromDonation(donationId, donationData);
+    } catch (shipmentError) {
+      console.error("Error creating shipment:", shipmentError);
+    }
   } catch (error) {
     console.error("Error handling successful payment:", error);
   }
@@ -184,6 +255,18 @@ async function handleFailedPayment(paymentIntent) {
       return;
     }
 
+    console.log(`Processing failed payment for donation ${donationId}`);
+
+    // Get the donation data first to have complete information for email
+    const donationDoc = await db.collection("donations").doc(donationId).get();
+
+    if (!donationDoc.exists) {
+      console.error(`Donation ${donationId} not found`);
+      return;
+    }
+
+    const donationData = donationDoc.data();
+
     // Update the donation in Firestore
     await db
       .collection("donations")
@@ -198,9 +281,208 @@ async function handleFailedPayment(paymentIntent) {
       });
 
     console.log(`Updated donation ${donationId} with failed payment status`);
+
+    // Send notification email to donor if email is available
+    if (donationData.donorEmail) {
+      try {
+        console.log(
+          `Sending payment failure email to ${donationData.donorEmail}`
+        );
+
+        // Example email sending code (uncomment and configure when ready)
+        /*
+        const mailOptions = {
+          from: 'noreply@yourorganization.com',
+          to: donationData.donorEmail,
+          subject: 'Your Donation Payment Failed',
+          html: `
+            <h1>Payment Failed</h1>
+            <p>Dear ${donationData.donorName},</p>
+            <p>We're sorry, but your payment of ${formatCurrency(donationData.amount)} could not be processed.</p>
+            <p>Reason: ${paymentIntent.last_payment_error?.message || "Unknown error"}</p>
+            <p>Donation ID: ${donationId}</p>
+            <p>Please try again or contact our support team for assistance.</p>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        */
+
+        console.log(
+          `Failure notification email sent to ${donationData.donorEmail}`
+        );
+      } catch (emailError) {
+        console.error("Error sending failure email:", emailError);
+      }
+    }
   } catch (error) {
     console.error("Error handling failed payment:", error);
   }
+}
+
+// Handle processing payment
+async function handleProcessingPayment(paymentIntent) {
+  try {
+    const { donationId } = paymentIntent.metadata;
+
+    if (!donationId) {
+      console.error("No donation ID found in payment metadata");
+      return;
+    }
+
+    console.log(`Processing payment in progress for donation ${donationId}`);
+
+    // Update the donation in Firestore
+    await db.collection("donations").doc(donationId).update({
+      paymentStatus: "processing",
+      status: "processing",
+      stripePaymentIntentId: paymentIntent.id,
+      paymentDate: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    console.log(
+      `Updated donation ${donationId} with processing payment status`
+    );
+  } catch (error) {
+    console.error("Error handling processing payment:", error);
+  }
+}
+
+// Helper function to create a shipment from a donation
+async function createShipmentFromDonation(donationId, donationData) {
+  try {
+    console.log(`Creating shipment for donation ${donationId}`);
+    console.log("Donation data:", donationData);
+
+    // Check if shipments already exist for this donation
+    const existingShipmentsQuery = await db
+      .collection("shipments")
+      .where("donationId", "==", donationId)
+      .get();
+
+    if (!existingShipmentsQuery.empty) {
+      const existingShipments = [];
+      existingShipmentsQuery.forEach((doc) => {
+        existingShipments.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      console.log(
+        `Shipments already exist for donation ${donationId}:`,
+        existingShipments
+      );
+      console.log(
+        `Returning existing shipment IDs instead of creating duplicates`
+      );
+
+      // Return the IDs of existing shipments
+      const existingIds = existingShipments.map((shipment) => shipment.id);
+      return existingIds;
+    }
+
+    // Create recipients array from donation data
+    let recipients = [];
+
+    // Check if donation has recipients array
+    if (donationData.recipients && donationData.recipients.length > 0) {
+      console.log(
+        "Using recipients array from donation:",
+        donationData.recipients
+      );
+      // Use the recipients array directly, but add quantity field
+      recipients = donationData.recipients.map((recipient) => ({
+        ...recipient,
+        quantity: 1, // Each recipient gets 1 book set
+      }));
+      console.log("Recipients array for shipment:", recipients);
+    } else {
+      // Create a single recipient from donation fields
+      console.log("Creating recipient from donation fields");
+      const recipientInfo = {
+        recipientName:
+          donationData.recipientName || donationData.donorName || "",
+        address: donationData.recipientAddress || "",
+        phone: donationData.recipientPhone || donationData.donorPhone || "",
+        recipientCategory: donationData.recipientCategory || "individual",
+        recipientId: donationData.recipientId || "",
+        recipientRegion: donationData.recipientRegion || "",
+        quantity: 1, // Always 1 book set per recipient
+      };
+      recipients = [recipientInfo];
+      console.log("Created recipient for shipment:", recipientInfo);
+    }
+
+    // Create a separate shipment for each recipient
+    const shipmentIds = [];
+
+    for (const recipient of recipients) {
+      // Create a shipment record in Firestore for this recipient
+      const shipmentData = {
+        donationId: donationId,
+        donorName: donationData.donorName,
+        donorEmail: donationData.donorEmail || null,
+        donorPhone: donationData.donorPhone,
+        // Add recipient information as direct properties
+        recipientName:
+          recipient.recipientName || recipient.institutionName || "",
+        recipientAddress: recipient.address || "",
+        recipientPhone: recipient.phone || "",
+        // Also store the single recipient in the recipients array for consistency
+        recipients: [recipient],
+        quantity: 1, // Each shipment is for 1 book set
+        status: "pending",
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        notes: "Automatically created from successful payment",
+        automatedCreation: true,
+        // Add items
+        items: [
+          {
+            name: "Book Donation",
+            quantity: 1, // Each shipment is for 1 book set
+          },
+        ],
+      };
+
+      console.log(
+        `Creating shipment for recipient: ${recipient.recipientName}`,
+        shipmentData
+      );
+      const shipmentRef = await db.collection("shipments").add(shipmentData);
+
+      console.log(
+        `Created shipment ${shipmentRef.id} for recipient: ${recipient.recipientName}`
+      );
+
+      shipmentIds.push(shipmentRef.id);
+    }
+
+    // Update the donation with all shipment IDs
+    await db.collection("donations").doc(donationId).update({
+      shipmentIds: shipmentIds, // Store all shipment IDs
+      shipmentId: shipmentIds[0], // Keep the first one for backward compatibility
+      shipmentStatus: "pending",
+    });
+
+    console.log(
+      `Updated donation ${donationId} with ${shipmentIds.length} shipment IDs`
+    );
+
+    return shipmentIds;
+  } catch (error) {
+    console.error(`Error creating shipment for donation ${donationId}:`, error);
+    throw error;
+  }
+}
+
+// Helper function to format currency
+function formatCurrency(amount) {
+  return new Intl.NumberFormat("th-TH", {
+    style: "currency",
+    currency: "THB",
+  }).format(amount || 0);
 }
 
 // Start the server

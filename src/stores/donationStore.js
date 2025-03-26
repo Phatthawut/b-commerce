@@ -10,10 +10,13 @@ import {
   query,
   orderBy,
   where,
+  limit,
   serverTimestamp,
-  setDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { useDonorStore } from "./donorStore";
+import { useAuthStore } from "./authStore";
 
 export const useDonationStore = defineStore("donation", () => {
   // State
@@ -27,51 +30,52 @@ export const useDonationStore = defineStore("donation", () => {
     return (id) => donations.value.find((donation) => donation.id === id);
   });
 
-  const getPendingDonations = computed(() => {
-    return donations.value.filter(
-      (donation) => donation.paymentStatus === "pending"
-    );
+  const getDonationsByDonorId = computed(() => {
+    return (donorId) =>
+      donations.value.filter((donation) => donation.donorId === donorId);
   });
 
-  const getCompletedDonations = computed(() => {
-    return donations.value.filter(
-      (donation) => donation.paymentStatus === "completed"
-    );
+  const getRecentDonations = computed(() => {
+    return [...donations.value]
+      .sort((a, b) => {
+        // Sort by timestamp (most recent first)
+        const dateA = a.timestamp?.seconds
+          ? a.timestamp.seconds
+          : new Date(a.timestamp).getTime() / 1000;
+        const dateB = b.timestamp?.seconds
+          ? b.timestamp.seconds
+          : new Date(b.timestamp).getTime() / 1000;
+        return dateB - dateA;
+      })
+      .slice(0, 5);
   });
 
-  const getFailedDonations = computed(() => {
-    return donations.value.filter(
-      (donation) => donation.paymentStatus === "failed"
-    );
+  const getTotalDonations = computed(() => {
+    return donations.value.reduce((total, donation) => {
+      return total + (donation.amount || 0);
+    }, 0);
   });
 
   // Actions
   const fetchDonations = async () => {
     loading.value = true;
     error.value = "";
-    console.log("Fetching donations from Firestore...");
 
     try {
-      console.log("Creating query for donations collection...");
       const donationsQuery = query(
         collection(db, "donations"),
-        orderBy("createdAt", "desc")
+        orderBy("timestamp", "desc")
       );
-
-      console.log("Executing query...");
       const querySnapshot = await getDocs(donationsQuery);
-      console.log(`Query returned ${querySnapshot.size} documents`);
 
       const donationsList = [];
       querySnapshot.forEach((doc) => {
-        console.log(`Processing document with ID: ${doc.id}`);
         donationsList.push({
           id: doc.id,
           ...doc.data(),
         });
       });
 
-      console.log(`Setting donations with ${donationsList.length} items`);
       donations.value = donationsList;
     } catch (err) {
       console.error("Error fetching donations:", err);
@@ -90,18 +94,52 @@ export const useDonationStore = defineStore("donation", () => {
       const donationSnapshot = await getDoc(donationRef);
 
       if (donationSnapshot.exists()) {
-        currentDonation.value = {
+        const donationData = {
           id: donationSnapshot.id,
           ...donationSnapshot.data(),
         };
+        currentDonation.value = donationData;
+        return donationData;
       } else {
         error.value = "Donation not found";
         currentDonation.value = null;
+        return null;
       }
     } catch (err) {
       console.error("Error fetching donation:", err);
       error.value = "Failed to load donation. Please try again.";
       currentDonation.value = null;
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const fetchDonationsByDonorId = async (donorId) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      const donationsQuery = query(
+        collection(db, "donations"),
+        where("donorId", "==", donorId),
+        orderBy("timestamp", "desc")
+      );
+      const querySnapshot = await getDocs(donationsQuery);
+
+      const donorDonations = [];
+      querySnapshot.forEach((doc) => {
+        donorDonations.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      return donorDonations;
+    } catch (err) {
+      console.error("Error fetching donor donations:", err);
+      error.value = "Failed to load donor donations. Please try again.";
+      return [];
     } finally {
       loading.value = false;
     }
@@ -112,105 +150,109 @@ export const useDonationStore = defineStore("donation", () => {
     error.value = "";
 
     try {
-      // Create donation record
-      const donationRef = await addDoc(collection(db, "donations"), {
-        ...donationData,
-        createdAt: serverTimestamp(),
-        lastUpdated: serverTimestamp(),
-      });
+      const donorStore = useDonorStore();
 
-      // Add the new donation to the local state
-      const newDonation = {
-        id: donationRef.id,
-        ...donationData,
-        createdAt: new Date(),
-        lastUpdated: new Date(),
-      };
-
-      donations.value.unshift(newDonation);
-
-      return donationRef.id;
-    } catch (err) {
-      console.error("Error creating donation:", err);
-      error.value = "Failed to create donation. Please try again.";
-      return null;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const createDonorAndDonation = async (donorData, donationData) => {
-    loading.value = true;
-    error.value = "";
-    console.log("Creating donor and donation with data:", {
-      donorData,
-      donationData,
-    });
-
-    try {
-      // Use telephone as a unique identifier for the donor
-      const donorId = donorData.telephone;
-      if (!donorId) {
-        throw new Error("Donor telephone is required");
+      // Process donor information
+      if (!donationData.donorPhone) {
+        throw new Error("Donor phone number is required for donations");
       }
 
-      const donorRef = doc(db, "donors", donorId);
+      if (!donationData.donorName) {
+        throw new Error("Donor name is required for donations");
+      }
 
-      // Save donor data, merging with existing data if the donor already exists
-      await setDoc(
-        donorRef,
-        {
-          ...donorData,
-          lastUpdated: serverTimestamp(),
-        },
-        { merge: true }
-      );
-      console.log(`Donor saved with ID: ${donorId}`);
+      // Create or update donor with minimal required information
+      const donor = await donorStore.createOrUpdateDonor({
+        name: donationData.donorName,
+        email: donationData.donorEmail || "",
+        telephone: donationData.donorPhone,
+        address: donationData.donorAddress || "",
+        totalAmount: donationData.amount,
+      });
 
-      // Don't override fields that are already set in donationData
-      const donationWithDonorRef = {
-        donorId: donorId,
-        // Default values for required fields if not provided
-        status: donationData.status || "initiated",
-        paymentStatus: donationData.paymentStatus || "initiated",
-        total:
-          donationData.total ||
-          donationData.formattedTotal ||
-          `${donationData.amount.toLocaleString()} THB`,
-        rawTotal: donationData.rawTotal || donationData.amount,
-        pricePerSet: donationData.pricePerSet || 1500,
-        message: donationData.message || "",
-        // Spread the original donation data to keep all fields
-        ...donationData,
-        // Ensure timestamps are set
-        createdAt: donationData.createdAt || serverTimestamp(),
-        lastUpdated: donationData.lastUpdated || serverTimestamp(),
-        timestamp: donationData.timestamp || serverTimestamp(),
+      if (!donor) {
+        throw new Error("Failed to process donor information");
+      }
+
+      console.log(`Creating donation for donor: ${donor.id} (${donor.name})`);
+
+      // Create donation document with minimal required fields
+      const donationRef = await addDoc(collection(db, "donations"), {
+        donorId: donor.id,
+        donorName: donor.name,
+        donorPhone: donor.telephone,
+        donorEmail: donor.email || "",
+        amount: donationData.amount,
+        items: donationData.items || [],
+        paymentMethod: donationData.paymentMethod || "bank_transfer",
+        paymentStatus: "pending",
+        notes: donationData.notes || "",
+        timestamp: serverTimestamp(),
+        status: "received",
+      });
+
+      const newDonation = {
+        id: donationRef.id,
+        donorId: donor.id,
+        donorName: donor.name,
+        donorPhone: donor.telephone,
+        donorEmail: donor.email || "",
+        amount: donationData.amount,
+        items: donationData.items || [],
+        paymentMethod: donationData.paymentMethod || "bank_transfer",
+        paymentStatus: "pending",
+        notes: donationData.notes || "",
+        timestamp: new Date(),
+        status: "received",
       };
 
-      console.log("Prepared donation data:", donationWithDonorRef);
+      // Add to local state
+      donations.value.unshift(newDonation);
 
-      const donationRef = await addDoc(
-        collection(db, "donations"),
-        donationWithDonorRef
-      );
-      console.log(`Donation created with ID: ${donationRef.id}`);
-
-      return {
-        donorId,
-        donationId: donationRef.id,
-      };
+      return newDonation;
     } catch (err) {
-      console.error("Error creating donor and donation:", err);
-      console.error("Error details:", err.message);
-      console.error("Error stack:", err.stack);
-      error.value = `Failed to process donation: ${err.message}`;
+      console.error("Error creating donation:", err);
+      error.value =
+        err.message || "Failed to create donation. Please try again.";
       return null;
     } finally {
       loading.value = false;
     }
   };
 
+  const updateDonation = async (donationId, donationData) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      const donationRef = doc(db, "donations", donationId);
+
+      await updateDoc(donationRef, {
+        ...donationData,
+        updatedAt: serverTimestamp(),
+      });
+
+      // Update local state
+      const index = donations.value.findIndex((d) => d.id === donationId);
+      if (index !== -1) {
+        donations.value[index] = {
+          ...donations.value[index],
+          ...donationData,
+          updatedAt: new Date(),
+        };
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Error updating donation:", err);
+      error.value = "Failed to update donation. Please try again.";
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Function specifically for updating payment information
   const updateDonationPayment = async (donationId, paymentData) => {
     loading.value = true;
     error.value = "";
@@ -218,10 +260,15 @@ export const useDonationStore = defineStore("donation", () => {
     try {
       const donationRef = doc(db, "donations", donationId);
 
-      // Update payment information
+      // Add payment date if not provided
+      if (!paymentData.paymentDate) {
+        paymentData.paymentDate = serverTimestamp();
+      }
+
+      // Update the donation with payment information
       await updateDoc(donationRef, {
         ...paymentData,
-        lastUpdated: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
 
       // Update local state
@@ -230,7 +277,7 @@ export const useDonationStore = defineStore("donation", () => {
         donations.value[index] = {
           ...donations.value[index],
           ...paymentData,
-          lastUpdated: new Date(),
+          updatedAt: new Date(),
         };
       }
 
@@ -238,122 +285,6 @@ export const useDonationStore = defineStore("donation", () => {
     } catch (err) {
       console.error("Error updating donation payment:", err);
       error.value = "Failed to update payment information. Please try again.";
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const updateDonationStatus = async (donationId, newStatus) => {
-    loading.value = true;
-    error.value = "";
-
-    try {
-      const donationRef = doc(db, "donations", donationId);
-
-      await updateDoc(donationRef, {
-        paymentStatus: newStatus,
-        status: newStatus,
-        lastUpdated: serverTimestamp(),
-      });
-
-      // Update local state
-      const index = donations.value.findIndex((d) => d.id === donationId);
-      if (index !== -1) {
-        donations.value[index].paymentStatus = newStatus;
-        donations.value[index].status = newStatus;
-        donations.value[index].lastUpdated = new Date();
-      }
-
-      return true;
-    } catch (err) {
-      console.error("Error updating donation status:", err);
-      error.value = "Failed to update donation status. Please try again.";
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // Function to create test data
-  const createTestData = async () => {
-    loading.value = true;
-    error.value = "";
-    console.log("Creating test donation data...");
-
-    try {
-      // Create a test donor
-      const donorData = {
-        name: "Test Donor",
-        email: "test@example.com",
-        telephone: "1234567890",
-        address: "123 Test Street, Test City",
-        createdAt: serverTimestamp(),
-        lastUpdated: serverTimestamp(),
-      };
-
-      // Save donor
-      const donorId = donorData.telephone;
-      const donorRef = doc(db, "donors", donorId);
-      await setDoc(donorRef, donorData);
-      console.log(`Created test donor with ID: ${donorId}`);
-
-      // Create test donations with different statuses
-      const statuses = ["pending", "completed", "failed"];
-      const categories = ["university", "library", "nonprofit"];
-      const regions = ["Bangkok", "Chiang Mai", "Phuket", "Khon Kaen"];
-
-      for (let i = 0; i < 5; i++) {
-        const status = statuses[i % statuses.length];
-        const category = categories[i % categories.length];
-        const region = regions[i % regions.length];
-
-        const donationData = {
-          donorId: donorId,
-          name: donorData.name,
-          email: donorData.email,
-          telephone: donorData.telephone,
-          address: donorData.address,
-          recipientName: `Test Recipient ${i + 1}`,
-          recipientCategory: category,
-          recipientRegion: region,
-          recipientAddress: `${i + 100} Recipient Street, ${region}`,
-          quantity: i + 1,
-          amount: (i + 1) * 1000,
-          paymentMethod: i % 2 === 0 ? "creditCard" : "bankTransfer",
-          paymentStatus: status,
-          status: status,
-          createdAt: serverTimestamp(),
-          lastUpdated: serverTimestamp(),
-        };
-
-        // Add payment details for completed donations
-        if (status === "completed") {
-          donationData.paymentDate = serverTimestamp();
-          if (donationData.paymentMethod === "creditCard") {
-            donationData.cardDetails = {
-              cardholderName: donorData.name,
-              lastFourDigits: "4242",
-            };
-          } else {
-            donationData.transferReference = `REF${Math.floor(
-              Math.random() * 1000000
-            )}`;
-          }
-        }
-
-        const donationRef = await addDoc(
-          collection(db, "donations"),
-          donationData
-        );
-        console.log(`Created test donation with ID: ${donationRef.id}`);
-      }
-
-      console.log("Test data creation complete");
-      return true;
-    } catch (err) {
-      console.error("Error creating test data:", err);
-      error.value = "Failed to create test data. Please try again.";
       return false;
     } finally {
       loading.value = false;
@@ -373,16 +304,29 @@ export const useDonationStore = defineStore("donation", () => {
     return new Date(timestamp).toLocaleString();
   };
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("th-TH", {
+      style: "currency",
+      currency: "THB",
+    }).format(amount || 0);
+  };
+
   const formatPaymentMethod = (method) => {
-    if (method === "credit-card") return "Credit Card";
-    if (method === "bank-transfer") return "Bank Transfer";
+    if (method === "credit_card") return "Credit Card";
+    if (method === "bank_transfer") return "Bank Transfer";
+    if (method === "paypal") return "PayPal";
+    if (method === "cash") return "Cash";
     return method || "N/A";
   };
 
   const formatStatus = (status) => {
+    if (status === "pending") return "Pending";
+    if (status === "processing") return "Processing";
     if (status === "completed") return "Completed";
-    if (status === "pending") return "Pending Verification";
     if (status === "failed") return "Failed";
+    if (status === "cancelled") return "Cancelled";
+    if (status === "received") return "Received";
+    if (status === "initiated") return "Initiated";
     return status || "N/A";
   };
 
@@ -390,7 +334,433 @@ export const useDonationStore = defineStore("donation", () => {
     if (category === "university") return "University";
     if (category === "library") return "Library";
     if (category === "nonprofit") return "Non-Profit Organization";
+    if (category === "school") return "School";
+    if (category === "community") return "Community Center";
     return category || "N/A";
+  };
+
+  // Function to create both donor and donation in one transaction
+  const createDonorAndDonation = async (donorData, donationData) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      const donorStore = useDonorStore();
+
+      // Create or update donor
+      const donor = await donorStore.createOrUpdateDonor({
+        name: donorData.name,
+        email: donorData.email || "",
+        telephone: donorData.telephone,
+        address: donorData.address || "",
+        totalAmount: donationData.amount,
+      });
+
+      if (!donor) {
+        throw new Error("Failed to process donor information");
+      }
+
+      console.log(`Creating donation for donor: ${donor.id} (${donor.name})`);
+
+      // Create donation document
+      const donationRef = await addDoc(collection(db, "donations"), {
+        donorId: donor.id,
+        donorName: donor.name,
+        donorPhone: donor.telephone,
+        donorEmail: donor.email,
+        amount: donationData.amount,
+        recipients: donationData.recipients || [],
+        quantity: donationData.quantity || 1,
+        paymentMethod: donationData.paymentMethod || "bank_transfer",
+        paymentStatus: donationData.paymentStatus || "initiated",
+        notes: donationData.message || "",
+        timestamp: serverTimestamp(),
+        createdAt: serverTimestamp(),
+        lastUpdated: serverTimestamp(),
+        status: donationData.status || "initiated",
+        reminderSent: false, // Track if a reminder has been sent
+      });
+
+      const newDonation = {
+        id: donationRef.id,
+        donorId: donor.id,
+        donorName: donor.name,
+        donorPhone: donor.telephone,
+        donorEmail: donor.email,
+        amount: donationData.amount,
+        recipients: donationData.recipients || [],
+        quantity: donationData.quantity || 1,
+        paymentMethod: donationData.paymentMethod || "bank_transfer",
+        paymentStatus: donationData.paymentStatus || "initiated",
+        notes: donationData.message || "",
+        timestamp: new Date(),
+        createdAt: new Date(),
+        lastUpdated: new Date(),
+        status: donationData.status || "initiated",
+        reminderSent: false,
+      };
+
+      // Add to local state
+      donations.value.unshift(newDonation);
+
+      return {
+        donationId: donationRef.id,
+        donorId: donor.id,
+        success: true,
+      };
+    } catch (err) {
+      console.error("Error creating donation:", err);
+      error.value =
+        err.message || "Failed to create donation. Please try again.";
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Function to fetch donations by status
+  const fetchDonationsByStatus = async (status) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      const donationsQuery = query(
+        collection(db, "donations"),
+        where("status", "==", status),
+        orderBy("createdAt", "desc")
+      );
+
+      const querySnapshot = await getDocs(donationsQuery);
+      const donationsList = [];
+
+      querySnapshot.forEach((doc) => {
+        donationsList.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      return donationsList;
+    } catch (err) {
+      console.error(`Error fetching ${status} donations:`, err);
+      error.value = `Failed to load ${status} donations. Please try again.`;
+      return [];
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Function to fetch incomplete donations for a specific donor
+  const fetchIncompleteDonationsByDonor = async (donorId) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      // Try the complex query first (requires composite index)
+      try {
+        const donationsQuery = query(
+          collection(db, "donations"),
+          where("donorId", "==", donorId),
+          where("status", "==", "initiated"),
+          orderBy("createdAt", "desc")
+        );
+
+        const querySnapshot = await getDocs(donationsQuery);
+        const donationsList = [];
+
+        querySnapshot.forEach((doc) => {
+          donationsList.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+
+        return donationsList;
+      } catch (indexError) {
+        console.warn(
+          "Index not yet available, using fallback query:",
+          indexError.message
+        );
+
+        // Fallback query without ordering (doesn't require composite index)
+        const fallbackQuery = query(
+          collection(db, "donations"),
+          where("donorId", "==", donorId),
+          where("status", "==", "initiated")
+        );
+
+        const fallbackSnapshot = await getDocs(fallbackQuery);
+        const fallbackList = [];
+
+        fallbackSnapshot.forEach((doc) => {
+          fallbackList.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+
+        // Sort manually in memory
+        return fallbackList.sort((a, b) => {
+          // Sort by createdAt (most recent first)
+          const dateA = a.createdAt?.seconds
+            ? a.createdAt.seconds
+            : new Date(a.createdAt).getTime() / 1000;
+          const dateB = b.createdAt?.seconds
+            ? b.createdAt.seconds
+            : new Date(b.createdAt).getTime() / 1000;
+          return dateB - dateA;
+        });
+      }
+    } catch (err) {
+      console.error("Error fetching incomplete donations:", err);
+      error.value = "Failed to load incomplete donations. Please try again.";
+      return [];
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Function to mark abandoned donations
+  const markAbandonedDonations = async (daysThreshold = 7) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      // Calculate the cutoff date
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysThreshold);
+
+      // Convert to Firestore timestamp
+      const cutoffTimestamp = Timestamp.fromDate(cutoffDate);
+
+      // Query for initiated donations older than the cutoff
+      const abandonedDonationsQuery = query(
+        collection(db, "donations"),
+        where("status", "==", "initiated"),
+        where("createdAt", "<", cutoffTimestamp)
+      );
+
+      const querySnapshot = await getDocs(abandonedDonationsQuery);
+      const updatedCount = querySnapshot.size;
+
+      // Update each abandoned donation
+      const batch = db.batch();
+      querySnapshot.forEach((doc) => {
+        const donationRef = doc.ref;
+        batch.update(donationRef, {
+          status: "abandoned",
+          lastUpdated: serverTimestamp(),
+        });
+      });
+
+      await batch.commit();
+
+      // Update local state if needed
+      querySnapshot.forEach((doc) => {
+        const index = donations.value.findIndex((d) => d.id === doc.id);
+        if (index !== -1) {
+          donations.value[index].status = "abandoned";
+          donations.value[index].lastUpdated = new Date();
+        }
+      });
+
+      return { success: true, count: updatedCount };
+    } catch (err) {
+      console.error("Error marking abandoned donations:", err);
+      error.value = "Failed to process abandoned donations.";
+      return { success: false, error: err.message };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Function to resume an incomplete donation
+  const resumeDonation = async (donationId) => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      const donationRef = doc(db, "donations", donationId);
+
+      // Update the donation status
+      await updateDoc(donationRef, {
+        status: "initiated", // Reset to initiated if it was abandoned
+        lastUpdated: serverTimestamp(),
+      });
+
+      // Update local state
+      const index = donations.value.findIndex((d) => d.id === donationId);
+      if (index !== -1) {
+        donations.value[index].status = "initiated";
+        donations.value[index].lastUpdated = new Date();
+      }
+
+      return { success: true, donationId };
+    } catch (err) {
+      console.error("Error resuming donation:", err);
+      error.value = "Failed to resume donation. Please try again.";
+      return { success: false, error: err.message };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  // Function to create test data for development
+  const createTestData = async () => {
+    loading.value = true;
+    error.value = "";
+
+    try {
+      // Check if we already have donations
+      const donationsQuery = query(collection(db, "donations"), limit(1));
+      const snapshot = await getDocs(donationsQuery);
+
+      // Only create test data if collection is empty
+      if (snapshot.empty) {
+        const donorStore = useDonorStore();
+
+        // Create test donors
+        const donor1 = await donorStore.createOrUpdateDonor({
+          name: "John Doe",
+          email: "john.doe@example.com",
+          telephone: "0812345678",
+          address: "123 Main St, Bangkok",
+          totalAmount: 3000,
+        });
+
+        const donor2 = await donorStore.createOrUpdateDonor({
+          name: "Jane Smith",
+          email: "jane.smith@example.com",
+          telephone: "0823456789",
+          address: "456 Park Ave, Chiang Mai",
+          totalAmount: 4500,
+        });
+
+        const donor3 = await donorStore.createOrUpdateDonor({
+          name: "Bob Johnson",
+          email: "bob.johnson@example.com",
+          telephone: "0834567890",
+          address: "789 River Rd, Phuket",
+          totalAmount: 1500,
+        });
+
+        // Create test donations
+        const testDonations = [
+          {
+            donorId: donor1.id,
+            donorName: donor1.name,
+            donorPhone: donor1.telephone,
+            amount: 3000,
+            items: [
+              {
+                name: "Fiction Books",
+                quantity: 10,
+                description: "Various fiction titles",
+              },
+              {
+                name: "Children's Books",
+                quantity: 5,
+                description: "Picture books for kids",
+              },
+            ],
+            paymentMethod: "credit_card",
+            paymentStatus: "completed",
+            notes: "Monthly donation",
+            timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+            status: "received",
+            createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+            lastUpdated: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          },
+          {
+            donorId: donor2.id,
+            donorName: donor2.name,
+            donorPhone: donor2.telephone,
+            amount: 4500,
+            items: [
+              {
+                name: "Textbooks",
+                quantity: 15,
+                description: "University level textbooks",
+              },
+              {
+                name: "Reference Books",
+                quantity: 3,
+                description: "Encyclopedias",
+              },
+            ],
+            paymentMethod: "bank_transfer",
+            paymentStatus: "pending",
+            notes: "School donation",
+            timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+            status: "processing",
+            createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+            lastUpdated: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+          },
+          {
+            donorId: donor3.id,
+            donorName: donor3.name,
+            donorPhone: donor3.telephone,
+            amount: 1500,
+            items: [
+              {
+                name: "Comic Books",
+                quantity: 20,
+                description: "Various comic book titles",
+              },
+            ],
+            paymentMethod: "paypal",
+            paymentStatus: "completed",
+            notes: "One-time donation",
+            timestamp: new Date(),
+            status: "received",
+            createdAt: new Date(),
+            lastUpdated: new Date(),
+          },
+          {
+            donorId: donor1.id,
+            donorName: donor1.name,
+            donorPhone: donor1.telephone,
+            amount: 2000,
+            items: [
+              {
+                name: "Science Books",
+                quantity: 8,
+                description: "Popular science titles",
+              },
+            ],
+            paymentMethod: "credit_card",
+            paymentStatus: "failed",
+            notes: "Card declined",
+            timestamp: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000), // 14 days ago
+            status: "cancelled",
+            createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+            lastUpdated: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
+          },
+        ];
+
+        // Add test donations to Firestore
+        for (const donation of testDonations) {
+          await addDoc(collection(db, "donations"), {
+            ...donation,
+            timestamp: serverTimestamp(),
+            createdAt: serverTimestamp(),
+            lastUpdated: serverTimestamp(),
+          });
+        }
+
+        console.log("Test donation data created successfully");
+        return true;
+      } else {
+        console.log("Donations collection already has data");
+        return false;
+      }
+    } catch (err) {
+      console.error("Error creating test donation data:", err);
+      error.value = "Failed to create test data. Please try again.";
+      return false;
+    } finally {
+      loading.value = false;
+    }
   };
 
   return {
@@ -402,21 +772,27 @@ export const useDonationStore = defineStore("donation", () => {
 
     // Getters
     getDonationById,
-    getPendingDonations,
-    getCompletedDonations,
-    getFailedDonations,
+    getDonationsByDonorId,
+    getRecentDonations,
+    getTotalDonations,
 
     // Actions
     fetchDonations,
     fetchDonationById,
+    fetchDonationsByDonorId,
     createDonation,
-    createDonorAndDonation,
+    updateDonation,
     updateDonationPayment,
-    updateDonationStatus,
+    createDonorAndDonation,
     createTestData,
+    fetchDonationsByStatus,
+    fetchIncompleteDonationsByDonor,
+    markAbandonedDonations,
+    resumeDonation,
 
     // Formatters
     formatDate,
+    formatCurrency,
     formatPaymentMethod,
     formatStatus,
     formatCategory,

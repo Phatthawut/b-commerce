@@ -14,6 +14,7 @@
             <option value="completed">Completed</option>
             <option value="pending">Pending</option>
             <option value="failed">Failed</option>
+            <option value="abandoned">Abandoned</option>
           </select>
         </div>
         <div class="filter-group">
@@ -36,25 +37,14 @@
             class="search-input"
           />
         </div>
-      </div>
-    </div>
-
-    <!-- Debug section -->
-    <div class="debug-section">
-      <div class="debug-info">
-        <p><strong>Store Status:</strong> {{ storeStatus }}</p>
-        <p>
-          <strong>Donations Count:</strong> {{ donationStore.donations.length }}
-        </p>
-        <p><strong>Filtered Count:</strong> {{ filteredDonations.length }}</p>
-      </div>
-      <div class="debug-actions">
-        <button @click="createTestData" class="debug-button">
-          Create Test Data
-        </button>
-        <button @click="fetchDonations" class="debug-button">
-          Refresh Data
-        </button>
+        <div class="filter-group">
+          <button
+            @click="handleMarkAbandoned"
+            class="action-button cleanup-button"
+          >
+            Mark Abandoned Donations
+          </button>
+        </div>
       </div>
     </div>
 
@@ -82,9 +72,9 @@
                 {{ sortDirection === "asc" ? "↑" : "↓" }}
               </span>
             </th>
-            <th @click="sortBy('name')" class="sortable">
+            <th @click="sortBy('donorName')" class="sortable">
               Donor
-              <span v-if="sortField === 'name'" class="sort-indicator">
+              <span v-if="sortField === 'donorName'" class="sort-indicator">
                 {{ sortDirection === "asc" ? "↑" : "↓" }}
               </span>
             </th>
@@ -122,8 +112,8 @@
             :class="{ 'pending-row': donation.paymentStatus === 'pending' }"
           >
             <td>{{ formatDate(donation.createdAt) }}</td>
-            <td>{{ donation.name }}</td>
-            <td>{{ donation.recipientName }}</td>
+            <td>{{ donation.donorName || "N/A" }}</td>
+            <td>{{ getRecipientName(donation) }}</td>
             <td>${{ donation.amount }}</td>
             <td>{{ formatPaymentMethod(donation.paymentMethod) }}</td>
             <td>
@@ -269,120 +259,97 @@
             </div>
           </div>
 
-          <!-- Payment Slip Section (only shown for bank transfers) -->
-          <div
-            class="detail-section"
-            v-if="selectedDonation.paymentMethod === 'bank-transfer'"
-          >
-            <h3>Payment Verification</h3>
-
-            <div
-              v-if="selectedDonation.paymentSlipURL"
-              class="payment-slip-container"
-            >
-              <h4 class="mb-2 font-medium">Payment Slip</h4>
-              <div class="payment-slip-image">
-                <img
-                  :src="selectedDonation.paymentSlipURL"
-                  alt="Payment Slip"
-                  class="max-w-full h-auto rounded border border-gray-300"
-                  @click="
-                    openImageInFullscreen(selectedDonation.paymentSlipURL)
-                  "
-                />
+          <!-- Payment Information -->
+          <div class="modal-section">
+            <h3 class="section-title">Payment Information</h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Method:</span>
+                <span class="info-value">{{
+                  formatPaymentMethod(selectedDonation.paymentMethod)
+                }}</span>
               </div>
-              <p class="text-sm text-gray-500 mt-2">
-                Click on the image to view in full size
-              </p>
-
-              <div class="verification-status mt-4">
-                <div
-                  v-if="selectedDonation.paymentStatus === 'pending'"
-                  class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4"
+              <div class="info-item">
+                <span class="info-label">Status:</span>
+                <span
+                  :class="
+                    'info-value status-badge ' + selectedDonation.paymentStatus
+                  "
+                  >{{ formatStatus(selectedDonation.paymentStatus) }}</span
                 >
-                  <div class="flex">
-                    <div class="flex-shrink-0">
-                      <svg
-                        class="h-5 w-5 text-yellow-400"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3">
-                      <p class="text-sm text-yellow-700">
-                        This payment is pending verification. Please review the
-                        payment slip and approve or reject the payment.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  v-else-if="selectedDonation.paymentStatus === 'completed'"
-                  class="bg-green-50 border-l-4 border-green-400 p-4 mb-4"
-                >
-                  <div class="flex">
-                    <div class="flex-shrink-0">
-                      <svg
-                        class="h-5 w-5 text-green-400"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3">
-                      <p class="text-sm text-green-700">
-                        This payment has been verified and approved.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  v-else-if="selectedDonation.paymentStatus === 'failed'"
-                  class="bg-red-50 border-l-4 border-red-400 p-4 mb-4"
-                >
-                  <div class="flex">
-                    <div class="flex-shrink-0">
-                      <svg
-                        class="h-5 w-5 text-red-400"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div class="ml-3">
-                      <p class="text-sm text-red-700">
-                        This payment has been rejected.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Date:</span>
+                <span class="info-value">{{
+                  formatDate(selectedDonation.paymentDate)
+                }}</span>
+              </div>
+              <div
+                class="info-item"
+                v-if="selectedDonation.stripePaymentIntentId"
+              >
+                <span class="info-label">Stripe Payment ID:</span>
+                <span class="info-value">{{
+                  selectedDonation.stripePaymentIntentId
+                }}</span>
+              </div>
+              <div class="info-item" v-if="selectedDonation.cardDetails">
+                <span class="info-label">Card:</span>
+                <span class="info-value">
+                  {{ selectedDonation.cardDetails.brand }} ****
+                  {{ selectedDonation.cardDetails.last4 }}
+                </span>
               </div>
             </div>
 
-            <div v-else class="no-slip-message bg-gray-50 p-4 rounded">
-              <p class="text-gray-700">
-                No payment slip has been uploaded for this donation.
+            <!-- Automated Verification Information (for credit card payments) -->
+            <div
+              v-if="selectedDonation.automatedVerification"
+              class="mt-4 p-3 bg-green-50 border border-green-200 rounded-md"
+            >
+              <div class="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-green-500 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <span class="font-medium text-green-700"
+                  >Automatically Verified by Stripe</span
+                >
+              </div>
+              <p class="text-sm text-green-600 mt-1">
+                This payment was automatically verified on
+                {{ formatDate(selectedDonation.verificationDate) }}
+              </p>
+              <p
+                class="text-sm text-green-600 mt-1"
+                v-if="selectedDonation.verificationNotes"
+              >
+                {{ selectedDonation.verificationNotes }}
+              </p>
+            </div>
+
+            <!-- Payment Slip (for bank transfers) -->
+            <div
+              v-if="selectedDonation.paymentSlipUrl"
+              class="payment-slip-container"
+            >
+              <h4 class="subsection-title">Payment Slip</h4>
+              <img
+                :src="selectedDonation.paymentSlipUrl"
+                alt="Payment Slip"
+                class="payment-slip-image"
+                @click="openImageInFullscreen(selectedDonation.paymentSlipUrl)"
+              />
+              <p class="text-sm text-gray-500 mt-1">
+                Click on the image to view in full size
               </p>
             </div>
           </div>
@@ -391,43 +358,101 @@
             <h3>Donor Information</h3>
             <div class="detail-row">
               <span class="detail-label">Name:</span>
-              <span class="detail-value">{{ selectedDonation.name }}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Email:</span>
-              <span class="detail-value">{{ selectedDonation.email }}</span>
+              <span class="detail-value">{{
+                selectedDonation.donorName || "N/A"
+              }}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Phone:</span>
-              <span class="detail-value">{{ selectedDonation.telephone }}</span>
+              <span class="detail-value">{{
+                selectedDonation.donorPhone || "N/A"
+              }}</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Address:</span>
-              <span class="detail-value">{{ selectedDonation.address }}</span>
+            <div class="detail-row" v-if="selectedDonation.donorId">
+              <span class="detail-label">Donor ID:</span>
+              <span class="detail-value">{{ selectedDonation.donorId }}</span>
             </div>
           </div>
 
-          <div class="detail-section">
+          <div
+            class="detail-section"
+            v-if="
+              selectedDonation.recipients &&
+              selectedDonation.recipients.length > 0
+            "
+          >
+            <h3>
+              Recipient Information
+              <span
+                v-if="selectedDonation.recipients.length > 1"
+                class="recipient-count"
+              >
+                ({{ selectedDonation.recipients.length }} recipients)
+              </span>
+            </h3>
+            <div
+              v-for="(recipient, index) in selectedDonation.recipients"
+              :key="index"
+              class="recipient-item mb-4"
+            >
+              <div v-if="index > 0" class="recipient-separator"></div>
+              <div
+                class="recipient-header"
+                v-if="selectedDonation.recipients.length > 1"
+              >
+                <span class="recipient-number">Recipient {{ index + 1 }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value">{{
+                  recipient.recipientName || "N/A"
+                }}</span>
+              </div>
+              <div class="detail-row" v-if="recipient.recipientCategory">
+                <span class="detail-label">Category:</span>
+                <span class="detail-value">{{
+                  formatCategory(recipient.recipientCategory)
+                }}</span>
+              </div>
+              <div class="detail-row" v-if="recipient.recipientRegion">
+                <span class="detail-label">Region:</span>
+                <span class="detail-value">{{
+                  recipient.recipientRegion
+                }}</span>
+              </div>
+              <div class="detail-row" v-if="recipient.recipientAddress">
+                <span class="detail-label">Address:</span>
+                <span class="detail-value">{{
+                  recipient.recipientAddress
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="detail-section"
+            v-else-if="selectedDonation.recipientName"
+          >
             <h3>Recipient Information</h3>
             <div class="detail-row">
               <span class="detail-label">Name:</span>
               <span class="detail-value">{{
-                selectedDonation.recipientName
+                selectedDonation.recipientName || "N/A"
               }}</span>
             </div>
-            <div class="detail-row">
+            <div class="detail-row" v-if="selectedDonation.recipientCategory">
               <span class="detail-label">Category:</span>
               <span class="detail-value">{{
                 formatCategory(selectedDonation.recipientCategory)
               }}</span>
             </div>
-            <div class="detail-row">
+            <div class="detail-row" v-if="selectedDonation.recipientRegion">
               <span class="detail-label">Region:</span>
               <span class="detail-value">{{
                 selectedDonation.recipientRegion
               }}</span>
             </div>
-            <div class="detail-row">
+            <div class="detail-row" v-if="selectedDonation.recipientAddress">
               <span class="detail-label">Address:</span>
               <span class="detail-value">{{
                 selectedDonation.recipientAddress
@@ -541,10 +566,12 @@
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
 import { useDonationStore } from "@/stores/donationStore";
+import { useShipmentStore } from "@/stores/shipmentStore";
 import { useRoute } from "vue-router";
 
 // Initialize the donation store
 const donationStore = useDonationStore();
+const shipmentStore = useShipmentStore();
 
 // State variables
 const showModal = ref(false);
@@ -559,29 +586,6 @@ const dateFilter = ref("all");
 const searchQuery = ref("");
 const sortField = ref("createdAt");
 const sortDirection = ref("desc");
-
-// Debug computed property
-const storeStatus = computed(() => {
-  if (donationStore.loading) return "Loading";
-  if (donationStore.error) return `Error: ${donationStore.error}`;
-  return donationStore.donations.length > 0 ? "Data Loaded" : "No Data";
-});
-
-// Create test data
-const createTestData = async () => {
-  try {
-    const result = await donationStore.createTestData();
-    if (result) {
-      alert("Test data created successfully!");
-      fetchDonations();
-    } else {
-      alert("Failed to create test data. Check console for details.");
-    }
-  } catch (err) {
-    console.error("Error in createTestData:", err);
-    alert(`Error creating test data: ${err.message}`);
-  }
-};
 
 // View donation details
 const viewDonationDetails = (donation) => {
@@ -615,13 +619,25 @@ const updateStatus = async (donationId, newStatus) => {
       selectedDonation.value.status = newStatus;
     }
 
+    // Find the donation in the list to create a shipment
+    if (newStatus === "completed") {
+      const donation = donationStore.donations.find((d) => d.id === donationId);
+      if (donation) {
+        await createShipmentFromDonation(donation);
+      }
+    }
+
     // Close modal if open
     if (showModal.value) {
       showModal.value = false;
     }
 
     alert(
-      `Donation status updated to ${donationStore.formatStatus(newStatus)}`
+      `Donation status updated to ${donationStore.formatStatus(newStatus)}${
+        newStatus === "completed"
+          ? " and a shipment has been automatically created."
+          : ""
+      }`
     );
   } else {
     alert("Failed to update donation status. Please try again.");
@@ -655,6 +671,11 @@ const updatePaymentVerification = async (donationId, newStatus) => {
       selectedDonation.value.status = newStatus;
       selectedDonation.value.verificationNotes = verificationNotes.value;
       selectedDonation.value.verificationDate = new Date();
+
+      // Automatically create shipment if payment is approved
+      if (newStatus === "completed") {
+        await createShipmentFromDonation(selectedDonation.value);
+      }
     }
 
     // Reset verification notes
@@ -668,10 +689,48 @@ const updatePaymentVerification = async (donationId, newStatus) => {
     alert(
       `Payment ${
         newStatus === "completed" ? "approved" : "rejected"
-      } successfully!`
+      } successfully!${
+        newStatus === "completed"
+          ? " A shipment has been automatically created."
+          : ""
+      }`
     );
   } else {
     alert("Failed to update payment status. Please try again.");
+  }
+};
+
+// Create a shipment from donation data
+const createShipmentFromDonation = async (donation) => {
+  try {
+    if (!donation) return;
+
+    console.log("Creating shipment from donation:", donation);
+
+    // Use the shipmentStore's createShipmentFromDonation function
+    // which now handles duplicate prevention and recipient processing
+    const shipmentResult = await shipmentStore.createShipmentFromDonation(
+      donation
+    );
+
+    if (shipmentResult) {
+      // Handle both single ID and array of IDs
+      const shipmentIds = Array.isArray(shipmentResult)
+        ? shipmentResult
+        : [shipmentResult];
+      console.log("Shipment(s) created successfully with IDs:", shipmentIds);
+
+      // Refresh the donations list to show updated shipment status
+      await fetchDonations();
+
+      return shipmentIds;
+    } else {
+      console.error("Failed to create shipment for donation:", donation.id);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error creating shipment from donation:", error);
+    return null;
   }
 };
 
@@ -682,10 +741,8 @@ const filteredDonations = computed(() => {
   // Apply donor filter if provided in URL query
   const route = useRoute();
   if (route.query.donor) {
-    const donorPhone = route.query.donor;
-    result = result.filter(
-      (d) => d.telephone === donorPhone || d.donorId === donorPhone
-    );
+    const donorId = route.query.donor;
+    result = result.filter((d) => d.donorId === donorId);
   }
 
   // Apply status filter
@@ -729,10 +786,15 @@ const filteredDonations = computed(() => {
     const query = searchQuery.value.toLowerCase().trim();
     result = result.filter(
       (d) =>
-        (d.name && d.name.toLowerCase().includes(query)) ||
-        (d.email && d.email.toLowerCase().includes(query)) ||
+        (d.donorName && d.donorName.toLowerCase().includes(query)) ||
+        (d.donorPhone && d.donorPhone.includes(query)) ||
         (d.id && d.id.toLowerCase().includes(query)) ||
-        (d.recipientName && d.recipientName.toLowerCase().includes(query))
+        (d.recipientName && d.recipientName.toLowerCase().includes(query)) ||
+        (d.recipients &&
+          d.recipients.some(
+            (r) =>
+              r.recipientName && r.recipientName.toLowerCase().includes(query)
+          ))
     );
   }
 
@@ -741,8 +803,16 @@ const filteredDonations = computed(() => {
     let aValue = a[sortField.value];
     let bValue = b[sortField.value];
 
+    // Special handling for recipient name
+    if (sortField.value === "recipientName") {
+      aValue = getRecipientName(a);
+      bValue = getRecipientName(b);
+    }
     // Handle timestamps
-    if (sortField.value === "createdAt" || sortField.value === "paymentDate") {
+    else if (
+      sortField.value === "createdAt" ||
+      sortField.value === "paymentDate"
+    ) {
       aValue = aValue?.seconds
         ? aValue.seconds
         : new Date(aValue).getTime() / 1000;
@@ -787,6 +857,46 @@ const error = computed(() => donationStore.error);
 // Retry fetching donations
 const fetchDonations = () => {
   donationStore.fetchDonations();
+};
+
+// Helper function to get recipient name
+const getRecipientName = (donation) => {
+  if (donation.recipients && donation.recipients.length > 0) {
+    if (donation.recipients.length === 1) {
+      return donation.recipients[0].recipientName || "N/A";
+    } else {
+      // Show multiple recipients with a comma-separated list
+      return donation.recipients.map((r) => r.recipientName).join(", ");
+    }
+  } else if (donation.recipientName) {
+    return donation.recipientName;
+  } else {
+    return "N/A";
+  }
+};
+
+// Function to mark abandoned donations
+const handleMarkAbandoned = async () => {
+  if (
+    confirm(
+      "This will mark all initiated donations older than 7 days as abandoned. Continue?"
+    )
+  ) {
+    try {
+      const result = await donationStore.markAbandonedDonations(7);
+
+      if (result.success) {
+        alert(`Successfully marked ${result.count} donations as abandoned.`);
+        // Refresh the donations list
+        donationStore.fetchDonations();
+      } else {
+        alert(`Error: ${result.error}`);
+      }
+    } catch (error) {
+      console.error("Error marking abandoned donations:", error);
+      alert("An error occurred while marking abandoned donations.");
+    }
+  }
 };
 </script>
 
@@ -841,7 +951,7 @@ const fetchDonations = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
+  padding: 2rem;
 }
 
 .spinner {
@@ -1125,43 +1235,8 @@ const fetchDonations = () => {
   }
 }
 
-.debug-section {
+.filter-section {
   margin-bottom: 1.5rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border: 1px dashed #ced4da;
-  border-radius: 0.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.debug-info {
-  flex: 1;
-}
-
-.debug-info p {
-  margin: 0.25rem 0;
-  font-family: monospace;
-}
-
-.debug-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.debug-button {
-  padding: 0.5rem 1rem;
-  background-color: #e9ecef;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.debug-button:hover {
-  background-color: #dee2e6;
 }
 
 /* Payment slip styles */
@@ -1272,5 +1347,96 @@ textarea {
   .modal-actions button {
     width: 100%;
   }
+}
+
+.recipient-count {
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: #6c757d;
+  margin-left: 0.5rem;
+}
+
+.recipient-separator {
+  border-top: 1px dashed #e9ecef;
+  margin: 1rem 0;
+}
+
+.recipient-header {
+  margin-bottom: 0.5rem;
+}
+
+.recipient-number {
+  font-weight: 500;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.cleanup-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.cleanup-button:hover {
+  background-color: #5a6268;
+}
+
+/* Payment Information section styles */
+.modal-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.info-item {
+  flex: 0 0 calc(50% - 0.5rem);
+}
+
+.info-label {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.info-value {
+  color: #2c3e50;
+}
+
+.subsection-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.payment-slip-container {
+  margin-top: 1rem;
+}
+
+.payment-slip-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>

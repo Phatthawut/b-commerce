@@ -17,7 +17,7 @@ app.use(createHead());
 const authStore = useAuthStore(pinia);
 
 authStore
-  .init()
+  .initAuth()
   .then(() => {
     app.mount("#app");
   })

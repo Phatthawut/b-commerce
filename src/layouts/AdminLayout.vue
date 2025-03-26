@@ -75,6 +75,72 @@
               </svg>
               Donations
             </router-link>
+
+            <router-link
+              to="/admin/shipments"
+              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
+              active-class="bg-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                />
+              </svg>
+              Shipments
+            </router-link>
+
+            <router-link
+              to="/admin/recipients"
+              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
+              active-class="bg-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                />
+              </svg>
+              Recipients
+            </router-link>
+
+            <router-link
+              to="/admin/selections"
+              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
+              active-class="bg-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              Admin Selections
+            </router-link>
           </nav>
 
           <div class="mt-auto">
@@ -159,7 +225,7 @@
         <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
           <nav class="flex-1 space-y-2">
             <router-link
-              to="/admin/dashboard"
+              to="/admin"
               class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
               active-class="bg-gray-700"
               @click="closeSidebar"
@@ -227,6 +293,75 @@
                 />
               </svg>
               Donations
+            </router-link>
+
+            <!-- Shipments -->
+            <router-link
+              to="/admin/shipments"
+              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
+              active-class="bg-gray-700"
+              @click="closeSidebar"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                />
+              </svg>
+              Shipments
+            </router-link>
+
+            <router-link
+              to="/admin/recipients"
+              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
+              active-class="bg-gray-700"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                />
+              </svg>
+              Recipients
+            </router-link>
+
+            <router-link
+              to="/admin/selections"
+              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
+              active-class="bg-gray-700"
+              @click="closeSidebar"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              Admin Selections
             </router-link>
           </nav>
 

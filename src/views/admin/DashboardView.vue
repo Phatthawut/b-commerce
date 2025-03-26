@@ -146,6 +146,90 @@
       </div>
     </div>
 
+    <!-- Shipment Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-purple-100 text-purple-600 mr-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+              />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Total Shipments</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ shipmentStats.totalShipments }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">In Progress</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ shipmentStats.inProgressShipments }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Delivered</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ shipmentStats.deliveredShipments }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Quick Actions -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
       <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
@@ -155,6 +239,12 @@
           class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 text-center"
         >
           Manage Donations
+        </router-link>
+        <router-link
+          to="/admin/shipments"
+          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 text-center"
+        >
+          Manage Shipments
         </router-link>
         <button
           @click="refreshStats"
@@ -291,6 +381,124 @@
       </div>
     </div>
 
+    <!-- Recent Shipments -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900">Recent Shipments</h2>
+      </div>
+
+      <div v-if="loadingShipments" class="flex justify-center py-12">
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"
+        ></div>
+      </div>
+
+      <div
+        v-else-if="recentShipments.length === 0"
+        class="p-6 text-center text-gray-600"
+      >
+        No recent shipments found.
+      </div>
+
+      <div v-else class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Shipment ID
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Donation ID
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Recipient
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Date
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Status
+              </th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="shipment in recentShipments" :key="shipment.id">
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+              >
+                #{{ shipment.id.substring(0, 8) }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ shipment.donationId }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ shipment.recipientName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ formatDate(shipment.createdAt) }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span
+                  :class="{
+                    'bg-yellow-100 text-yellow-800':
+                      shipment.status === 'pending',
+                    'bg-blue-100 text-blue-800':
+                      shipment.status === 'processing',
+                    'bg-purple-100 text-purple-800':
+                      shipment.status === 'shipped',
+                    'bg-green-100 text-green-800':
+                      shipment.status === 'delivered',
+                    'bg-red-100 text-red-800': shipment.status === 'cancelled',
+                  }"
+                  class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                >
+                  {{ capitalizeFirstLetter(shipment.status) }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button
+                  @click="viewShipmentDetails(shipment)"
+                  class="text-purple-600 hover:text-purple-900"
+                >
+                  View
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="px-6 py-4 border-t border-gray-200">
+        <router-link
+          to="/admin/shipments"
+          class="text-purple-600 hover:text-purple-900 text-sm font-medium"
+        >
+          View All Shipments
+        </router-link>
+      </div>
+    </div>
+
     <!-- Donation Distribution -->
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200">
@@ -375,13 +583,17 @@ import {
 import { db } from "@/firebase/config";
 import { useDonationStore } from "@/stores/donationStore";
 import { useDonorStore } from "@/stores/donorStore";
+import { useShipmentStore } from "@/stores/shipmentStore";
 
 const router = useRouter();
 const donationStore = useDonationStore();
 const donorStore = useDonorStore();
+const shipmentStore = useShipmentStore();
 
 const loading = ref(true);
+const loadingShipments = ref(true);
 const recentDonations = ref([]);
+const recentShipments = ref([]);
 
 // Dashboard statistics
 const stats = ref({
@@ -393,6 +605,13 @@ const stats = ref({
   newDonors: 0,
   completedDonations: 0,
   pendingDonations: 0,
+});
+
+// Shipment statistics
+const shipmentStats = ref({
+  totalShipments: 0,
+  inProgressShipments: 0,
+  deliveredShipments: 0,
 });
 
 // Donation categories
@@ -437,9 +656,19 @@ const viewDonationDetails = (donation) => {
   });
 };
 
+// View shipment details
+const viewShipmentDetails = (shipment) => {
+  // Navigate to shipment details or open a modal
+  router.push({
+    path: "/admin/shipments",
+    query: { id: shipment.id },
+  });
+};
+
 // Fetch dashboard data
 const fetchDashboardData = async () => {
   loading.value = true;
+  loadingShipments.value = true;
 
   try {
     // Fetch recent donations
@@ -504,12 +733,55 @@ const fetchDashboardData = async () => {
     const newDonorsSnapshot = await getDocs(newDonorsQuery);
     stats.value.newDonors = newDonorsSnapshot.size;
 
+    // Fetch recent shipments
+    const shipmentsQuery = query(
+      collection(db, "shipments"),
+      orderBy("createdAt", "desc"),
+      limit(5)
+    );
+
+    const shipmentsSnapshot = await getDocs(shipmentsQuery);
+    recentShipments.value = shipmentsSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+      };
+    });
+
+    // Count shipments by status
+    const allShipmentsQuery = query(collection(db, "shipments"));
+    const allShipmentsSnapshot = await getDocs(allShipmentsQuery);
+
+    shipmentStats.value.totalShipments = allShipmentsSnapshot.size;
+
+    let inProgressCount = 0;
+    let deliveredCount = 0;
+
+    allShipmentsSnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+
+      if (data.status === "delivered") {
+        deliveredCount++;
+      } else if (
+        data.status === "pending" ||
+        data.status === "processing" ||
+        data.status === "shipped"
+      ) {
+        inProgressCount++;
+      }
+    });
+
+    shipmentStats.value.inProgressShipments = inProgressCount;
+    shipmentStats.value.deliveredShipments = deliveredCount;
+
     // Calculate donation distribution (in a real app, this would be based on actual data)
     // For now, we'll use the static data defined above
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
   } finally {
     loading.value = false;
+    loadingShipments.value = false;
   }
 };
 

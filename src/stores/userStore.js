@@ -104,7 +104,9 @@ export const useUserStore = defineStore("user", {
 
       try {
         const authStore = useAuthStore();
-        const user = await authStore.init();
+        await authStore.initAuth();
+
+        const user = authStore.user;
 
         if (user) {
           this.user = {
@@ -119,8 +121,10 @@ export const useUserStore = defineStore("user", {
 
         return user;
       } catch (error) {
+        console.error("Error checking authentication:", error);
         this.error = error.message;
-        throw error;
+        this.user = null;
+        return null;
       } finally {
         this.loading = false;
       }

@@ -290,7 +290,7 @@ const viewDonorDonations = (donor) => {
   // Navigate to donations view with filter for this donor
   router.push({
     path: "/admin/donations",
-    query: { donor: donor.telephone },
+    query: { donor: donor.id },
   });
 };
 

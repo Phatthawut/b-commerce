@@ -26,8 +26,8 @@
               <router-link to="/service" class="link link-hover"
                 >Our Service</router-link
               >
-              <router-link to="/donation" class="link link-hover"
-                >Donation Campaign</router-link
+              <router-link to="/donate" class="link link-hover"
+                >Donate</router-link
               >
             </div>
           </nav>
