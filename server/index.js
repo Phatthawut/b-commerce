@@ -116,6 +116,72 @@ app.post("/api/create-payment-intent", async (req, res) => {
   }
 });
 
+// Create PromptPay payment intent endpoint
+app.post("/api/create-promptpay-payment", async (req, res) => {
+  try {
+    const { amount, currency, donationId, metadata } = req.body;
+
+    // Validate required fields
+    if (!amount || !currency || !donationId) {
+      return res.status(400).send({ error: "Missing required parameters" });
+    }
+
+    console.log(
+      `Creating PromptPay payment intent for donation ${donationId} with amount ${amount} ${currency}`
+    );
+
+    // Create a PaymentIntent with the PromptPay payment method
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount * 100), // Stripe expects amount in cents
+      currency: currency.toLowerCase(),
+      payment_method_types: ["promptpay"],
+      metadata: {
+        donationId,
+        paymentMethod: "promptpay",
+        ...metadata,
+      },
+    });
+
+    console.log(`PromptPay payment intent created: ${paymentIntent.id}`);
+
+    // Send publishable key and PaymentIntent details to client
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+    });
+  } catch (error) {
+    console.error("Error creating PromptPay payment intent:", error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Check payment status endpoint
+app.get("/api/check-payment-status", async (req, res) => {
+  try {
+    const { paymentIntentId } = req.query;
+
+    if (!paymentIntentId) {
+      return res.status(400).send({ error: "Missing payment intent ID" });
+    }
+
+    console.log(`Checking payment status for intent: ${paymentIntentId}`);
+
+    // Retrieve the payment intent from Stripe
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    console.log(`Payment status: ${paymentIntent.status}`);
+
+    // Return the payment status
+    res.send({
+      status: paymentIntent.status,
+      paymentIntent: paymentIntent,
+    });
+  } catch (error) {
+    console.error("Error checking payment status:", error);
+    res.status(500).send({ error: error.message });
+  }
+});
+
 // Webhook endpoint to handle Stripe events
 app.post(
   "/api/webhook",

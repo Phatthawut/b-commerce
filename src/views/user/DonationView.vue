@@ -17,8 +17,8 @@
       <div class="grid grid-cols-1 gradient-background-donate py-4 md:p-12">
         <div class="text-background-blue p-2 md:p-6 md:w-[80%] mx-auto">
           <form class="px-2 md:px-8 pt-6 pb-8">
-            <div class="mb-4">
-              <label class="sr-only" for="name"> Full Name </label>
+            <div class="flex items-center mb-4">
+              <label for="name" class="w-1/4">Donor Name:</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="name"
@@ -28,10 +28,8 @@
               />
             </div>
 
-            <div class="mb-4">
-              <label class="sr-only" for="address">
-                Donor Address (Optional)
-              </label>
+            <div class="flex items-center mb-4">
+              <label class="w-1/4" for="address">Donor Address:</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="address"
@@ -41,8 +39,8 @@
               />
             </div>
 
-            <div class="mb-4">
-              <label class="sr-only" for="telephone"> Telephone </label>
+            <div class="flex items-center mb-4">
+              <label class="w-1/4" for="telephone">Telephone:</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="telephone"
@@ -53,8 +51,8 @@
               />
             </div>
 
-            <div class="mb-4">
-              <label class="sr-only" for="email"> Email </label>
+            <div class="flex items-center mb-4">
+              <label class="w-1/4" for="email">Email:</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="email"
@@ -65,20 +63,21 @@
               />
             </div>
 
-            <div class="mb-4">
-              <label class="sr-only" for="quantity"> Quantity </label>
+            <div class="flex items-center mb-4">
+              <label class="w-1/4" for="quantity">Amount:</label>
               <input
-                class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+                class="w-1/4 py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="quantity"
                 type="number"
                 min="1"
-                placeholder="NUMBER OF SETS TO DONATE"
+                placeholder="Amount"
                 v-model="formData.quantity"
                 @input="onQuantityChange"
                 aria-label="Quantity"
               />
-              <p class="text-sm text-gray-600 mt-1">
-                You can select {{ formData.quantity || 0 }} different recipients
+              <p class="text-sm text-gray-600 mt-1 ml-4">
+                You can select {{ formData.quantity || 0 }} different
+                recipients.
               </p>
             </div>
 
@@ -296,43 +295,134 @@
                   >Institution</label
                 >
 
-                <!-- Search input for institutions -->
-                <div class="mb-2">
-                  <div class="relative">
-                    <input
-                      type="text"
-                      v-model="recipient.institutionSearch"
-                      class="w-full p-3 pl-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Search for institution..."
-                      autocomplete="off"
-                      @focus="$event.target.select()"
-                      @input="
-                        handleInstitutionSearchInput(index, $event.target.value)
-                      "
-                    />
-                    <div
-                      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500"
+                <!-- Improved search input for institutions with autocomplete -->
+                <div class="mb-2 relative">
+                  <input
+                    type="text"
+                    v-model="recipient.institutionSearch"
+                    class="w-full p-3 pl-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Search and select institution..."
+                    autocomplete="off"
+                    @focus="$event.target.select()"
+                    @input="
+                      handleInstitutionSearchInput(index, $event.target.value)
+                    "
+                  />
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                  <button
+                    v-if="recipient.institutionSearch"
+                    @click="clearInstitutionSearch(index)"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                    style="min-height: 44px; min-width: 44px"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+
+                  <!-- Autocomplete results dropdown -->
+                  <div
+                    v-if="
+                      recipient.institutionSearch &&
+                      displayInstitutions(
+                        recipient.category,
+                        recipient.region,
+                        recipient.country,
+                        recipient.institutionSearch,
+                        index
+                      ).length > 0
+                    "
+                    class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  >
+                    <ul class="py-1">
+                      <li
+                        v-for="institution in displayInstitutions(
+                          recipient.category,
+                          recipient.region,
+                          recipient.country,
+                          recipient.institutionSearch,
+                          index
+                        ).slice(0, 10)"
+                        :key="institution.id"
+                        @click="selectInstitution(index, institution)"
+                        class="px-3 py-2 cursor-pointer hover:bg-blue-50"
                       >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
+                        {{ institution.name }}
+                      </li>
+                      <li
+                        v-if="
+                          displayInstitutions(
+                            recipient.category,
+                            recipient.region,
+                            recipient.country,
+                            recipient.institutionSearch,
+                            index
+                          ).length > 10
+                        "
+                        class="px-3 py-2 text-center text-sm text-gray-500"
+                      >
+                        Type more to narrow down results
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div
+                  v-if="recipient.institutionSearch"
+                  class="text-sm text-gray-600 mt-1 ml-1"
+                >
+                  {{
+                    getSearchResultsMessage(
+                      recipient.category,
+                      recipient.region,
+                      recipient.country,
+                      recipient.institutionSearch
+                    )
+                  }}
+                </div>
+
+                <!-- Selected institution display -->
+                <div
+                  v-if="recipient.institutionId"
+                  class="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200"
+                >
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <h4 class="font-medium">
+                        {{ recipient.institutionName }}
+                      </h4>
                     </div>
                     <button
-                      v-if="recipient.institutionSearch"
-                      @click="clearInstitutionSearch(index)"
-                      class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
-                      style="min-height: 44px; min-width: 44px"
+                      @click="clearSelectedInstitution(index)"
+                      class="text-gray-500 hover:text-gray-700"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -350,56 +440,8 @@
                       </svg>
                     </button>
                   </div>
-                  <div
-                    v-if="recipient.institutionSearch"
-                    class="text-sm text-gray-600 mt-1 ml-1"
-                  >
-                    {{
-                      getSearchResultsMessage(
-                        recipient.category,
-                        recipient.region,
-                        recipient.country,
-                        recipient.institutionSearch
-                      )
-                    }}
-                  </div>
                 </div>
 
-                <select
-                  id="institution"
-                  v-model="recipient.institutionId"
-                  @change="onInstitutionChange(index)"
-                  required
-                  class="w-full p-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select Institution</option>
-                  <option
-                    v-for="institution in displayInstitutions(
-                      recipient.category,
-                      recipient.region,
-                      recipient.country,
-                      recipient.institutionSearch,
-                      index
-                    )"
-                    :key="institution.id"
-                    :value="institution.id"
-                  >
-                    {{ institution.name }}
-                  </option>
-                  <option
-                    v-if="
-                      hasMoreInstitutions(
-                        recipient.category,
-                        recipient.region,
-                        recipient.country
-                      )
-                    "
-                    value="load_more"
-                    class="font-italic text-blue-600"
-                  >
-                    -- Load more institutions --
-                  </option>
-                </select>
                 <div
                   v-if="loadingRecipients"
                   class="mt-2 text-sm text-gray-600 flex items-center"
@@ -470,7 +512,6 @@ const recipientStore = useRecipientStore();
 // Constants
 const PRICE_PER_SET = 2000; // 2000 THB per set
 const RECIPIENTS_PAGE_SIZE = 100; // Number of recipients to load at once
-const SEARCH_PAGE_SIZE = 200; // Higher limit for search queries to ensure comprehensive results
 
 // Form data
 const formData = ref({
@@ -544,43 +585,29 @@ const getCountriesForRegion = (regionId) => {
 // Function to fetch unique countries for a region
 const fetchCountriesForRegion = async (regionId) => {
   try {
-    loadingCountries.value = true;
+    // Use dataService instead of recipientService
+    const { dataService } = await import("@/services/dataService");
 
-    console.log(`Fetching countries for region: ${regionId}`);
+    // Get all recipients for this region
+    const recipientsByRegion = dataService.getRecipientsByRegion(regionId);
 
-    // Fetch recipients for this region to extract countries
-    const recipientsRef = collection(db, "recipients");
-    const q = query(
-      recipientsRef,
-      where("regionId", "==", regionId.toLowerCase()),
-      limit(1000) // Use a high limit to try to get all recipients
-    );
-
-    const querySnapshot = await getDocs(q);
-    const countries = new Set();
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.country) {
-        countries.add(data.country);
+    // Extract unique countries
+    const uniqueCountries = new Set();
+    recipientsByRegion.forEach((recipient) => {
+      if (recipient.country) {
+        uniqueCountries.add(recipient.country);
       }
     });
 
-    // Convert to array and sort alphabetically
-    const countriesArray = Array.from(countries).sort();
-    console.log(
-      `Found ${countriesArray.length} countries for region ${regionId}`
-    );
+    const countries = Array.from(uniqueCountries).sort();
 
-    // Cache the countries for this region
-    countryCache.value[regionId.toLowerCase()] = countriesArray;
+    // Cache the countries
+    countryCache.value[regionId.toLowerCase()] = countries;
 
-    return countriesArray;
+    return countries;
   } catch (error) {
     console.error(`Error fetching countries for region ${regionId}:`, error);
     return [];
-  } finally {
-    loadingCountries.value = false;
   }
 };
 
@@ -799,10 +826,9 @@ const onInstitutionChange = async (index) => {
         }
       }
 
-      // If not in cache, fetch from Firestore
-      const institution = await recipientStore.getRecipientById(
-        recipient.institutionId
-      );
+      // If not in cache, fetch from dataService
+      const { dataService } = await import("@/services/dataService");
+      const institution = dataService.getRecipientById(recipient.institutionId);
 
       if (institution) {
         recipient.address = institution.address;
@@ -822,8 +848,6 @@ const onInstitutionChange = async (index) => {
 // Add loading state
 const loading = ref(false);
 const checkingPendingDonations = ref(false);
-const hasPendingDonation = ref(false);
-const pendingDonation = ref(null);
 
 // Helper function to format currency
 const formatCurrency = (amount) => {
@@ -865,17 +889,16 @@ const initializeForm = () => {
   }
 
   loadingRecipients.value = false;
-  expandedSections.value = [];
-  showCategories.value = [];
   loading.value = false;
-  error.value = null;
-  submitted.value = false;
+
+  // Calculate initial total
+  calculateTotal();
 
   // Initialize Firestore data
   fetchRegions();
 };
 
-// New function to fetch recipients directly from Firestore with pagination
+// New function to fetch recipients with pagination
 const fetchRecipientsFromFirestore = async (
   category,
   regionId,
@@ -893,179 +916,85 @@ const fetchRecipientsFromFirestore = async (
     }
 
     console.log(
-      `Querying Firestore for ${category}/${regionId}${
+      `Querying recipients for ${category}/${regionId}${
         country ? `/${country}` : ""
       } with limit ${pageSize}`
     );
 
-    const recipientsRef = collection(db, "recipients");
-    let baseQuery = [];
-
-    // Build query conditions
-    baseQuery.push(where("category", "==", category));
-    baseQuery.push(where("regionId", "==", regionId));
+    // Use dataService instead of recipientService
+    const { dataService } = await import("@/services/dataService");
+    let recipientsData = [];
 
     if (country) {
-      baseQuery.push(where("country", "==", country));
-    }
-
-    baseQuery.push(orderBy("name"));
-    baseQuery.push(limit(pageSize));
-
-    // Add startAfter if loading more
-    if (loadMore && recipientsLastVisible.value[cacheKey]) {
-      baseQuery.push(startAfter(recipientsLastVisible.value[cacheKey]));
-    } else if (!loadMore) {
-      // Reset pagination when not loading more
-      recipientsLastVisible.value[cacheKey] = null;
-    }
-
-    const q = query(recipientsRef, ...baseQuery);
-    const querySnapshot = await getDocs(q);
-
-    console.log(
-      `Found ${querySnapshot.size} recipients in Firestore for ${cacheKey}`
-    );
-
-    // Update last visible for pagination
-    if (!querySnapshot.empty) {
-      recipientsLastVisible.value[cacheKey] =
-        querySnapshot.docs[querySnapshot.docs.length - 1];
-      recipientsHasMore.value[cacheKey] = querySnapshot.size >= pageSize;
-    } else {
-      recipientsHasMore.value[cacheKey] = false;
-    }
-
-    if (!querySnapshot.empty) {
-      const recipientsData = [];
-      querySnapshot.forEach((doc) => {
-        recipientsData.push({
-          id: doc.id,
-          ...doc.data(),
-        });
+      // Use the optimized filtering with dataService
+      const allRecipients = dataService.getFilteredRecipients({
+        category: category,
+        regionId: regionId,
+        country: country,
       });
 
-      // Update cache (append if loading more, replace otherwise)
-      if (loadMore && recipientCache.value[cacheKey]) {
-        recipientCache.value[cacheKey] = [
-          ...recipientCache.value[cacheKey],
-          ...recipientsData,
-        ];
+      // Apply pagination manually since dataService returns all results
+      const startIndex =
+        loadMore && recipientsLastVisible.value[cacheKey]
+          ? pageSize * recipientsLastVisible.value[cacheKey]
+          : 0;
+
+      const endIndex = startIndex + pageSize;
+      recipientsData = allRecipients.slice(startIndex, endIndex);
+      recipientsHasMore.value[cacheKey] = endIndex < allRecipients.length;
+
+      // Update last visible for pagination
+      if (recipientsHasMore.value[cacheKey]) {
+        recipientsLastVisible.value[cacheKey] =
+          Math.floor(startIndex / pageSize) + 1;
       } else {
-        recipientCache.value[cacheKey] = recipientsData;
+        recipientsLastVisible.value[cacheKey] = null;
       }
-
-      console.log(
-        `Cached ${recipientsData.length} recipients for ${cacheKey} (total: ${recipientCache.value[cacheKey].length})`
-      );
-      return recipientCache.value[cacheKey];
     } else {
-      // If empty, try the original case
-      if (
-        !loadMore &&
-        (category !== category.toLowerCase() ||
-          regionId !== regionId.toLowerCase())
-      ) {
-        console.log("No results with lowercase, trying with original case");
-        return await fetchRecipientsFromFirestore(
-          category.toLowerCase(),
-          regionId.toLowerCase(),
-          country,
-          false,
-          pageSize
-        );
-      }
+      // Fetch all recipients for category and region
+      const filteredRecipients = dataService.getFilteredRecipients({
+        category: category,
+        regionId: regionId,
+      });
 
-      console.log(`No recipients found for ${cacheKey}`);
-      if (!loadMore) {
-        recipientCache.value[cacheKey] = [];
+      // Apply pagination manually for consistency
+      const startIndex =
+        loadMore && recipientsLastVisible.value[cacheKey]
+          ? pageSize * recipientsLastVisible.value[cacheKey]
+          : 0;
+
+      const endIndex = startIndex + pageSize;
+      recipientsData = filteredRecipients.slice(startIndex, endIndex);
+      recipientsHasMore.value[cacheKey] = endIndex < filteredRecipients.length;
+
+      // Update last visible for pagination
+      if (recipientsHasMore.value[cacheKey]) {
+        recipientsLastVisible.value[cacheKey] =
+          Math.floor(startIndex / pageSize) + 1;
+      } else {
+        recipientsLastVisible.value[cacheKey] = null;
       }
-      return recipientCache.value[cacheKey] || [];
     }
+
+    console.log(`Found ${recipientsData.length} recipients for ${cacheKey}`);
+
+    // Update cache (append if loading more, replace otherwise)
+    if (loadMore && recipientCache.value[cacheKey]) {
+      recipientCache.value[cacheKey] = [
+        ...recipientCache.value[cacheKey],
+        ...recipientsData,
+      ];
+    } else {
+      recipientCache.value[cacheKey] = recipientsData;
+    }
+
+    console.log(
+      `Cached ${recipientsData.length} recipients for ${cacheKey} (total: ${recipientCache.value[cacheKey].length})`
+    );
+    return recipientCache.value[cacheKey];
   } catch (error) {
     console.error("Error in fetchRecipientsFromFirestore:", error);
     return [];
-  }
-};
-
-// Load common recipient combinations in the background
-const preloadCommonRecipients = async () => {
-  try {
-    // Most commonly selected combinations
-    const commonCombinations = [
-      {
-        category: "university",
-        region: "europe",
-        countries: ["United Kingdom", "Germany", "France"],
-      },
-      {
-        category: "library",
-        region: "europe",
-        countries: ["United Kingdom", "Germany"],
-      },
-      {
-        category: "nonprofit",
-        region: "europe",
-        countries: ["United Kingdom"],
-      },
-      {
-        category: "university",
-        region: "northamerica",
-        countries: ["United States", "Canada"],
-      },
-      {
-        category: "library",
-        region: "northamerica",
-        countries: ["United States"],
-      },
-      {
-        category: "templechurch",
-        region: "northamerica",
-        countries: ["United States"],
-      },
-      {
-        category: "templechurch",
-        region: "asia",
-        countries: ["Thailand", "India"],
-      },
-      {
-        category: "culturecenter",
-        region: "europe",
-        countries: ["France", "Italy"],
-      },
-    ];
-
-    console.log(
-      "Starting to preload common recipient combinations in background"
-    );
-
-    for (const combo of commonCombinations) {
-      const { category, region, countries } = combo;
-      const cacheKey = `${category}-${region}`;
-
-      // First preload the category-region combination
-      if (!recipientCache.value[cacheKey]) {
-        console.log(`Preloading ${category}/${region} in background`);
-        await fetchRecipientsFromFirestore(category, region);
-      }
-
-      // Then preload specific countries if provided
-      if (countries && countries.length > 0) {
-        for (const country of countries) {
-          const countryCacheKey = `${category}-${region}-${country}`;
-          if (!recipientCache.value[countryCacheKey]) {
-            console.log(
-              `Preloading ${category}/${region}/${country} in background`
-            );
-            await fetchRecipientsFromFirestore(category, region, country);
-          }
-        }
-      }
-    }
-
-    console.log("Finished preloading common recipient combinations");
-  } catch (error) {
-    console.error("Error preloading common recipients:", error);
   }
 };
 
@@ -1087,12 +1016,6 @@ onMounted(async () => {
     } else {
       console.log("Regions loaded:", regions.value.length);
     }
-
-    // Start preloading common recipients in the background
-    // This runs asynchronously and doesn't block the UI
-    setTimeout(() => {
-      preloadCommonRecipients();
-    }, 1000);
   } catch (error) {
     console.error("Error in component initialization:", error);
   } finally {
@@ -1123,9 +1046,9 @@ onMounted(async () => {
 
   // Check for pending donation
   const pendingDonationId = localStorage.getItem("pendingDonationId");
-  const pendingDonation = localStorage.getItem("pendingDonation");
+  const pendingDonationData = localStorage.getItem("pendingDonation");
 
-  if (pendingDonationId && pendingDonation) {
+  if (pendingDonationId && pendingDonationData) {
     try {
       // Try to fetch the donation from Firestore to check its status
       await donationStore.fetchDonationById(pendingDonationId);
@@ -1221,10 +1144,6 @@ const isFormValid = computed(() => {
 // Reset form function
 const resetForm = () => {
   initializeForm();
-  submitted.value = false;
-  // Reset all validation states
-  isDirty.value = false;
-
   // Scroll to top
   window.scrollTo({
     top: 0,
@@ -1378,13 +1297,8 @@ watch(
   }
 );
 
-// Function to search for institutions by name directly from Firestore
-const searchInstitutionsByName = async (
-  category,
-  regionId,
-  country,
-  searchTerm
-) => {
+// Search function to find matching recipients
+const searchRecipients = async (category, regionId, country, searchTerm) => {
   if (!category || !regionId || !country || !searchTerm) return [];
 
   try {
@@ -1399,84 +1313,41 @@ const searchInstitutionsByName = async (
     }
 
     console.log(
-      `Searching Firestore for ${category}/${regionId}/${country} matching "${searchTerm}"`
+      `Searching for ${category}/${regionId}/${country} matching "${searchTerm}"`
     );
 
-    const recipientsRef = collection(db, "recipients");
+    // Use dataService for optimized retrieval
+    const { dataService } = await import("@/services/dataService");
 
-    // Build the base query with the required filters
-    let baseQuery = [
-      where("category", "==", category.toLowerCase()),
-      where("regionId", "==", regionId.toLowerCase()),
-      where("country", "==", country),
-    ];
-
-    // We can't use where() for partial text search, so we'll fetch and filter manually
-    // But we'll still use the other filters to reduce the dataset size
-    baseQuery.push(orderBy("name"));
-    baseQuery.push(limit(SEARCH_PAGE_SIZE)); // Use higher limit for search to ensure comprehensive results
-
-    const q = query(recipientsRef, ...baseQuery);
-    const querySnapshot = await getDocs(q);
-
-    // Filter results client-side for the name search
-    const searchLower = searchTerm.toLowerCase();
-    const searchResults = [];
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.name && data.name.toLowerCase().includes(searchLower)) {
-        searchResults.push({
-          id: doc.id,
-          ...data,
-        });
-      }
+    // Get filtered recipients based on all criteria
+    const filteredRecipients = dataService.getFilteredRecipients({
+      category: category,
+      regionId: regionId,
+      country: country,
+      searchTerm: searchTerm,
     });
-
-    // Sort results to put exact matches first, then matches at the beginning of the name
-    searchResults.sort((a, b) => {
-      const aName = a.name.toLowerCase();
-      const bName = b.name.toLowerCase();
-
-      // Exact match gets highest priority
-      if (aName === searchLower && bName !== searchLower) return -1;
-      if (bName === searchLower && aName !== searchLower) return 1;
-
-      // Then matches at the beginning
-      if (aName.startsWith(searchLower) && !bName.startsWith(searchLower))
-        return -1;
-      if (bName.startsWith(searchLower) && !aName.startsWith(searchLower))
-        return 1;
-
-      // Then alphabetical order
-      return aName.localeCompare(bName);
-    });
-
-    console.log(
-      `Found ${searchResults.length} institutions matching "${searchTerm}"`
-    );
 
     // Cache the search results
-    if (recipientCache.value) {
-      recipientCache.value[cacheKey] = searchResults;
-      console.log(
-        `Cached search results for "${searchTerm}" with ${searchResults.length} items`
-      );
-      // Trigger reactivity update
-      refreshSearchResults();
-    } else {
-      console.warn(
-        "recipientCache.value is undefined, cannot cache search results"
-      );
-    }
+    recipientCache.value[cacheKey] = filteredRecipients;
 
-    return searchResults;
+    return filteredRecipients;
   } catch (error) {
-    console.error("Error searching institutions:", error);
+    console.error(`Error searching recipients for "${searchTerm}":`, error);
     return [];
   } finally {
     loadingRecipients.value = false;
   }
+};
+
+// Function to search for institutions by name directly from Firestore
+const searchInstitutionsByName = async (
+  category,
+  regionId,
+  country,
+  searchTerm
+) => {
+  // This function is now replaced by searchRecipients
+  return searchRecipients(category, regionId, country, searchTerm);
 };
 
 // Function to filter institutions by search term - now uses direct Firestore search when needed
@@ -1574,15 +1445,11 @@ const handleInstitutionSearchInput = debounce(async (index, searchInput) => {
   const recipient = recipients.value[index];
   recipient.institutionSearch = searchInput;
 
-  // Clear selection if the search changes
-  if (recipient.institutionName) {
-    recipient.institutionName = "";
-    recipient.institutionId = "";
-    recipient.address = "";
-  }
+  // If the user is actively typing, don't clear their selection yet
+  // This will be handled by selectInstitution when they make a choice
 
+  // For very short inputs, just use base filtering
   if (!searchInput || searchInput.length < 2) {
-    // For very short inputs, we'll just use the normal filtering
     await getFilteredInstitutionsBySearch(
       recipient.category,
       recipient.region,
@@ -1595,7 +1462,7 @@ const handleInstitutionSearchInput = debounce(async (index, searchInput) => {
 
   loadingRecipients.value = true;
   try {
-    // This will update the cache with search results
+    // Get search results
     const results = await getFilteredInstitutionsBySearch(
       recipient.category,
       recipient.region,
@@ -1603,7 +1470,7 @@ const handleInstitutionSearchInput = debounce(async (index, searchInput) => {
       searchInput
     );
 
-    // Make sure the results are in the cache
+    // Cache the results
     const cacheKey = `search-${recipient.category}-${recipient.region}-${
       recipient.country
     }-${searchInput.toLowerCase()}`;
@@ -1633,6 +1500,30 @@ const clearInstitutionSearch = (index) => {
   ).then(() => {
     refreshSearchResults();
   });
+};
+
+// New function to select an institution from the autocomplete dropdown
+const selectInstitution = async (index, institution) => {
+  const recipient = recipients.value[index];
+  recipient.institutionId = institution.id;
+  recipient.institutionName = institution.name;
+  recipient.address = institution.address || "";
+
+  // Clear the search after selection
+  recipient.institutionSearch = "";
+
+  // Refresh the display
+  refreshSearchResults();
+};
+
+// New function to clear the selected institution
+const clearSelectedInstitution = (index) => {
+  const recipient = recipients.value[index];
+  recipient.institutionId = "";
+  recipient.institutionName = "";
+  recipient.address = "";
+  recipient.institutionSearch = "";
+  refreshSearchResults();
 };
 
 // Helper function to get filtered institutions for v-for directive (synchronous)
@@ -1670,7 +1561,7 @@ const getFilteredInstitutionsForDisplay = (
       );
 
       // If search term is present but no results in cache, trigger a search
-      searchInstitutionsByName(category, regionId, country, searchTerm)
+      searchRecipients(category, regionId, country, searchTerm)
         .then((results) => {
           console.log(`Search complete with ${results.length} results`);
         })
@@ -1711,15 +1602,21 @@ const displayInstitutions = (
     searchTerm
   );
 };
+
+// Fetch regions from the store
+const fetchRegions = async () => {
+  try {
+    loadingRegions.value = true;
+    await recipientStore.fetchRegions();
+  } catch (error) {
+    console.error("Error fetching regions:", error);
+  } finally {
+    loadingRegions.value = false;
+  }
+};
 </script>
 
 <style scoped>
-/* Define color variables */
-:root {
-  --button-blue: #3b82f6;
-  --button-blue-hover: #2563eb;
-}
-
 .gradient-background-donate {
   background: linear-gradient(to right, #d9ebec, #cbe5e5);
 }
@@ -1728,6 +1625,17 @@ const displayInstitutions = (
 }
 .text-background-blue {
   background: #e8f7f9;
+}
+
+/* Button colors defined directly */
+.bg-button-blue {
+  background-color: #3b82f6;
+}
+.bg-button-blue:hover {
+  background-color: #2563eb;
+}
+.outline-button-blue {
+  outline-color: #3b82f6;
 }
 
 /* Custom dropdown styling with triangle */

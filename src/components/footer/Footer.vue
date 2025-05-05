@@ -20,14 +20,14 @@
               <router-link to="/about" class="link link-hover"
                 >About</router-link
               >
-              <router-link to="/books" class="link link-hover"
+              <router-link to="/our-book" class="link link-hover"
                 >Our Book</router-link
               >
               <router-link to="/service" class="link link-hover"
                 >Our Service</router-link
               >
-              <router-link to="/donate" class="link link-hover"
-                >Donate</router-link
+              <router-link to="/donation-campaign" class="link link-hover"
+                >Donation Campaign</router-link
               >
             </div>
           </nav>
@@ -60,9 +60,9 @@
       </div>
     </footer>
     <footer
-      class="footer px-10 py-4 border-t border-base-300 max-w-[1440px] mx-auto"
+      class="footer py-4 border-t border-base-300 max-w-[1440px] mx-auto w-[90%]"
     >
-      <aside class="">
+      <aside class="text-black">
         <p>© {{ currentYear }} By Woody Prieb. All rights reserved.</p>
       </aside>
     </footer>

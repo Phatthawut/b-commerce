@@ -1,13 +1,13 @@
 <template>
-	<div class="min-h-screen flex flex-col">
-		<div class="max-w-[1440px] mx-auto w-full">
-			<TopNav />
-			<main class="flex-grow">
-				<router-view />
-			</main>
-		</div>
-		<Footer />
-	</div>
+  <div class="min-h-screen flex flex-col bg-white">
+    <div class="max-w-[1440px] mx-auto w-full">
+      <TopNav />
+      <main class="flex-grow">
+        <router-view />
+      </main>
+    </div>
+    <Footer />
+  </div>
 </template>
 
 <script setup>

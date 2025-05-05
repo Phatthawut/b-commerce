@@ -423,18 +423,24 @@ const getPendingSelections = (donation) => {
     }));
 };
 
-const getCountriesForRegion = (regionId) => {
-  if (!regionId) return [];
+const getCountriesForRegion = async (regionId) => {
+  try {
+    // Use recipientService instead of direct Firebase access
+    const { recipientService } = await import(
+      "../../services/recipientService"
+    );
+    const countriesArray = await recipientService.getCountriesByRegion(
+      regionId.toLowerCase()
+    );
 
-  const regionKey = regionId.toLowerCase();
+    // Cache the countries
+    countryCache.value[regionId.toLowerCase()] = countriesArray;
 
-  if (countryCache.value[regionKey]) {
-    return countryCache.value[regionKey];
+    return countriesArray;
+  } catch (error) {
+    console.error(`Error fetching countries for region ${regionId}:`, error);
+    return [];
   }
-
-  // If not cached, fetch it
-  fetchCountriesForRegion(regionId);
-  return [];
 };
 
 const getFilteredInstitutions = (category, regionId, country) => {
@@ -500,7 +506,7 @@ const onRegionChange = async (donationId, index) => {
     recipient.newRegion &&
     !countryCache.value[recipient.newRegion.toLowerCase()]
   ) {
-    await fetchCountriesForRegion(recipient.newRegion);
+    await getCountriesForRegion(recipient.newRegion);
   }
 
   // Fetch recipients data for this category/region if not cached
@@ -815,67 +821,23 @@ const fetchCustomRecipients = async () => {
   }
 };
 
-const fetchCountriesForRegion = async (regionId) => {
-  try {
-    const recipientsRef = collection(db, "recipients");
-    const q = query(
-      recipientsRef,
-      where("regionId", "==", regionId.toLowerCase()),
-      limit(1000)
-    );
-
-    const querySnapshot = await getDocs(q);
-    const countries = new Set();
-
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      if (data.country) {
-        countries.add(data.country);
-      }
-    });
-
-    const countriesArray = Array.from(countries).sort();
-
-    // Cache the countries
-    countryCache.value[regionId.toLowerCase()] = countriesArray;
-
-    return countriesArray;
-  } catch (error) {
-    console.error(`Error fetching countries for region ${regionId}:`, error);
-    return [];
-  }
-};
-
 const fetchRecipientsFromFirestore = async (category, regionId) => {
   try {
     const cacheKey = `${category}-${regionId}`;
 
-    const recipientsRef = collection(db, "recipients");
-    const q = query(
-      recipientsRef,
-      where("category", "==", category),
-      where("regionId", "==", regionId),
-      limit(1000)
+    // Use recipientService instead of direct Firebase access
+    const { recipientService } = await import(
+      "../../services/recipientService"
+    );
+    const recipientsData = await recipientService.getFilteredRecipients(
+      category,
+      regionId
     );
 
-    const querySnapshot = await getDocs(q);
+    // Store in cache
+    recipientCache.value[cacheKey] = recipientsData;
 
-    if (!querySnapshot.empty) {
-      const recipientsData = [];
-      querySnapshot.forEach((doc) => {
-        recipientsData.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-
-      // Store in cache
-      recipientCache.value[cacheKey] = recipientsData;
-
-      return recipientsData;
-    }
-
-    return [];
+    return recipientsData;
   } catch (error) {
     console.error("Error fetching recipients:", error);
     return [];

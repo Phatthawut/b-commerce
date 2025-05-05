@@ -48,7 +48,7 @@
             </li>
             <li>
               <router-link
-                to="/books"
+                to="/our-book"
                 class="btn btn-ghost text-gray-600 hover:text-primary"
               >
                 Our Book
@@ -64,7 +64,7 @@
             </li>
             <li>
               <router-link
-                to="/donate"
+                to="/donation-campaign"
                 class="btn btn-ghost text-gray-600 hover:text-primary"
               >
                 Donation Campaign
@@ -107,7 +107,7 @@
         </li>
         <li>
           <router-link
-            to="/books"
+            to="/our-book"
             class="block text-gray-600 hover:text-primary p-2"
           >
             Our Book
@@ -123,7 +123,7 @@
         </li>
         <li>
           <router-link
-            to="/donate"
+            to="/donation-campaign"
             class="block text-gray-600 hover:text-primary p-2"
           >
             Donation Campaign

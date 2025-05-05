@@ -45,9 +45,21 @@ const router = createRouter({
           component: () => import("../views/user/AboutView.vue"),
         },
         {
+          path: "our-book",
+          name: "our-book",
+          component: () => import("../views/user/OurBookView.vue"),
+          meta: { requiresAuth: false },
+        },
+        {
+          path: "donation-campaign",
+          name: "donation-campaign",
+          component: () => import("../views/user/DonationCampaignView.vue"),
+          meta: { requiresAuth: false },
+        },
+        {
           path: "donate",
           name: "donate",
-          component: () => import("../views/user/DonationView.vue"),
+          component: () => import("@/views/user/DonationView2.vue"),
           meta: { requiresAuth: false },
         },
         {
@@ -90,6 +102,67 @@ const router = createRouter({
             title: "Check Donation Status",
             requiresAuth: false,
           },
+        },
+        {
+          path: "/recipient-search",
+          name: "recipient-search",
+          component: () => import("../views/user/RecipientSearchView.vue"),
+          meta: { requiresAuth: false },
+        },
+      ],
+    },
+    {
+      path: "/book-detail",
+      name: "book-detail",
+      component: HomeLayout,
+      children: [
+        {
+          path: "dharmascience",
+          name: "dharmascience",
+          component: () => import("../views/user/DharmascienceDetailView.vue"),
+        },
+        {
+          path: "neodharma",
+          name: "neodharma",
+          component: () => import("../views/user/NeoDharmaDetailView.vue"),
+        },
+        {
+          path: "sankhara",
+          name: "sankhara",
+          component: () => import("../views/user/SankharaDetailView.vue"),
+        },
+        {
+          path: "nirvana",
+          name: "nirvana",
+          component: () => import("../views/user/NirvanaDetailView.vue"),
+        },
+        {
+          path: "draw-your-thoughts",
+          name: "draw-your-thoughts",
+          component: () =>
+            import("../views/user/DrawYourThoughtsDetailView.vue"),
+        },
+        {
+          path: "tyrant-handbook",
+          name: "tyrant-handbook",
+          component: () => import("../views/user/TyrantDetailView.vue"),
+        },
+        {
+          path: "the-way-out",
+          name: "the-way-out",
+          component: () => import("../views/user/TheWayOutDetailView.vue"),
+        },
+        {
+          path: "cleaning-up-thailand-book-1",
+          name: "cleaning-up-thailand-book-1",
+          component: () =>
+            import("../views/user/CleanUpThailand01DetailView.vue"),
+        },
+        {
+          path: "cleaning-up-thailand-book-2",
+          name: "cleaning-up-thailand-book-2",
+          component: () =>
+            import("../views/user/CleanUpThailand02DetailView.vue"),
         },
       ],
     },

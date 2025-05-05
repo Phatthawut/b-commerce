@@ -1,0 +1,37 @@
+[
+  {
+    "id": "north-america",
+    "name": "North America",
+    "order": 1
+  },
+  {
+    "id": "southamerica",
+    "name": "South America",
+    "order": 2
+  },
+  {
+    "id": "europe",
+    "name": "Europe",
+    "order": 3
+  },
+  {
+    "id": "asia",
+    "name": "Asia",
+    "order": 4
+  },
+  {
+    "id": "africa",
+    "name": "Africa",
+    "order": 5
+  },
+  {
+    "id": "oceania",
+    "name": "Oceania",
+    "order": 6
+  },
+  {
+    "id": "middle-east",
+    "name": "Middle East",
+    "order": 7
+  }
+]

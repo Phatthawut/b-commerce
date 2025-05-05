@@ -92,8 +92,8 @@
             />
             <label for="bank-transfer" class="text-lg">Bank Transfer</label>
           </div>
-
-          <div class="flex items-center">
+          <!-- Credit card replace flex items-center waiting for stripe api from client-->
+          <div class="items-center hidden">
             <input
               type="radio"
               id="credit-card"
@@ -111,6 +111,18 @@
               />
               <img src="/images/visa-logo.svg" alt="Visa" class="h-8 ml-2" />
             </label>
+          </div>
+          <!-- PromptPay replace flex items-center waiting for promptpay api from client-->
+          <div class="items-center hidden">
+            <input
+              type="radio"
+              id="promptpay"
+              name="payment-method"
+              value="promptpay"
+              v-model="paymentMethod"
+              class="mr-3 h-5 w-5 accent-button-blue"
+            />
+            <label for="promptpay" class="text-lg">PromptPay</label>
           </div>
         </div>
 
@@ -231,6 +243,57 @@
           </div>
         </div>
 
+        <!-- PromptPay form (shown when PromptPay is selected) -->
+        <div
+          v-if="paymentMethod === 'promptpay'"
+          class="mt-6 p-4 bg-gray-50 rounded"
+        >
+          <div v-if="promptpayLoading" class="text-center py-4">
+            <div class="spinner mb-2"></div>
+            <p>Generating PromptPay QR code...</p>
+          </div>
+
+          <div v-else-if="promptpayError" class="text-red-500 text-sm mt-2">
+            {{ promptpayError }}
+          </div>
+
+          <div v-else-if="promptpayData" class="text-center">
+            <h3 class="font-semibold mb-2">Scan QR Code with Banking App</h3>
+
+            <div class="mt-4 mb-4">
+              <img
+                :src="promptpayData.qrCode"
+                alt="PromptPay QR Code"
+                class="max-w-full h-auto max-h-64 mx-auto border rounded-md"
+              />
+            </div>
+
+            <p class="text-sm text-gray-700 mb-1">
+              Amount: {{ formatCurrency(donationAmount) }}
+            </p>
+            <p class="text-sm text-gray-700 mb-4">
+              After scanning, please wait for payment confirmation.
+            </p>
+
+            <div
+              v-if="promptpayPolling"
+              class="flex justify-center items-center mt-3 text-sm"
+            >
+              <div class="spinner mr-2"></div>
+              <p>Checking payment status...</p>
+            </div>
+          </div>
+
+          <div v-else class="text-center">
+            <button
+              class="bg-[#7ECAD1] hover:bg-[#6BB8BF] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              @click="generatePromptPayQR"
+            >
+              Generate PromptPay QR Code
+            </button>
+          </div>
+        </div>
+
         <div class="mt-6">
           <button
             class="w-full bg-[#7ECAD1] hover:bg-[#6BB8BF] text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -245,7 +308,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { serverTimestamp } from "firebase/firestore";
 import {
@@ -267,6 +330,7 @@ const fileInput = ref(null);
 const fileError = ref("");
 const donationData = ref(null);
 const donationId = ref("");
+const donationAmount = ref(0);
 const cardDetails = ref({
   number: "",
   expiry: "",
@@ -276,6 +340,13 @@ const cardDetails = ref({
 const loading = ref(false);
 const stripeLoading = ref(false);
 const stripeError = ref("");
+
+// PromptPay variables
+const promptpayLoading = ref(false);
+const promptpayError = ref("");
+const promptpayData = ref(null);
+const promptpayPolling = ref(false);
+const pollingInterval = ref(null);
 
 // Stripe configuration
 const STRIPE_PUBLIC_KEY =
@@ -684,6 +755,167 @@ const processStripePayment = async () => {
   }
 };
 
+// Function to generate PromptPay QR code
+const generatePromptPayQR = async () => {
+  if (!donationId.value) {
+    promptpayError.value = "Donation ID is missing. Please try again.";
+    return;
+  }
+
+  promptpayLoading.value = true;
+  promptpayError.value = "";
+
+  try {
+    // Calculate the donation amount if not already set
+    if (!donationAmount.value) {
+      if (
+        donationStore.currentDonation &&
+        donationStore.currentDonation.amount
+      ) {
+        donationAmount.value = donationStore.currentDonation.amount;
+      } else if (donationData.value && donationData.value.rawTotal) {
+        donationAmount.value = donationData.value.rawTotal;
+      } else if (donationData.value && donationData.value.formattedTotal) {
+        // Extract numeric value from formatted total (e.g., "1,500 THB" -> 1500)
+        const formattedTotal = donationData.value.formattedTotal;
+        const numericValue = formattedTotal.replace(/[^0-9]/g, "");
+        donationAmount.value = parseInt(numericValue);
+      } else if (donationData.value && donationData.value.quantity) {
+        const quantity = parseInt(donationData.value.quantity);
+        donationAmount.value = quantity * 2000; // Using the standard price per set
+      }
+    }
+
+    // Call backend to create PromptPay payment intent
+    const response = await fetch(
+      "http://localhost:3000/api/create-promptpay-payment",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: donationAmount.value,
+          currency: "thb",
+          donationId: donationId.value,
+          metadata: {
+            donorName:
+              donationData.value?.name ||
+              (donationStore.currentDonation
+                ? donationStore.currentDonation.donorName
+                : ""),
+            donorEmail:
+              donationData.value?.email ||
+              (donationStore.currentDonation
+                ? donationStore.currentDonation.donorEmail
+                : ""),
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to create PromptPay payment");
+    }
+
+    const { clientSecret, paymentIntentId } = await response.json();
+
+    // Mock QR code for now - in production, your backend would generate a real PromptPay QR
+    // This is a placeholder. In a real implementation, the QR code would be generated by your backend
+    // and returned in the response.
+    promptpayData.value = {
+      qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PromptPay:${donationAmount.value}THB:DonationID:${donationId.value}`,
+      paymentIntentId: paymentIntentId,
+    };
+
+    // Start polling for payment status
+    startPollingPaymentStatus(paymentIntentId);
+  } catch (error) {
+    console.error("Error generating PromptPay QR:", error);
+    promptpayError.value =
+      error.message ||
+      "Failed to generate PromptPay QR code. Please try again.";
+  } finally {
+    promptpayLoading.value = false;
+  }
+};
+
+// Function to poll payment status
+const startPollingPaymentStatus = (paymentIntentId) => {
+  // Clear any existing polling
+  if (pollingInterval.value) {
+    clearInterval(pollingInterval.value);
+  }
+
+  promptpayPolling.value = true;
+
+  // Poll every 3 seconds
+  pollingInterval.value = setInterval(async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/check-payment-status?paymentIntentId=${paymentIntentId}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to check payment status");
+      }
+
+      const data = await response.json();
+      console.log(`PromptPay payment status: ${data.status}`);
+
+      // Check payment status
+      if (data.status === "succeeded") {
+        // Payment successful
+        clearInterval(pollingInterval.value);
+        promptpayPolling.value = false;
+
+        // Update donation with payment information
+        await donationStore.updateDonationPayment(donationId.value, {
+          paymentMethod: "promptpay",
+          paymentStatus: "completed",
+          stripePaymentIntentId: paymentIntentId,
+          paymentDate: serverTimestamp(),
+          status: "completed",
+        });
+
+        // Redirect to thank you page
+        localStorage.removeItem("pendingDonation");
+        localStorage.removeItem("pendingDonationId");
+        localStorage.setItem("donationId", donationId.value);
+        router.push("/thank-you");
+      } else if (
+        ["canceled", "failed", "requires_payment_method"].includes(data.status)
+      ) {
+        // Payment failed or canceled
+        clearInterval(pollingInterval.value);
+        promptpayPolling.value = false;
+        promptpayError.value =
+          "Payment failed or was canceled. Please try again.";
+      }
+      // For other statuses (like processing, requires_action, etc.), continue polling
+    } catch (error) {
+      console.error("Error checking payment status:", error);
+      // Don't stop polling on network errors, just log them
+    }
+  }, 5000);
+
+  // Stop polling after 10 minutes (600000 ms) to prevent indefinite polling
+  setTimeout(() => {
+    if (pollingInterval.value) {
+      clearInterval(pollingInterval.value);
+      promptpayPolling.value = false;
+
+      // Only show error if we're still on this page and haven't received a successful payment
+      if (promptpayPolling.value) {
+        promptpayError.value =
+          "Payment timeout. Please check your banking app to see if the payment was processed.";
+      }
+    }
+  }, 600000);
+};
+
+// Modify confirmPayment to handle PromptPay
 const confirmPayment = async () => {
   if (!paymentMethod.value) {
     alert("Please select a payment method");
@@ -742,6 +974,15 @@ const confirmPayment = async () => {
           return;
         }
       }
+    } else if (paymentMethod.value === "promptpay") {
+      // For PromptPay, we don't need to do anything special here
+      // Just generate the QR code if not already done
+      if (!promptpayData.value) {
+        loading.value = false;
+        await generatePromptPayQR();
+        return;
+      }
+      return; // Don't proceed with the rest of the function
     }
 
     // Update donation with payment information
@@ -917,6 +1158,13 @@ const formatCurrency = (amount) => {
     currency: "THB",
   }).format(amount || 0);
 };
+
+// Clear polling interval when component is unmounted
+onUnmounted(() => {
+  if (pollingInterval.value) {
+    clearInterval(pollingInterval.value);
+  }
+});
 </script>
 
 <style scoped>

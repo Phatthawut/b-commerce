@@ -1,278 +1,229 @@
 <template>
-  <div class="p-4 bg-white rounded-lg shadow">
-    <h2 class="text-xl font-bold mb-4">Import Recipients from CSV</h2>
+  <div class="bg-white rounded-lg shadow p-4 mt-6">
+    <h2 class="text-xl font-semibold mb-4">Import Recipients</h2>
+    <p class="text-sm text-gray-600 mb-4">
+      Upload a CSV file to import recipients in bulk.
+    </p>
 
-    <div class="mb-4">
-      <p class="text-sm text-gray-600 mb-2">
-        Upload a CSV file with recipient data. The CSV should have the following
-        columns:
-        <code>name,category,regionId,address</code>
-      </p>
-      <p class="text-sm text-gray-600 mb-4">
-        Categories should be one of: <code>university</code>,
-        <code>library</code>, <code>nonprofit</code>
-      </p>
-
-      <div class="flex items-center justify-center w-full">
-        <label
-          class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-        >
-          <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg
-              class="w-8 h-8 mb-4 text-gray-500"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 16"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-              />
-            </svg>
-            <p class="mb-2 text-sm text-gray-500">
-              <span class="font-semibold">Click to upload</span> or drag and
-              drop
-            </p>
-            <p class="text-xs text-gray-500">CSV file only</p>
-          </div>
-          <input
-            id="dropzone-file"
-            type="file"
-            class="hidden"
-            accept=".csv"
-            @change="handleFileUpload"
-          />
-        </label>
-      </div>
-    </div>
-
-    <!-- Preview section -->
-    <div v-if="csvData.length > 0" class="mb-4">
-      <h3 class="text-lg font-semibold mb-2">
-        Preview ({{ csvData.length }} records)
-      </h3>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Category
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Region ID
-              </th>
-              <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Address
-              </th>
-            </tr>
-          </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="(row, index) in previewData" :key="index">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ row.name }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ row.category }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ row.regionId }}
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {{ row.address }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Validation errors -->
     <div
-      v-if="validationErrors.length > 0"
-      class="mb-4 p-3 bg-red-50 text-red-700 rounded"
+      class="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center cursor-pointer hover:bg-gray-50"
+      @click="triggerFileUpload"
+      @dragover.prevent="dragover = true"
+      @dragleave.prevent="dragover = false"
+      @drop.prevent="onDrop"
+      :class="{ 'bg-blue-50 border-blue-300': dragover }"
     >
-      <h3 class="font-semibold mb-2">Validation Errors:</h3>
-      <ul class="list-disc pl-5">
-        <li v-for="(error, index) in validationErrors" :key="index">
-          {{ error }}
-        </li>
-      </ul>
+      <input
+        type="file"
+        ref="fileInput"
+        @change="onFileSelect"
+        accept=".csv"
+        class="hidden"
+      />
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-10 w-10 mx-auto text-gray-400 mb-3"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+        />
+      </svg>
+
+      <p class="mb-1 font-medium">
+        <span v-if="!importing">
+          Drag and drop your CSV file here or click to browse
+        </span>
+        <span v-else> Importing your data... </span>
+      </p>
+      <p class="text-xs text-gray-500">
+        CSV file format: name, category, regionId, country, address
+      </p>
     </div>
 
-    <!-- Import button -->
-    <div class="flex justify-end">
-      <button
-        @click="importRecipients"
-        :disabled="
-          importing || csvData.length === 0 || validationErrors.length > 0
-        "
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        <span v-if="importing">
-          <svg
-            class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-          Importing...
-        </span>
-        <span v-else>Import {{ csvData.length }} Recipients</span>
+    <div
+      v-if="selectedFile"
+      class="mt-4 p-3 bg-gray-50 rounded flex items-center justify-between"
+    >
+      <div>
+        <p class="font-medium text-gray-700">{{ selectedFile.name }}</p>
+        <p class="text-xs text-gray-500">
+          {{ formatFileSize(selectedFile.size) }}
+        </p>
+      </div>
+      <button @click="clearFile" class="text-red-600 hover:text-red-800">
+        Remove
       </button>
     </div>
 
-    <!-- Success message -->
+    <button
+      v-if="selectedFile && !importing"
+      @click="importFile"
+      class="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+    >
+      Import Recipients
+    </button>
+
     <div
-      v-if="importSuccess"
+      v-if="importResults.success"
       class="mt-4 p-3 bg-green-50 text-green-700 rounded"
     >
-      Successfully imported {{ importedCount }} recipients!
+      Successfully imported {{ importResults.count }} recipients!
+    </div>
+
+    <div
+      v-if="importResults.error"
+      class="mt-4 p-3 bg-red-50 text-red-700 rounded"
+    >
+      {{ importResults.error }}
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useRecipientStore } from "@/stores/recipientStore";
 import Papa from "papaparse";
 
 const recipientStore = useRecipientStore();
-
-const csvData = ref([]);
-const validationErrors = ref([]);
+const fileInput = ref(null);
+const selectedFile = ref(null);
+const dragover = ref(false);
 const importing = ref(false);
-const importSuccess = ref(false);
-const importedCount = ref(0);
-
-// Only show first 5 rows in preview
-const previewData = computed(() => {
-  return csvData.value.slice(0, 5);
+const importResults = ref({
+  success: false,
+  error: null,
+  count: 0,
 });
 
-const handleFileUpload = (event) => {
+const triggerFileUpload = () => {
+  fileInput.value.click();
+};
+
+const onFileSelect = (event) => {
   const file = event.target.files[0];
-  if (!file) return;
+  if (file) {
+    selectedFile.value = file;
+    importResults.value = { success: false, error: null, count: 0 };
+  }
+};
 
-  // Reset states
-  csvData.value = [];
-  validationErrors.value = [];
-  importSuccess.value = false;
+const onDrop = (event) => {
+  dragover.value = false;
+  const file = event.dataTransfer.files[0];
+  if (file && file.name.endsWith(".csv")) {
+    selectedFile.value = file;
+    importResults.value = { success: false, error: null, count: 0 };
+  } else {
+    importResults.value = {
+      success: false,
+      error: "Please upload a CSV file",
+      count: 0,
+    };
+  }
+};
 
-  // Parse CSV file
-  Papa.parse(file, {
+const clearFile = () => {
+  selectedFile.value = null;
+  fileInput.value.value = "";
+  importResults.value = { success: false, error: null, count: 0 };
+};
+
+const formatFileSize = (size) => {
+  if (size < 1024) {
+    return `${size} bytes`;
+  } else if (size < 1024 * 1024) {
+    return `${(size / 1024).toFixed(1)} KB`;
+  } else {
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  }
+};
+
+const importFile = () => {
+  if (!selectedFile.value) return;
+
+  importing.value = true;
+  importResults.value = { success: false, error: null, count: 0 };
+
+  Papa.parse(selectedFile.value, {
     header: true,
-    skipEmptyLines: true,
-    complete: (results) => {
-      if (results.data && results.data.length > 0) {
-        csvData.value = results.data;
-        validateCsvData();
+    complete: async (results) => {
+      if (results.errors.length > 0) {
+        importResults.value = {
+          success: false,
+          error: `CSV parsing error: ${results.errors[0].message}`,
+          count: 0,
+        };
+        importing.value = false;
+        return;
+      }
+
+      try {
+        const recipients = results.data.filter(
+          (r) => r.name && r.category && r.regionId
+        );
+
+        if (recipients.length === 0) {
+          importResults.value = {
+            success: false,
+            error: "No valid recipients found in the CSV file",
+            count: 0,
+          };
+          importing.value = false;
+          return;
+        }
+
+        // Add createdAt timestamp to each recipient
+        const recipientsWithTimestamp = recipients.map((r) => ({
+          ...r,
+          createdAt: new Date().toISOString(),
+        }));
+
+        // Use a helper function to import the recipients
+        for (const recipient of recipientsWithTimestamp) {
+          await recipientStore.createRecipient(recipient);
+        }
+
+        importResults.value = {
+          success: true,
+          error: null,
+          count: recipients.length,
+        };
+
+        // Clear the file after successful import
+        clearFile();
+
+        // Emit an event to notify parent component
+        emit("import-completed", { count: recipients.length });
+      } catch (error) {
+        console.error("Error importing recipients:", error);
+        importResults.value = {
+          success: false,
+          error: `Import error: ${error.message}`,
+          count: 0,
+        };
+      } finally {
+        importing.value = false;
       }
     },
     error: (error) => {
-      validationErrors.value.push(`Error parsing CSV: ${error.message}`);
+      console.error("CSV parsing error:", error);
+      importResults.value = {
+        success: false,
+        error: `CSV parsing error: ${error.message}`,
+        count: 0,
+      };
+      importing.value = false;
     },
   });
 };
 
-const validateCsvData = () => {
-  validationErrors.value = [];
-
-  // Check required columns
-  const requiredColumns = ["name", "category", "regionId", "address"];
-  const firstRow = csvData.value[0];
-
-  const missingColumns = requiredColumns.filter(
-    (col) => !firstRow.hasOwnProperty(col)
-  );
-  if (missingColumns.length > 0) {
-    validationErrors.value.push(
-      `Missing required columns: ${missingColumns.join(", ")}`
-    );
-  }
-
-  // Validate each row
-  csvData.value.forEach((row, index) => {
-    // Check for empty name
-    if (!row.name || row.name.trim() === "") {
-      validationErrors.value.push(`Row ${index + 1}: Name is required`);
-    }
-
-    // Check category is valid
-    const validCategories = ["university", "library", "nonprofit"];
-    if (!validCategories.includes(row.category)) {
-      validationErrors.value.push(
-        `Row ${index + 1}: Invalid category "${
-          row.category
-        }". Must be one of: ${validCategories.join(", ")}`
-      );
-    }
-
-    // Check regionId is not empty
-    if (!row.regionId || row.regionId.trim() === "") {
-      validationErrors.value.push(`Row ${index + 1}: Region ID is required`);
-    }
-
-    // Check address is not empty
-    if (!row.address || row.address.trim() === "") {
-      validationErrors.value.push(`Row ${index + 1}: Address is required`);
-    }
-  });
-};
-
-const importRecipients = async () => {
-  if (validationErrors.value.length > 0 || csvData.value.length === 0) {
-    return;
-  }
-
-  importing.value = true;
-
-  try {
-    const result = await recipientStore.importRecipientsFromCSV(csvData.value);
-
-    if (result.success) {
-      importSuccess.value = true;
-      importedCount.value = result.count;
-      csvData.value = [];
-    } else {
-      validationErrors.value.push(`Import failed: ${result.error}`);
-    }
-  } catch (error) {
-    validationErrors.value.push(`Import failed: ${error.message}`);
-  } finally {
-    importing.value = false;
-  }
-};
+// Define emit for parent component communication
+const emit = defineEmits(["import-completed"]);
 </script>

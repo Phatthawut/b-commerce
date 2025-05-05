@@ -109,6 +109,9 @@
         <!-- Import section -->
         <RecipientImport />
 
+        <!-- Bulk University Data Import -->
+        <BulkDataImporter />
+
         <!-- Import sample data button -->
         <div class="bg-white rounded-lg shadow p-4 mt-6">
           <h2 class="text-xl font-semibold mb-4">Quick Setup</h2>
@@ -668,7 +671,8 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useRecipientStore } from "@/stores/recipientStore";
 import RecipientImport from "@/components/admin/RecipientImport.vue";
-import Papa from "papaparse";
+import BulkDataImporter from "@/components/admin/BulkDataImporter.vue";
+import { jsonDataService } from "@/services/jsonDataService";
 
 const recipientStore = useRecipientStore();
 
@@ -678,8 +682,8 @@ const loading = ref(false);
 const hasMoreRecipients = ref(false);
 const totalRecipients = ref(0);
 const filters = ref({
-  category: "university",
-  region: "north-america",
+  category: "",
+  region: "",
   search: "",
 });
 const importingSample = ref(false);
@@ -823,11 +827,8 @@ const fetchRecipients = async (reset = true) => {
   }
 };
 
-const loadMoreRecipients = () => {
-  fetchRecipients(true);
-};
-
 const applyFilters = () => {
+  currentPage.value = 1; // Reset to page 1 when applying filters
   fetchRecipients(true);
 };
 
@@ -842,7 +843,7 @@ const debounceSearch = () => {
 
 const resetFilters = () => {
   filters.value = {
-    category: "university",
+    category: "",
     region: "",
     search: "",
   };
@@ -856,11 +857,13 @@ const importSampleData = async () => {
   sampleImportSuccess.value = false;
 
   try {
-    // Sample data removed per request
-    alert("Sample data import has been disabled. Please import your own data.");
-    sampleImportSuccess.value = false;
-    importingSample.value = false;
-    return;
+    // Use the store to reset data to initial values
+    await recipientStore.importSampleData();
+
+    // Refresh the list
+    await fetchRecipients(true);
+
+    sampleImportSuccess.value = true;
   } catch (error) {
     console.error("Error importing sample data:", error);
   } finally {
@@ -875,7 +878,7 @@ onMounted(async () => {
   try {
     await recipientStore.fetchRegions();
 
-    // Set default region to first region (likely North America) if available
+    // Set default region to first region if available
     if (regions.value.length > 0) {
       // Find North America region if it exists
       const northAmerica = regions.value.find((r) =>
