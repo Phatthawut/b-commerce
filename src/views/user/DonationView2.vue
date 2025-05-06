@@ -287,11 +287,11 @@
                     <option value="">Select Recipient Type</option>
                     <option value="university">Universities</option>
                     <option value="library">Libraries</option>
-                    <option value="nonprofit">Non-Profit Organizations</option>
-                    <option value="templechurch">Temples & Churches</option>
+                    <option value="religious">Religious Organizations</option>
+                    <option value="church">Churches</option>
+                    <option value="wat">Wat</option>
                     <option value="culturecenter">Cultural Centers</option>
                     <option value="custom">Custom Recipient</option>
-                    <option value="other">Other</option>
                   </select>
                 </div>
 
@@ -832,8 +832,9 @@ const formData = ref({
 const unspecifiedCategories = ref({
   university: { selected: true, amount: 1 },
   library: { selected: false, amount: 0 },
-  nonprofit: { selected: false, amount: 0 },
-  templechurch: { selected: false, amount: 0 },
+  church: { selected: false, amount: 0 },
+  wat: { selected: false, amount: 0 },
+  religious: { selected: false, amount: 0 },
   culturecenter: { selected: false, amount: 0 },
   other: { selected: false, amount: 0 },
 });
@@ -842,8 +843,9 @@ const unspecifiedCategories = ref({
 const categoryNames = {
   university: "Universities",
   library: "Libraries",
-  nonprofit: "Non-Profit Organizations",
-  templechurch: "Temples & Churches",
+  religious: "Religious Organizations",
+  church: "Churches",
+  wat: "Wat",
   culturecenter: "Cultural Centers",
   other: "Please Select One For Me",
 };
