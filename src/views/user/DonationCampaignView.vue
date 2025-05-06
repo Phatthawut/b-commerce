@@ -55,7 +55,7 @@
           <!-- Content -->
           <div class="flex flex-col py-12 px-4 text-background-blue">
             <!-- Objective 1 -->
-            <div class="flex pt-8 pb-10">
+            <div class="flex pt-8 pb-10 pr-12">
               <div class="w-1/4 text-right pr-8">
                 <span class="text-4xl font-bold text-gray-800">01</span>
               </div>
@@ -64,14 +64,13 @@
                   Global Knowledge Sharing
                 </h3>
                 <p class="text-gray-600">
-                  Spreading wisdom and understanding across borders and
-                  cultures.
+                  Available in English for recipients around the world
                 </p>
               </div>
             </div>
 
             <!-- Objective 2 -->
-            <div class="flex pb-10">
+            <div class="flex pb-10 pr-12">
               <div class="w-1/4 text-right pr-8">
                 <span class="text-4xl font-bold text-gray-800">02</span>
               </div>
@@ -82,14 +81,15 @@
                   Cultural Exchange & Understanding
                 </h3>
                 <p class="text-gray-600">
-                  Building bridges between Eastern and Western philosophical
-                  traditions.
+                  Using a simple language, universal examples, and scientific
+                  discoveries to help readers from all cultures apply the
+                  teachings to everyday life.
                 </p>
               </div>
             </div>
 
             <!-- Objective 3 -->
-            <div class="flex pb-10">
+            <div class="flex pb-10 pr-12">
               <div class="w-1/4 text-right pr-8">
                 <span class="text-4xl font-bold text-gray-800">03</span>
               </div>
@@ -98,8 +98,8 @@
                   Educational Resource
                 </h3>
                 <p class="text-gray-600">
-                  Providing valuable materials for universities, libraries, and
-                  cultural institutions.
+                  A learning tool that makes Dharma accessible to all, helping
+                  people apply it in daily life.
                 </p>
               </div>
             </div>
@@ -124,36 +124,44 @@
         <div class="gradient-background-red py-16 px-4">
           <div class="max-w-3xl mx-auto">
             <p class="text-gray-700 text-center font-montserrat mb-8">
-              The main content of this book series (4 volumes) explains that, in
-              essence, "Dharma is Science, and Science is Dharma." It merges
-              modern science with the traditional wisdom of Dharma into a
-              unified whole, calling this new body of knowledge "Dharmoscience."
-              This will enable readers to deeply and profoundly understand the
-              truths of nature.
+              The core concept of this four-book series is the idea that "Dharma
+              is science, and science is dharma." It integrates modern science
+              with the ancient wisdom of dharma into a unified knowledge system
+              called "Dharmoscience." This new framework enables readers to gain
+              a profound and comprehensive understanding of the ultimate truths
+              of nature.
             </p>
 
             <!-- Book Images -->
             <div class="flex flex-wrap justify-center gap-4 mb-12">
-              <img
-                src="@/assets/images/dharmoscience-thumbnail.webp"
-                alt="Dharmascience Book 1"
-                class="w-40 h-auto"
-              />
-              <img
-                src="@/assets/images/nirvana-thumbnail.webp"
-                alt="Dharmascience Book 2"
-                class="w-40 h-auto"
-              />
-              <img
-                src="@/assets/images/neodharma-thumbnail.webp"
-                alt="Dharmascience Book 3"
-                class="w-40 h-auto"
-              />
-              <img
-                src="@/assets/images/sankhara-thumbnail.webp"
-                alt="Dharmascience Book 4"
-                class="w-40 h-auto"
-              />
+              <router-link to="book-detail/dharmascience">
+                <img
+                  src="@/assets/images/dharmoscience-thumbnail.webp"
+                  alt="Dharmascience Book 1"
+                  class="w-40 h-auto"
+                />
+              </router-link>
+              <router-link to="book-detail/nirvana">
+                <img
+                  src="@/assets/images/nirvana-thumbnail.webp"
+                  alt="Dharmascience Book 2"
+                  class="w-40 h-auto"
+                />
+              </router-link>
+              <router-link to="book-detail/neodharma">
+                <img
+                  src="@/assets/images/neodharma-thumbnail.webp"
+                  alt="Dharmascience Book 3"
+                  class="w-40 h-auto"
+                />
+              </router-link>
+              <router-link to="book-detail/sankhara">
+                <img
+                  src="@/assets/images/sankhara-thumbnail.webp"
+                  alt="Dharmascience Book 4"
+                  class="w-40 h-auto"
+                />
+              </router-link>
             </div>
 
             <!-- Donate Button -->
