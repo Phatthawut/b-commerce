@@ -17,14 +17,11 @@ import buy05 from "@/assets/images/buy-05.webp";
 const dharmaScienceBook = {
   title: "Neodharma",
   image: neodharmaThumb,
-  shortDescription:
-    "Explore the intersection of modern science and ancient wisdom in this groundbreaking series.",
+  shortDescription: "",
   description:
-    'The main content of this book series (4 volumes) explains that, in essence, "Dharma is Science, and Science is Dharma." It merges modern science with the traditional wisdom of Dharma into a unified whole, calling this new body of knowledge "Dharmoscience." This will enable readers to deeply and profoundly understand the truths of nature.',
-  additionalInfo1:
-    "Written by renowned philosopher and spiritual teacher Dr. Vuthiphong Priebjrivat, this series brings together decades of research and insight.",
-  additionalInfo2:
-    "Perfect for readers interested in philosophy, science, spirituality, and the search for deeper meaning and understanding.",
+    "Unarguably, science has long been the authoritative voice in story-telling about practically everything --from the universe to stars and galaxies; the big bang and black holes; atoms and quarks, matter and energy; plants, animals and humans; chromosomes and DNA; body and mind; life and death; etc. This book retells those same stories but from a rather different voice, dharma. After having read the book, those stories may never sound the same again.",
+  additionalInfo1: "",
+  additionalInfo2: "",
   series: "Dharmoscience Series",
   colorScheme: "blue",
   backgroundColor: "blue",

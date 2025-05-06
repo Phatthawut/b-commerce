@@ -538,36 +538,73 @@ onMounted(async () => {
   });
 });
 
-const handleFileUpload = (event) => {
+const handleFileUpload = async (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Validate file type
-  const validTypes = [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "image/heic",
-    "image/heif",
-    "application/pdf",
-  ];
-  if (!validTypes.includes(file.type)) {
-    fileError.value = "Please upload an image file (JPEG, PNG, GIF) or PDF";
-    return;
-  }
-
-  // Validate file size (max 5MB)
-  const maxSize = 5 * 1024 * 1024; // 5MB
-  if (file.size > maxSize) {
-    fileError.value = "File size should not exceed 5MB";
-    return;
-  }
-
-  // Clear previous error
+  // Reset any previous error
   fileError.value = "";
 
-  // Store the file
-  paymentSlip.value = file;
+  // Validate file type with stronger checks
+  const validTypes = ["image/jpeg", "image/png", "image/gif"];
+
+  if (!validTypes.includes(file.type)) {
+    fileError.value = "Please upload an image file (JPEG, PNG)";
+    return;
+  }
+
+  // Additional file validation - check file extension
+  const fileName = file.name.toLowerCase();
+  const validExtensions = [".jpg", ".jpeg", ".png"];
+  const hasValidExtension = validExtensions.some((ext) =>
+    fileName.endsWith(ext)
+  );
+
+  if (!hasValidExtension) {
+    fileError.value = "Invalid file type. Please use only JPG, PNG files.";
+    return;
+  }
+
+  // Validate file size (max 1MB for initial upload)
+  const maxSize = 1 * 1024 * 1024; // 1MB
+  if (file.size > maxSize) {
+    fileError.value = "File size should not exceed 1MB";
+    return;
+  }
+
+  // For images, perform additional security checks using FileReader
+  if (file.type.startsWith("image/")) {
+    try {
+      await validateImageContent(file);
+    } catch (error) {
+      fileError.value = error.message || "Invalid image file";
+      return;
+    }
+  }
+
+  // Store the original file
+  let fileToUpload = file;
+
+  // Compress image if it's over 250KB and is an image (not PDF)
+  if (file.type.startsWith("image/") && file.size > 250 * 1024) {
+    try {
+      fileError.value = "Compressing image...";
+      fileToUpload = await compressImage(file);
+      fileError.value = `Image compressed from ${formatFileSize(
+        file.size
+      )} to ${formatFileSize(fileToUpload.size)}`;
+      setTimeout(() => {
+        fileError.value = "";
+      }, 3000);
+    } catch (error) {
+      console.error("Error compressing image:", error);
+      // If compression fails, use the original file but log the error
+      fileToUpload = file;
+    }
+  }
+
+  // Store the file (original or compressed)
+  paymentSlip.value = fileToUpload;
 
   // Create preview for image files
   if (file.type.startsWith("image/")) {
@@ -580,6 +617,132 @@ const handleFileUpload = (event) => {
     // For PDF files, show a generic icon
     paymentSlipPreview.value = "/images/pdf-icon.png";
   }
+};
+
+// Function to validate image content (checks if file is actually an image)
+const validateImageContent = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const arrayBuffer = event.target.result;
+
+      // Check for image file signatures (magic numbers)
+      const byteArray = new Uint8Array(arrayBuffer.slice(0, 4));
+
+      // JPEG signature: FF D8 FF
+      const isJpeg =
+        byteArray[0] === 0xff && byteArray[1] === 0xd8 && byteArray[2] === 0xff;
+
+      // PNG signature: 89 50 4E 47
+      const isPng =
+        byteArray[0] === 0x89 &&
+        byteArray[1] === 0x50 &&
+        byteArray[2] === 0x4e &&
+        byteArray[3] === 0x47;
+
+      // GIF signature: either "GIF87a" or "GIF89a"
+      const isGif =
+        arrayBuffer.byteLength >= 6 &&
+        byteArray[0] === 0x47 &&
+        byteArray[1] === 0x49 &&
+        byteArray[2] === 0x46;
+
+      if (isJpeg || isPng || isGif) {
+        resolve();
+      } else {
+        reject(new Error("The file appears to be invalid or corrupted"));
+      }
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Failed to read the file"));
+    };
+
+    // Read the first few bytes to check the file signature
+    reader.readAsArrayBuffer(file.slice(0, 4));
+  });
+};
+
+// Function to compress image
+const compressImage = (file) => {
+  return new Promise((resolve, reject) => {
+    // Create an image element to load the file
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      // Create canvas for image manipulation
+      const canvas = document.createElement("canvas");
+
+      // Calculate dimensions while maintaining aspect ratio
+      let width = img.width;
+      let height = img.height;
+
+      // Max dimensions - adjust as needed for your use case
+      const MAX_WIDTH = 1200;
+      const MAX_HEIGHT = 1200;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+
+      // Set canvas dimensions
+      canvas.width = width;
+      canvas.height = height;
+
+      // Draw image to canvas with new dimensions
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Convert to blob with quality adjustment
+      // Start with 0.7 quality for JPEG
+      const quality = 0.7;
+
+      // Use the original file type, or default to JPEG
+      let outputType = file.type;
+      if (!outputType.startsWith("image/")) {
+        outputType = "image/jpeg";
+      }
+
+      // Convert canvas to blob
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error("Canvas to Blob conversion failed"));
+            return;
+          }
+
+          // Create a new file from the blob
+          const compressedFile = new File([blob], file.name, {
+            type: outputType,
+            lastModified: new Date().getTime(),
+          });
+
+          // Clean up
+          URL.revokeObjectURL(img.src);
+
+          // Resolve with the compressed file
+          resolve(compressedFile);
+        },
+        outputType,
+        quality
+      );
+    };
+
+    img.onerror = (error) => {
+      URL.revokeObjectURL(img.src);
+      reject(error);
+    };
+  });
 };
 
 const removePaymentSlip = () => {
@@ -602,12 +765,39 @@ const uploadPaymentSlip = async (file, donationId) => {
 
   try {
     const storage = getStorage();
-    const fileExtension = file.name.split(".").pop();
-    const fileName = `payment_slips/${donationId}_${Date.now()}.${fileExtension}`;
+
+    // Sanitize file name to prevent path traversal attacks
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+    const fileExtension = sanitizedName.split(".").pop().toLowerCase();
+
+    // Generate a unique filename with timestamp and random string
+    const randomString = Math.random().toString(36).substring(2, 10);
+    const fileName = `payment_slips/${donationId}_${Date.now()}_${randomString}.${fileExtension}`;
+
     const fileRef = storageRef(storage, fileName);
 
-    // Upload the file
-    await uploadBytes(fileRef, file);
+    // For files still over 250KB after compression, show a warning
+    if (file.size > 250 * 1024) {
+      console.warn(
+        `Uploading large file (${formatFileSize(
+          file.size
+        )}). This may affect performance.`
+      );
+    }
+
+    // Set appropriate metadata
+    const metadata = {
+      contentType: file.type,
+      customMetadata: {
+        uploadedBy: donationData.value?.name || "anonymous user",
+        donationId: donationId,
+        originalFilename: sanitizedName,
+        uploadDate: new Date().toISOString(),
+      },
+    };
+
+    // Upload the file with metadata
+    await uploadBytes(fileRef, file, metadata);
 
     // Get the download URL
     const downloadURL = await getDownloadURL(fileRef);

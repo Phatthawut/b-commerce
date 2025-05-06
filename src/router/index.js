@@ -75,12 +75,7 @@ const router = createRouter({
         {
           path: "login",
           name: "login",
-          component: () => import("../views/LoginView.vue"),
-          meta: { hideForAuth: true },
-          props: (route) => ({
-            redirect: route.query.redirect || "/",
-            mode: route.query.mode || "login",
-          }),
+          component: () => import("@/views/user/LoginView.vue"),
         },
         {
           path: "payment",
@@ -102,12 +97,6 @@ const router = createRouter({
             title: "Check Donation Status",
             requiresAuth: false,
           },
-        },
-        {
-          path: "/recipient-search",
-          name: "recipient-search",
-          component: () => import("../views/user/RecipientSearchView.vue"),
-          meta: { requiresAuth: false },
         },
       ],
     },

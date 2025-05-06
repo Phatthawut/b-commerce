@@ -17,14 +17,11 @@ import buy05 from "@/assets/images/buy-05.webp";
 const dharmaScienceBook = {
   title: "Nirvana",
   image: nirvanaThumb,
-  shortDescription:
-    "Explore the intersection of modern science and ancient wisdom in this groundbreaking series.",
+  shortDescription: "",
   description:
-    'The main content of this book series (4 volumes) explains that, in essence, "Dharma is Science, and Science is Dharma." It merges modern science with the traditional wisdom of Dharma into a unified whole, calling this new body of knowledge "Dharmoscience." This will enable readers to deeply and profoundly understand the truths of nature.',
-  additionalInfo1:
-    "Written by renowned philosopher and spiritual teacher Dr. Vuthiphong Priebjrivat, this series brings together decades of research and insight.",
-  additionalInfo2:
-    "Perfect for readers interested in philosophy, science, spirituality, and the search for deeper meaning and understanding.",
+    "Spiritual enlightenment, nirvana, is the ultimate spiritual goal among the eastern religions, philosophy and metaphysics. Within the book, this profound, complex and often misunderstood concept from the various religions and differing schools of thought as well as modern science, are brought together in order to create a common conceptual framework. The concept is then elaborated and visually illustrated with several simple diagrams for easy understanding. Visual nirvana roadmaps are also provided as the navigating tool for spiritual seekers on their ultimate journey.",
+  additionalInfo1: "",
+  additionalInfo2: "",
   series: "Dharmoscience Series",
   colorScheme: "purple",
   backgroundColor: "purple",

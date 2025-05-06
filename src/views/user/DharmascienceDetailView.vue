@@ -18,13 +18,13 @@ const dharmaScienceBook = {
   title: "Dharmascience",
   image: dharmoscienceThumbnail,
   shortDescription:
-    "Explore the intersection of modern science and ancient wisdom in this groundbreaking series.",
+    "Modern science, without a doubt, can be regarded as the pinnacle of human intellectual pursuit. Considering its recent emergence of only four or five hundred years since Galileo or Copernicus, science certainly has made remarkable progress and impact when compared to other intellectual traditions, either religious or secular. Aside from countless products and artifacts only made possible by modern technology, our way of looking at the world is also profoundly influenced by science. With this enormous success, science has become so confident in itself (sometimes bordering on arrogance) that it tends to overlook what other intellectual or spiritual traditions --particularly the age-old wisdom of religions and metaphysics – have to say.",
   description:
-    'The main content of this book series (4 volumes) explains that, in essence, "Dharma is Science, and Science is Dharma." It merges modern science with the traditional wisdom of Dharma into a unified whole, calling this new body of knowledge "Dharmoscience." This will enable readers to deeply and profoundly understand the truths of nature.',
+    "In another vein, the word dharma in Sanskrit, in its original and strictest sense, does not mean ethics or morality as commonly understood nowadays; but it means nature. The spiritual core of various eastern religions--particularly Buddhism, Taoism, Jainism and Hinduism-- is in fact the pursuit of true understanding of nature and its immutable laws in order for us to reach spiritual enlightenment and liberation. This is also the ultimate mission of science. In this sense, dharma is science; and science is dharma.",
   additionalInfo1:
-    "Written by renowned philosopher and spiritual teacher Dr. Vuthiphong Priebjrivat, this series brings together decades of research and insight.",
+    "This four-book set is an effort to combine and integrate modern science and age-old dharma into one fuller body of knowledge --dharmoscience-- in order to better describe the ultimate reality of nature. In other words, this is a novel attempt to scientifically formulate dharma; and at the same time broaden the horizon of modern science beyond the confines of the material realm.",
   additionalInfo2:
-    "Perfect for readers interested in philosophy, science, spirituality, and the search for deeper meaning and understanding.",
+    "The four books making up this dharmoscience tetralogy are as follows: (1) Neodharma, (2) Dharmascience, (3) Sankhara, and (4) Nirvana. Within these books is where modern science and dharma converge.",
   series: "Dharmoscience Series",
   colorScheme: "red",
   relatedBooks: [

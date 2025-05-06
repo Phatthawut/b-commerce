@@ -17,14 +17,11 @@ import buy05 from "@/assets/images/buy-05.webp";
 const dharmaScienceBook = {
   title: "Sankhara",
   image: sankharaThumb,
-  shortDescription:
-    "Explore the intersection of modern science and ancient wisdom in this groundbreaking series.",
+  shortDescription: "",
   description:
-    'The main content of this book series (4 volumes) explains that, in essence, "Dharma is Science, and Science is Dharma." It merges modern science with the traditional wisdom of Dharma into a unified whole, calling this new body of knowledge "Dharmoscience." This will enable readers to deeply and profoundly understand the truths of nature.',
-  additionalInfo1:
-    "Written by renowned philosopher and spiritual teacher Dr. Vuthiphong Priebjrivat, this series brings together decades of research and insight.",
-  additionalInfo2:
-    "Perfect for readers interested in philosophy, science, spirituality, and the search for deeper meaning and understanding.",
+    "This book challenges the predominantly analysis-based perspective of today's science in explaining the ultimate reality of nature. It does so by reintroducing an ancient yet amazingly powerful concept from eastern religions and philosophy called sankhara in plain scientific formulation. A Pali word, sankhara denotes the act of joining the various pertinent parts into a complete and functional whole. When properly assembled, the whole exhibits brand new qualities that were nonexistent before. Sankhara is therefore the logical bedrocks of the holistic worldview. Hopefully, the sankhara worldview would provoke and at the same time enrich the mainstream scientific mindset, which is largely reductionist and narrowly focused on the material aspect of nature.",
+  additionalInfo1: "",
+  additionalInfo2: "",
   series: "Dharmoscience Series",
   colorScheme: "teal",
   backgroundColor: "teal",

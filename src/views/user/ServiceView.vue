@@ -32,12 +32,12 @@
               class="flex flex-col justify-center items-center py-12 px-4 text-background-blue"
             >
               <p class="px-4 text-sm md:text-lg">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
-                nostrud exerci tation ullamcorper euismod tincidunt ut laoreet
-                dolore magna aliquam erat volutpat. Ut wisi enim ad minim
-                veniam, quis nostrud exerci tation
+                Engaging and thought-provoking, these talks are designed to
+                inspire a new way of thinking. Through powerful storytelling and
+                insights, they explore the impact of thought management on
+                personal growth, leadership, and mindset transformation. Each
+                session sparks fresh perspectives and motivation for positive
+                change.
               </p>
             </div>
           </div>
@@ -84,12 +84,12 @@
               class="flex flex-col justify-center items-center py-12 px-4 text-background-blue"
             >
               <p class="px-4 text-sm md:text-lg">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
-                nostrud exerci tation ullamcorper euismod tincidunt ut laoreet
-                dolore magna aliquam erat volutpat. Ut wisi enim ad minim
-                veniam, quis nostrud exerci tation
+                Hands-on and interactive, these workshops offer practical tools
+                to master thought management. Participants will engage in
+                exercises that enhance clarity, decision-making, and resilience.
+                With actionable strategies, they will learn how to boost
+                productivity, creativity, and emotional intelligence in both
+                personal and professional life.
               </p>
             </div>
           </div>

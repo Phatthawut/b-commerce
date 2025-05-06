@@ -18,15 +18,11 @@ import buy05 from "@/assets/images/buy-05.webp";
 const drawYourThoughtsBook = {
   title: "Draw Your Thoughts",
   image: drawYourThoughtsThumbnail,
-  shortDescription:
-    "A creative journey through visualization and mindfulness techniques.",
+  shortDescription: "",
   description:
-    "Draw Your Thoughts is a unique approach to mindfulness and self-discovery through visual thinking. This innovative book guides readers on a journey of self-expression and clarity, using drawing as a tool for deeper understanding.",
-  additionalInfo1:
-    "Suitable for all skill levels - no artistic experience required. The focus is on the process rather than the artistic outcome.",
-  additionalInfo2:
-    "Includes practical exercises, guided visualizations, and techniques that can be applied in daily life for stress reduction, problem-solving, and creative thinking.",
-  series: "Mindfulness Series",
+    "Within this book, diagrams and pictorial symbols-termed here as the visual language-- are extensively and seamlessly employed to depict, formulate, analyse, discuss, think through and solve many diverse problems in equally diverse areas of interest, such as : economics, business management, accounting, project management, decision science, public policy, public finance as well as politics, and surprisingly even religions and metaphysics. This visual thinking handbook will likely open up many new ways of looking at the same old world; and therefore will broaden your perspective and elevate enrich your thought, your work, as well as your mind and ultimately your life. This book is equally useful as a stand - alone read or as accompanying material for training courses on the subject matter",
+  additionalInfo1: "",
+  additionalInfo2: "",
   colorScheme: "blue", // Will use the blue gradient
   relatedBooks: [], // No related books for this example
   stores: [

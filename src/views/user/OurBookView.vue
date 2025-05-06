@@ -30,43 +30,69 @@
         <!-- Book Images -->
         <div class="flex flex-wrap justify-center gap-12">
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/dharmoscience-thumbnail.webp"
-              alt="Dharmascience Book 1"
-              class="w-40 h-auto"
-            />
-            <p class="text-gray-700 text-center font-montserrat mb-8">
-              Dharmascience Book 1
+            <router-link to="book-detail/dharmascience">
+              <img
+                src="@/assets/images/dharmoscience-thumbnail.webp"
+                alt="Dharmascience Book 1"
+                class="w-40 h-auto"
+              />
+            </router-link>
+            <p
+              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
+            >
+              Dharmoscience<br />
+              <span class="text-sm font-normal">
+                The Fusion of Science and Dharma.
+              </span>
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/nirvana-thumbnail.webp"
-              alt="Nirvana Book 2"
-              class="w-40 h-auto"
-            />
-            <p class="text-gray-700 text-center font-montserrat mb-8">
-              Nirvana Book 2
+            <router-link to="book-detail/nirvana">
+              <img
+                src="@/assets/images/nirvana-thumbnail.webp"
+                alt="Nirvana Book 2"
+                class="w-40 h-auto"
+              />
+            </router-link>
+            <p
+              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
+            >
+              Nirvana<br />
+              <span class="text-sm font-normal">
+                Roadmap to Spiritual Enlightenment
+              </span>
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/neodharma-thumbnail.webp"
-              alt="Neo Dharma Book 3"
-              class="w-40 h-auto"
-            />
-            <p class="text-gray-700 text-center font-montserrat mb-8">
-              Neo Dharma Book 3
+            <router-link to="book-detail/neodharma">
+              <img
+                src="@/assets/images/neodharma-thumbnail.webp"
+                alt="Neo Dharma Book 3"
+                class="w-40 h-auto"
+              />
+            </router-link>
+            <p
+              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
+            >
+              Neodharma<br />
+              <span class="text-sm font-normal"> From Atom to Anatta </span>
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/sankhara-thumbnail.webp"
-              alt="Sankhara Book 4"
-              class="w-40 h-auto"
-            />
-            <p class="text-gray-700 text-center font-montserrat mb-8">
-              Sankhara Book 4
+            <router-link to="book-detail/sankhara">
+              <img
+                src="@/assets/images/sankhara-thumbnail.webp"
+                alt="Sankhara Book 4"
+                class="w-40 h-auto"
+              />
+            </router-link>
+            <p
+              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
+            >
+              Sankhara<br />
+              <span class="text-sm font-normal">
+                The Theory of Everything and Nothing.
+              </span>
             </p>
           </div>
         </div>
@@ -83,22 +109,22 @@
             Draw Your Thoughts
           </h3>
           <p class="text-gray-700 text-justify font-montserrat mb-8 w-[60%]">
-            The main content of this book series (4 volumes) explains that, in
-            essence, "Dharma is Science, and Science is Dharma." It merges
-            modern science with the traditional wisdom of Dharma into a unified
-            whole, calling this new body of knowledge "Dharmoscience." This will
-            enable readers to deeply and profoundly understand the truths of
-            nature.
+            Unlocks the power of visual thinking to solve problems across
+            diverse fields, from business and politics to metaphysics. This book
+            offers fresh perspectives, enhancing decision-making and enriching
+            both work and life.
           </p>
         </div>
         <!-- Book Images -->
         <div class="flex flex-wrap justify-center gap-12">
           <div class="flex flex-col items-center gap-4 w-60">
-            <img
-              src="@/assets/images/draw-your-thoughts-thumbnail.webp"
-              alt="Draw Your Thoughts Book 1"
-              class="w-60 h-auto"
-            />
+            <router-link to="book-detail/draw-your-thoughts">
+              <img
+                src="@/assets/images/draw-your-thoughts-thumbnail.webp"
+                alt="Draw Your Thoughts Book 1"
+                class="w-60 h-auto"
+              />
+            </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8">
               Draw Your Thoughts
             </p>
@@ -128,41 +154,49 @@
         <!-- Book Images -->
         <div class="flex flex-wrap justify-center gap-12">
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/Tyrant-Handbook-thumbnail.webp"
-              alt="Tyrant's Handbook"
-              class="w-40 h-auto"
-            />
+            <router-link to="book-detail/tyrant-handbook">
+              <img
+                src="@/assets/images/Tyrant-Handbook-thumbnail.webp"
+                alt="Tyrant's Handbook"
+                class="w-40 h-auto"
+              />
+            </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
               Tyrant's Handbook
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/The-Way-Out-thumbnail.webp"
-              alt="The Way Out"
-              class="w-40 h-auto"
-            />
+            <router-link to="book-detail/the-way-out">
+              <img
+                src="@/assets/images/The-Way-Out-thumbnail.webp"
+                alt="The Way Out"
+                class="w-40 h-auto"
+              />
+            </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
               The Way Out
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/Cleaning-Up-Thailand-book1-thumbnail.webp"
-              alt="Cleaning Up Thailand Book 1"
-              class="w-40 h-auto"
-            />
+            <router-link to="book-detail/cleaning-up-thailand-book-1">
+              <img
+                src="@/assets/images/Cleaning-Up-Thailand-book1-thumbnail.webp"
+                alt="Cleaning Up Thailand Book 1"
+                class="w-40 h-auto"
+              />
+            </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
               Cleaning Up Thailand Book 1
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <img
-              src="@/assets/images/Cleaning-Up-Thailand-book2-thumbnail.webp"
-              alt="Cleaning Up Thailand Book 2"
-              class="w-40 h-auto"
-            />
+            <router-link to="book-detail/cleaning-up-thailand-book-2">
+              <img
+                src="@/assets/images/Cleaning-Up-Thailand-book2-thumbnail.webp"
+                alt="Cleaning Up Thailand Book 2"
+                class="w-40 h-auto"
+              />
+            </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
               Cleaning Up Thailand Book 2
             </p>
