@@ -28,8 +28,11 @@
             <div
               class="flex flex-col gap-6 justify-center items-center py-12 px-4 bg-mainbg max-w-[1300px] mx-auto"
             >
+              <h2 class="text-2xl font-bold italic font-merriweather">
+                Woody Prieb
+              </h2>
               <h3 class="text-xl font-bold italic mb-2 font-merriweather">
-                Dr. Vuthiphong Priebjrivat
+                ( Dr. Vuthiphong Priebjrivat )
               </h3>
               <p class="px-4 text-sm md:text-lg font-montserrat">
                 After having ranked first in Thailand’s national examination in

@@ -67,11 +67,12 @@
               scientifically formulate dharma while simultaneously expanding the
               scope of modern science beyond the limits of materialism.
             </p>
-            <button
+            <router-link
+              to="/our-book#dharmoscience"
               class="bg-button-blue hover:bg-button-blue-hover text-white px-8 py-4 mt-4"
             >
               Learn More
-            </button>
+            </router-link>
           </div>
         </div>
         <div
@@ -96,11 +97,12 @@
               book offers fresh perspectives, enhancing decision-making and
               enriching both work and life.
             </p>
-            <button
+            <router-link
+              to="/our-book#draw-your-thoughts"
               class="bg-button-blue hover:bg-button-blue-hover text-white px-6 py-2 mt-4"
             >
               Learn More
-            </button>
+            </router-link>
           </div>
         </div>
         <div class="flex flex-col md:flex-row md:gap-0 p-4 md:p-0 items-center">
@@ -125,11 +127,12 @@
               Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing
               elit. Quisquam,
             </p>
-            <button
+            <router-link
+              to="/our-book#politics-public-policy"
               class="bg-button-blue hover:bg-button-blue-hover text-white px-6 py-2 mt-4"
             >
               Learn More
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -140,7 +143,7 @@
       <div class="flex flex-col gap-8">
         <div class="flex flex-col">
           <div class="flex flex-col justify-center items-center pt-8">
-            <h3 class="text-2xl font-bold text-black">About the Author</h3>
+            <h3 class="text-2xl font-bold text-black">Woody Prieb</h3>
             <p class="text-black font-merriweather">
               Dr. Vuthiphong Priebjrivat
             </p>
@@ -155,12 +158,15 @@
           <div
             class="flex flex-col justify-center items-center pt-4 pb-6 px-4 mx-auto -mt-14 text-background-blue md:w-1/3"
           >
-            <p class="text-black font-montserrat text-center">Woody Wisdom</p>
-            <button
+            <p class="text-black font-montserrat text-center">
+              Knowledge Square
+            </p>
+            <router-link
+              to="/about"
               class="bg-button-blue hover:bg-button-blue-hover text-white px-6 py-2 mt-4"
             >
               Learn More
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -193,11 +199,12 @@
           >
             Learn about the why, where and how of our book donation
           </h3>
-          <button
+          <router-link
+            to="donation-campaign"
             class="bg-button-blue hover:bg-button-blue-hover text-white px-8 p-4 mt-6"
           >
             Donate Now
-          </button>
+          </router-link>
         </div>
       </div>
     </section>

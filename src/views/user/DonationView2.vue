@@ -701,98 +701,6 @@
                 </p>
               </div>
             </div>
-
-            <!-- Debug Panel -->
-            <div
-              v-if="showDebug"
-              class="mt-8 p-4 bg-gray-100 rounded-lg border border-gray-300"
-            >
-              <div class="flex justify-between items-center mb-2">
-                <h3 class="font-semibold text-md">Debug Information</h3>
-                <button
-                  @click="toggleDebug"
-                  class="text-sm px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                >
-                  Hide Debug
-                </button>
-              </div>
-
-              <!-- Form Data -->
-              <div class="mb-4">
-                <h4 class="font-medium mb-1">Form Data:</h4>
-                <pre
-                  class="text-xs bg-white p-2 rounded overflow-auto max-h-40"
-                  >{{ formData }}</pre
-                >
-              </div>
-
-              <!-- Unspecified Categories -->
-              <div class="mb-4">
-                <h4 class="font-medium mb-1">Unspecified Categories:</h4>
-                <pre
-                  class="text-xs bg-white p-2 rounded overflow-auto max-h-40"
-                  >{{ unspecifiedCategories }}</pre
-                >
-              </div>
-
-              <!-- Recipients Data -->
-              <div class="mb-4" v-if="formData.isSpecified">
-                <h4 class="font-medium mb-1">Recipients Data:</h4>
-                <pre
-                  class="text-xs bg-white p-2 rounded overflow-auto max-h-40"
-                  >{{ recipients }}</pre
-                >
-              </div>
-
-              <!-- Validation Status -->
-              <div class="mb-4">
-                <h4 class="font-medium mb-1">Validation:</h4>
-                <div
-                  class="grid grid-cols-2 gap-2 text-xs bg-white p-2 rounded"
-                >
-                  <div>
-                    Form Valid:
-                    <span
-                      :class="isFormValid ? 'text-green-600' : 'text-red-600'"
-                      >{{ isFormValid }}</span
-                    >
-                  </div>
-                  <div>Total Category Amount: {{ totalCategoryAmount }}</div>
-                  <div>Total Sets: {{ formData.quantity }}</div>
-                  <div>Specified: {{ formData.specifiedAmount }}</div>
-                  <div>Unspecified: {{ formData.unspecifiedAmount }}</div>
-                </div>
-              </div>
-
-              <!-- Preview what will be submitted -->
-              <div>
-                <h4 class="font-medium mb-1">Data to be submitted:</h4>
-                <pre
-                  class="text-xs bg-white p-2 rounded overflow-auto max-h-40"
-                  >{{ getSubmitPreview() }}</pre
-                >
-              </div>
-            </div>
-            <!-- Debug Info Toggle -->
-            <div class="hidden mt-4 text-center">
-              <button
-                type="button"
-                @click="toggleDebug"
-                class="text-sm text-gray-500 hover:text-gray-700 underline"
-              >
-                {{ showDebug ? "Hide Debug Info" : "Show Debug Info" }}
-              </button>
-            </div>
-
-            <div class="hidden mt-6 text-center">
-              <button
-                type="button"
-                @click="clearAllData"
-                class="text-sm text-gray-500 hover:text-red-500 underline"
-              >
-                Reset Cached Data
-              </button>
-            </div>
           </form>
         </div>
       </div>
@@ -847,14 +755,11 @@ const categoryNames = {
   church: "Churches",
   wat: "Wat",
   culturecenter: "Cultural Centers",
-  other: "Please Select One For Me",
+  other: "Please Select For Me",
 };
 
 // Loading state for form submission
 const submitting = ref(false);
-
-// Debug mode toggle
-const showDebug = ref(false);
 
 // Loading state for checking previous donations
 const checkingPendingDonations = ref(false);
@@ -939,6 +844,107 @@ watch(
   { deep: true }
 );
 
+// Watch for donation type checkbox changes to update amounts
+watch(
+  () => [formData.value.isSpecified, formData.value.isUnspecified],
+  () => {
+    const totalQuantity = parseInt(formData.value.quantity || 0);
+
+    // If both are unchecked, default to unspecified
+    if (!formData.value.isSpecified && !formData.value.isUnspecified) {
+      formData.value.isUnspecified = true;
+      formData.value.unspecifiedAmount = totalQuantity;
+      formData.value.specifiedAmount = 0;
+      return;
+    }
+
+    // If only specified is checked
+    if (formData.value.isSpecified && !formData.value.isUnspecified) {
+      formData.value.specifiedAmount = totalQuantity;
+      formData.value.unspecifiedAmount = 0;
+    }
+    // If only unspecified is checked
+    else if (!formData.value.isSpecified && formData.value.isUnspecified) {
+      formData.value.unspecifiedAmount = totalQuantity;
+      formData.value.specifiedAmount = 0;
+    }
+    // If both are checked
+    else if (formData.value.isSpecified && formData.value.isUnspecified) {
+      // If we're switching from only unspecified to both
+      if (formData.value.unspecifiedAmount === totalQuantity) {
+        formData.value.specifiedAmount = Math.floor(totalQuantity / 2);
+        formData.value.unspecifiedAmount =
+          totalQuantity - formData.value.specifiedAmount;
+      }
+      // If we're switching from only specified to both
+      else if (formData.value.specifiedAmount === totalQuantity) {
+        formData.value.unspecifiedAmount = Math.floor(totalQuantity / 2);
+        formData.value.specifiedAmount =
+          totalQuantity - formData.value.unspecifiedAmount;
+      }
+      // If we're already in both mode, maintain the current distribution
+      else {
+        const currentSpecified = parseInt(formData.value.specifiedAmount || 0);
+        const currentUnspecified = parseInt(
+          formData.value.unspecifiedAmount || 0
+        );
+
+        // Ensure the total matches quantity
+        if (currentSpecified + currentUnspecified !== totalQuantity) {
+          formData.value.specifiedAmount = Math.floor(totalQuantity / 2);
+          formData.value.unspecifiedAmount =
+            totalQuantity - formData.value.specifiedAmount;
+        }
+      }
+    }
+
+    // Update recipient forms
+    updateRecipientsCount(parseInt(formData.value.specifiedAmount || 0));
+  },
+  { deep: true }
+);
+
+// Watch for changes in specifiedAmount to update unspecifiedAmount
+watch(
+  () => formData.value.specifiedAmount,
+  (newSpecifiedAmount) => {
+    if (!formData.value.isSpecified) return;
+
+    const totalQuantity = parseInt(formData.value.quantity || 0);
+    const specifiedAmount = parseInt(newSpecifiedAmount || 0);
+
+    // Ensure specified amount doesn't exceed total quantity
+    if (specifiedAmount > totalQuantity) {
+      formData.value.specifiedAmount = totalQuantity;
+      formData.value.unspecifiedAmount = 0;
+    } else {
+      formData.value.unspecifiedAmount = totalQuantity - specifiedAmount;
+    }
+
+    // Update recipient forms
+    updateRecipientsCount(specifiedAmount);
+  }
+);
+
+// Watch for changes in unspecifiedAmount to update specifiedAmount
+watch(
+  () => formData.value.unspecifiedAmount,
+  (newUnspecifiedAmount) => {
+    if (!formData.value.isUnspecified) return;
+
+    const totalQuantity = parseInt(formData.value.quantity || 0);
+    const unspecifiedAmount = parseInt(newUnspecifiedAmount || 0);
+
+    // Ensure unspecified amount doesn't exceed total quantity
+    if (unspecifiedAmount > totalQuantity) {
+      formData.value.unspecifiedAmount = totalQuantity;
+      formData.value.specifiedAmount = 0;
+    } else {
+      formData.value.specifiedAmount = totalQuantity - unspecifiedAmount;
+    }
+  }
+);
+
 // Watch for changes in quantity to update specified/unspecified amounts
 watch(
   () => formData.value.quantity,
@@ -981,62 +987,6 @@ watch(
       // If specified is unchecked, reset to 0 recipients
       updateRecipientsCount(0);
     }
-  }
-);
-
-// Watch for donation type checkbox changes to update amounts
-watch(
-  () => [formData.value.isSpecified, formData.value.isUnspecified],
-  () => {
-    const totalQuantity = parseInt(formData.value.quantity || 0);
-
-    // Adjust amounts based on checkboxes
-    if (formData.value.isSpecified && !formData.value.isUnspecified) {
-      // Only specified is checked
-      formData.value.specifiedAmount = totalQuantity;
-      formData.value.unspecifiedAmount = 0;
-    } else if (!formData.value.isSpecified && formData.value.isUnspecified) {
-      // Only unspecified is checked
-      formData.value.unspecifiedAmount = totalQuantity;
-      formData.value.specifiedAmount = 0;
-    } else if (formData.value.isSpecified && formData.value.isUnspecified) {
-      // Both are checked, maintain current distribution if possible
-      const currentSpecified = parseInt(formData.value.specifiedAmount || 0);
-      const currentUnspecified = parseInt(
-        formData.value.unspecifiedAmount || 0
-      );
-
-      // Ensure the total matches quantity
-      if (currentSpecified + currentUnspecified !== totalQuantity) {
-        // Default distribution: half and half, or all to specified if quantity is 1
-        if (totalQuantity === 1) {
-          formData.value.specifiedAmount = 1;
-          formData.value.unspecifiedAmount = 0;
-        } else {
-          formData.value.specifiedAmount = Math.floor(totalQuantity / 2);
-          formData.value.unspecifiedAmount =
-            totalQuantity - formData.value.specifiedAmount;
-        }
-      }
-    } else {
-      // None are checked, default to unspecified
-      formData.value.isUnspecified = true;
-      formData.value.unspecifiedAmount = totalQuantity;
-      formData.value.specifiedAmount = 0;
-    }
-
-    // Update recipient forms
-    updateRecipientsCount(parseInt(formData.value.specifiedAmount || 0));
-  },
-  { deep: true }
-);
-
-// Watch for changes in specifiedAmount to update the recipients count
-watch(
-  () => formData.value.specifiedAmount,
-  (newAmount) => {
-    // Update the number of recipient forms based on the specified amount
-    updateRecipientsCount(parseInt(newAmount || 0));
   }
 );
 
@@ -1412,6 +1362,19 @@ const clearInstitutionSearch = (index) => {
 // Function to select an institution
 const selectInstitution = (index, institution) => {
   const recipient = recipients.value[index];
+
+  // Check if this institution is already selected in another recipient
+  const isDuplicate = recipients.value.some(
+    (r, i) => i !== index && r.institutionId === institution.id
+  );
+
+  if (isDuplicate) {
+    alert(
+      "This institution has already been selected for another recipient. Please choose a different institution."
+    );
+    return;
+  }
+
   recipient.institutionId = institution.id;
   recipient.institutionName = institution.name;
   recipient.address = institution.address || "";
@@ -1482,6 +1445,15 @@ const displayInstitutions = (
     institutions = getFilteredInstitutions(category, regionId, country);
   }
 
+  // Filter out already selected institutions
+  const selectedInstitutionIds = recipients.value
+    .map((r, i) => (i !== index ? r.institutionId : null))
+    .filter((id) => id !== null && id !== "");
+
+  institutions = institutions.filter(
+    (institution) => !selectedInstitutionIds.includes(institution.id)
+  );
+
   // If search term is provided, filter by name
   if (searchTerm && searchTerm.trim() !== "") {
     const search = searchTerm.toLowerCase();
@@ -1499,7 +1471,7 @@ const getSearchResultsMessage = (category, regionId, country, searchTerm) => {
 
   const results = displayInstitutions(category, regionId, country, searchTerm);
   if (results.length === 0) {
-    return "No matching institutions found";
+    return "No matching institutions found or all institutions have been selected";
   } else if (results.length === 1) {
     return "1 institution found";
   } else {
@@ -1617,25 +1589,6 @@ const clearForm = () => {
   ];
 
   calculateTotal();
-};
-
-// Function to clear all localStorage data (for testing)
-const clearAllData = () => {
-  localStorage.removeItem("regions");
-  localStorage.removeItem("recipients_categories");
-  localStorage.removeItem("region_countries");
-
-  // Clear all category data
-  const categories = JSON.parse(
-    localStorage.getItem("recipients_categories") || "[]"
-  );
-  categories.forEach((category) => {
-    localStorage.removeItem(`recipients_${category}`);
-  });
-
-  console.log("All stored data cleared");
-  // Reload page to refresh data
-  window.location.reload();
 };
 
 // Handle form submission
@@ -1816,11 +1769,6 @@ const handleClickOutside = (event, index) => {
     recipient.dropdownVisible = false;
     refreshSearchResults();
   }
-};
-
-// Toggle debug mode
-const toggleDebug = () => {
-  showDebug.value = !showDebug.value;
 };
 
 // Preview what will be submitted

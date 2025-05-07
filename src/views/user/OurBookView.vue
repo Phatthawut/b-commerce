@@ -11,7 +11,7 @@
 
     <!-- Dharmoscience Series -->
     <div class="container mx-auto">
-      <div class="gradient-background-red py-8 px-4">
+      <div class="gradient-background-red py-8 px-4" id="dharmoscience">
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
           <h3
             class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-4"
@@ -101,7 +101,7 @@
 
     <!-- draw your thoughts -->
     <div class="container mx-auto">
-      <div class="gradient-background-blue py-8 px-4">
+      <div class="gradient-background-blue py-8 px-4" id="draw-your-thoughts">
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
           <h3
             class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-4"
@@ -135,7 +135,10 @@
 
     <!-- Politics & Public Policy Series -->
     <div class="container mx-auto">
-      <div class="gradient-background-purple py-8 px-4">
+      <div
+        class="gradient-background-purple py-8 px-4"
+        id="politics-public-policy"
+      >
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
           <h3
             class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-4"
