@@ -145,7 +145,7 @@
           <div class="flex flex-col justify-center items-center pt-8">
             <h3 class="text-2xl font-bold text-black">Woody Prieb</h3>
             <p class="text-black font-merriweather">
-              Dr. Vuthiphong Priebjrivat
+              ( Dr. Vuthiphong Priebjrivat )
             </p>
           </div>
           <div class="pt-4 pb-6 px-8 mx-auto">

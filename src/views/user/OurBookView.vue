@@ -30,6 +30,21 @@
         <!-- Book Images -->
         <div class="flex flex-wrap justify-center gap-12">
           <div class="flex flex-col items-center gap-4 w-40">
+            <router-link to="book-detail/neodharma">
+              <img
+                src="@/assets/images/neodharma-thumbnail.webp"
+                alt="Neo Dharma Book 3"
+                class="w-40 h-auto"
+              />
+            </router-link>
+            <p
+              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
+            >
+              Neodharma<br />
+              <span class="text-sm font-normal"> From Atom to Anatta </span>
+            </p>
+          </div>
+          <div class="flex flex-col items-center gap-4 w-40">
             <router-link to="book-detail/dharmascience">
               <img
                 src="@/assets/images/dharmoscience-thumbnail.webp"
@@ -47,38 +62,6 @@
             </p>
           </div>
           <div class="flex flex-col items-center gap-4 w-40">
-            <router-link to="book-detail/nirvana">
-              <img
-                src="@/assets/images/nirvana-thumbnail.webp"
-                alt="Nirvana Book 2"
-                class="w-40 h-auto"
-              />
-            </router-link>
-            <p
-              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
-            >
-              Nirvana<br />
-              <span class="text-sm font-normal">
-                Roadmap to Spiritual Enlightenment
-              </span>
-            </p>
-          </div>
-          <div class="flex flex-col items-center gap-4 w-40">
-            <router-link to="book-detail/neodharma">
-              <img
-                src="@/assets/images/neodharma-thumbnail.webp"
-                alt="Neo Dharma Book 3"
-                class="w-40 h-auto"
-              />
-            </router-link>
-            <p
-              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
-            >
-              Neodharma<br />
-              <span class="text-sm font-normal"> From Atom to Anatta </span>
-            </p>
-          </div>
-          <div class="flex flex-col items-center gap-4 w-40">
             <router-link to="book-detail/sankhara">
               <img
                 src="@/assets/images/sankhara-thumbnail.webp"
@@ -92,6 +75,23 @@
               Sankhara<br />
               <span class="text-sm font-normal">
                 The Theory of Everything and Nothing.
+              </span>
+            </p>
+          </div>
+          <div class="flex flex-col items-center gap-4 w-40">
+            <router-link to="book-detail/nirvana">
+              <img
+                src="@/assets/images/nirvana-thumbnail.webp"
+                alt="Nirvana Book 2"
+                class="w-40 h-auto"
+              />
+            </router-link>
+            <p
+              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
+            >
+              Nirvana<br />
+              <span class="text-sm font-normal">
+                Roadmap to Spiritual Enlightenment
               </span>
             </p>
           </div>
@@ -141,11 +141,13 @@
       >
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
           <h3
-            class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-4"
+            class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-8"
           >
             Politics & Public Policy Series
           </h3>
-          <p class="text-gray-700 text-justify font-montserrat mb-8 w-[60%]">
+          <p
+            class="text-gray-700 text-justify font-montserrat mb-8 w-[60%] hidden"
+          >
             The main content of this book series (4 volumes) explains that, in
             essence, "Dharma is Science, and Science is Dharma." It merges
             modern science with the traditional wisdom of Dharma into a unified

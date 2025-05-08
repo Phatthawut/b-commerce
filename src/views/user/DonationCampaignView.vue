@@ -16,7 +16,7 @@
       <div class="flex flex-col justify-center items-center gap-12 my-12">
         <div class="relative">
           <img
-            src="@/assets/images/dharmoscience-series.webp"
+            src="@/assets/images/bookset.webp"
             alt="Book Collection"
             class="max-w-xs md:max-w-sm"
           />
@@ -134,20 +134,6 @@
 
             <!-- Book Images -->
             <div class="flex flex-wrap justify-center gap-4 mb-12">
-              <router-link to="book-detail/dharmascience">
-                <img
-                  src="@/assets/images/dharmoscience-thumbnail.webp"
-                  alt="Dharmascience Book 1"
-                  class="w-40 h-auto"
-                />
-              </router-link>
-              <router-link to="book-detail/nirvana">
-                <img
-                  src="@/assets/images/nirvana-thumbnail.webp"
-                  alt="Dharmascience Book 2"
-                  class="w-40 h-auto"
-                />
-              </router-link>
               <router-link to="book-detail/neodharma">
                 <img
                   src="@/assets/images/neodharma-thumbnail.webp"
@@ -155,10 +141,24 @@
                   class="w-40 h-auto"
                 />
               </router-link>
+              <router-link to="book-detail/dharmascience">
+                <img
+                  src="@/assets/images/dharmoscience-thumbnail.webp"
+                  alt="Dharmascience Book 1"
+                  class="w-40 h-auto"
+                />
+              </router-link>
               <router-link to="book-detail/sankhara">
                 <img
                   src="@/assets/images/sankhara-thumbnail.webp"
                   alt="Dharmascience Book 4"
+                  class="w-40 h-auto"
+                />
+              </router-link>
+              <router-link to="book-detail/nirvana">
+                <img
+                  src="@/assets/images/nirvana-thumbnail.webp"
+                  alt="Dharmascience Book 2"
                   class="w-40 h-auto"
                 />
               </router-link>
