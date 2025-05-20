@@ -61,7 +61,7 @@
         <div class="flex flex-col gap-2 items-center">
           <h3 class="text-3xl font-bold">Workshops</h3>
           <p class="md:text-lg font-merriweather">
-            Visual Thinking / Dharmoscience
+            Visual Thinking / Business Strategy / Political Chess & Strategy
           </p>
         </div>
 

@@ -7,13 +7,17 @@
       <div class="divider divider-info w-1/2 mx-auto"></div>
     </div>
 
-    <div class="gradient-background-donate p-12 w-[90%]">
-      <div class="w-full max-w-3xl mx-auto text-background-blue pt-8 shadow-md">
-        <form class="rounded px-8 pt-6 pb-8">
+    <div
+      class="gradient-background-donate px-2 py-6 sm:px-4 md:px-8 lg:px-12 w-full"
+    >
+      <div
+        class="w-full max-w-md md:max-w-2xl lg:max-w-3xl mx-auto text-background-blue pt-8 shadow-md rounded px-4"
+      >
+        <form class="rounded px-2 sm:px-4 md:px-8 pt-6 pb-8 w-full">
           <div class="mb-4">
             <label class="sr-only" for="name"> Full Name </label>
             <input
-              class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              class="w-full py-3 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
               id="name"
               type="text"
               placeholder="Full Name"
@@ -24,7 +28,7 @@
           <div class="mb-4">
             <label class="sr-only" for="email"> Email </label>
             <input
-              class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              class="w-full py-3 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
               id="email"
               type="email"
               placeholder="your.email@example.com"
@@ -35,16 +39,16 @@
           <div class="mb-6">
             <label class="sr-only" for="message"> Message </label>
             <textarea
-              class="w-full py-4 px-3 h-[150px] bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              class="w-full py-3 px-3 h-[150px] bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
               id="message"
               placeholder="Your Message"
               v-model="formData.message"
             ></textarea>
           </div>
 
-          <div class="flex items-center justify-end">
+          <div class="flex flex-col items-stretch sm:flex-row sm:justify-end">
             <button
-              class="bg-button-blue hover:bg-button-blue-hover text-white font-bold py-2 px-8 rounded focus:outline-2 outline-button-blue focus:shadow-outline w-[30%]"
+              class="bg-button-blue hover:bg-button-blue-hover text-white font-bold py-2 px-8 rounded focus:outline-2 outline-button-blue focus:shadow-outline w-full sm:w-auto"
               type="button"
               @click="handleSubmit"
             >

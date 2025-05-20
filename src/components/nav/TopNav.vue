@@ -5,7 +5,7 @@
       <div class="md:hidden bg-mainbg w-full fixed top-0 left-0 px-4 py-2 z-50">
         <button
           @click="toggleMenu"
-          class="btn btn-ghost text-gray-600 focus:outline-none"
+          class="btn btn-ghost text-gray-600 focus:outline-none bg-transparent hover:text-white"
         >
           <i v-if="!isMenuOpen" class="fas fa-bars"></i>
           <i v-else class="fas fa-times"></i>
@@ -28,12 +28,12 @@
         </div>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:flex md:items-center md:space-x-4">
-          <ul class="flex space-x-4 md:space-x-8 lg:space-x-12 xl:space-x-16">
+        <div class="hidden md:flex md:items-center md:space-x-4 pb-4">
+          <ul class="flex xl:space-x-16">
             <li>
               <router-link
                 to="/"
-                class="btn btn-ghost text-gray-600 hover:text-primary"
+                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 Home
               </router-link>
@@ -41,7 +41,7 @@
             <li>
               <router-link
                 to="/about"
-                class="btn btn-ghost text-gray-600 hover:text-primary"
+                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 About
               </router-link>
@@ -49,7 +49,7 @@
             <li>
               <router-link
                 to="/our-book"
-                class="btn btn-ghost text-gray-600 hover:text-primary"
+                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 Our Book
               </router-link>
@@ -57,7 +57,7 @@
             <li>
               <router-link
                 to="/service"
-                class="btn btn-ghost text-gray-600 hover:text-primary"
+                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 Our Service
               </router-link>
@@ -65,7 +65,7 @@
             <li>
               <router-link
                 to="/donation-campaign"
-                class="btn btn-ghost text-gray-600 hover:text-primary"
+                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 Donation Campaign
               </router-link>
@@ -73,7 +73,7 @@
             <li>
               <router-link
                 to="/contact"
-                class="btn btn-ghost text-gray-600 hover:text-primary"
+                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 Contact Us
               </router-link>
@@ -86,54 +86,34 @@
     <!-- Mobile Menu -->
     <div
       v-if="isMenuOpen"
-      class="md:hidden fixed top-12 left-0 w-[80%] bg-mainbg z-40"
+      class="md:hidden fixed top-12 left-0 w-[80%] bg-mainbg z-40 w-full"
     >
-      <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <ul class="px-8 pt-2 pb-3 space-y-2 sm:px-4 font-semibold">
         <li>
-          <router-link
-            to="/"
-            class="block text-gray-600 hover:text-primary p-2"
-          >
-            Home
-          </router-link>
+          <router-link to="/" class="block text-gray-600"> Home </router-link>
         </li>
         <li>
-          <router-link
-            to="/about"
-            class="block text-gray-600 hover:text-primary p-2"
-          >
+          <router-link to="/about" class="block text-gray-600">
             About
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/our-book"
-            class="block text-gray-600 hover:text-primary p-2"
-          >
+          <router-link to="/our-book" class="block text-gray-600">
             Our Book
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/service"
-            class="block text-gray-600 hover:text-primary p-2"
-          >
+          <router-link to="/service" class="block text-gray-600">
             Our Service
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/donation-campaign"
-            class="block text-gray-600 hover:text-primary p-2"
-          >
+          <router-link to="/donation-campaign" class="block text-gray-600">
             Donation Campaign
           </router-link>
         </li>
         <li>
-          <router-link
-            to="/contact"
-            class="block text-gray-600 hover:text-primary p-2"
-          >
+          <router-link to="/contact" class="block text-gray-600">
             Contact Us
           </router-link>
         </li>
@@ -158,4 +138,11 @@ const navigateTo = (path) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.nav-link {
+  color: #606060;
+}
+.teal-button:hover {
+  color: #81c1c6;
+}
+</style>

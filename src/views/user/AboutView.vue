@@ -38,11 +38,12 @@
                 After having ranked first in Thailand’s national examination in
                 1970, Woody went to the United States to further his education
                 under the patronage of the King’s Scholarship of Thailand and
-                the Rockefeller Scholarships. He received a B.S. in civil
-                engineering from M.I.T. (1975); an M.S. in environmental
-                engineering from Stanford University (1976); as well as an
-                M.B.A. and a Ph.D. in economics and public management from the
-                University of Chicago (1979 and 1984).
+                the Rockefeller Scholarship. He received a B.S. in civil
+                engineering from Massachusetts Institute of Technology or MIT
+                (1975); an M.S. in environmental engineering from Stanford
+                University (1976); as well as an M.B.A. and a Ph.D. in economics
+                and public management from the University of Chicago (1979 and
+                1984).
               </p>
               <p class="px-4 text-sm md:text-lg font-montserrat">
                 Woody has been quite successful in a rather diverse career
@@ -55,7 +56,7 @@
                 concerning the interconnections between modern science and the
                 age-old wisdom of dharma: Dharmadynamics (2004), Neodharma (2012
                 and 2020), Dharmoscience (2012 and 2020), Sankhara (2014 and
-                2020) and Nirvana (2024) At present, he regularly lectures on
+                2020) and Nirvana (2024). At present, he regularly lectures on
                 the subject matter to monks and the lay public alike, both in
                 Thailand and overseas.
               </p>

@@ -23,8 +23,8 @@
         <p
           class="font-merriweather text-xl md:text-2xl mx-auto text-center w-full"
         >
-          Discover the wisdom in learning about how science and buddhism
-          beautifully intertwine
+          Discover the wisdom in learning about how science and dharma
+          beautifully intertwine.
         </p>
         <div class="flex w-full justify-end mt-4">
           <svg
@@ -55,17 +55,15 @@
             class="flex flex-col items-start text-background-blue shadow-md px-4 py-8 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
           >
             <p class="text-black text-xs">15 May 2020</p>
-            <h2 class="text-2xl font-bold text-black">
-              The Dharmoscience Series
-            </h2>
+            <h2 class="text-2xl font-bold text-black">Dharmoscience Series</h2>
             <div class="divider divider-info my-2"></div>
             <p class="text-black">
               This four-book series, "Dharmoscience," is an effort to merge
               modern scientific knowledge with ancient dharma into a unified
               framework. The goal is to offer a more comprehensive explanation
               of the ultimate reality of nature. This approach seeks to
-              scientifically formulate dharma while simultaneously expanding the
-              scope of modern science beyond the limits of materialism.
+              scientifically formulate dharma; while simultaneously expanding
+              the scope of modern science beyond the limits of materialism.
             </p>
             <router-link
               to="/our-book#dharmoscience"
@@ -89,11 +87,11 @@
             class="flex flex-col items-start justify-center text-background-blue shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-mr-8 lg:-mr-16 z-10"
           >
             <p class="text-black text-xs">15 May 2020</p>
-            <h2 class="text-2xl font-bold text-black">Draw Your Thought</h2>
+            <h2 class="text-2xl font-bold text-black">Draw Your Thoughts</h2>
             <div class="divider divider-info my-2"></div>
             <p class="text-black">
               Unlocks the power of visual thinking to solve problems across
-              diverse fields, from business and politics to metaphysics. This
+              diverse fields: from business and politics to metaphysics. This
               book offers fresh perspectives, enhancing decision-making and
               enriching both work and life.
             </p>

@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <section class="text-center mb-8">
         <h1 class="text-4xl font-montserrat font-bold text-gray-800 mt-12 mb-6">
-          Our Book
+          Our Books
         </h1>
         <div class="w-1/2 h-[2px] line-blue mx-auto mb-4"></div>
       </section>
@@ -21,15 +21,17 @@
           <p class="text-gray-700 text-justify font-montserrat mb-8 w-[60%]">
             The main content of this book series (4 volumes) explains that, in
             essence, "Dharma is Science, and Science is Dharma." It merges
-            modern science with the traditional wisdom of Dharma into a unified
+            modern science with the ancient wisdom of dharma into a unified
             whole, calling this new body of knowledge "Dharmoscience." This will
-            enable readers to deeply and profoundly understand the truths of
-            nature.
+            enable readers to deeply and profoundly understand the ultimate
+            reality of nature.
           </p>
         </div>
         <!-- Book Images -->
-        <div class="flex flex-wrap justify-center gap-12">
-          <div class="flex flex-col items-center gap-4 w-40">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-items-center md:mx-24"
+        >
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/neodharma">
               <img
                 src="@/assets/images/neodharma-thumbnail.webp"
@@ -44,7 +46,7 @@
               <span class="text-sm font-normal"> From Atom to Anatta </span>
             </p>
           </div>
-          <div class="flex flex-col items-center gap-4 w-40">
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/dharmascience">
               <img
                 src="@/assets/images/dharmoscience-thumbnail.webp"
@@ -61,7 +63,7 @@
               </span>
             </p>
           </div>
-          <div class="flex flex-col items-center gap-4 w-40">
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/sankhara">
               <img
                 src="@/assets/images/sankhara-thumbnail.webp"
@@ -69,16 +71,18 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p
-              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
-            >
-              Sankhara<br />
-              <span class="text-sm font-normal">
+            <div class="flex flex-col items-center mb-8">
+              <p
+                class="text-gray-700 text-center font-montserrat font-semibold"
+              >
+                Sankhara
+              </p>
+              <p class="text-gray-700 text-center font-montserrat w-[80%]">
                 The Theory of Everything and Nothing.
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
-          <div class="flex flex-col items-center gap-4 w-40">
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/nirvana">
               <img
                 src="@/assets/images/nirvana-thumbnail.webp"
@@ -86,14 +90,16 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p
-              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
-            >
-              Nirvana<br />
-              <span class="text-sm font-normal">
+            <div class="flex flex-col items-center mb-8 w-[80%]">
+              <p
+                class="text-gray-700 text-center font-montserrat font-semibold"
+              >
+                Nirvana
+              </p>
+              <p class="text-gray-700 text-center font-montserrat">
                 Roadmap to Spiritual Enlightenment
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -125,7 +131,7 @@
                 class="w-60 h-auto"
               />
             </router-link>
-            <p class="text-gray-700 text-center font-montserrat mb-8">
+            <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
               Draw Your Thoughts
             </p>
           </div>
@@ -157,8 +163,10 @@
           </p>
         </div>
         <!-- Book Images -->
-        <div class="flex flex-wrap justify-center gap-12">
-          <div class="flex flex-col items-center gap-4 w-40">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-items-center md:mx-24"
+        >
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/tyrant-handbook">
               <img
                 src="@/assets/images/Tyrant-Handbook-thumbnail.webp"
@@ -167,10 +175,10 @@
               />
             </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Tyrant's Handbook
+              Handbook for Tyrants
             </p>
           </div>
-          <div class="flex flex-col items-center gap-4 w-40">
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/the-way-out">
               <img
                 src="@/assets/images/The-Way-Out-thumbnail.webp"
@@ -179,10 +187,10 @@
               />
             </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              The Way Out
+              Handbook for Thailand Recovery
             </p>
           </div>
-          <div class="flex flex-col items-center gap-4 w-40">
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/cleaning-up-thailand-book-1">
               <img
                 src="@/assets/images/Cleaning-Up-Thailand-book1-thumbnail.webp"
@@ -191,10 +199,10 @@
               />
             </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Cleaning Up Thailand Book 1
+              Clean Up Thailand (Book 1)
             </p>
           </div>
-          <div class="flex flex-col items-center gap-4 w-40">
+          <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/cleaning-up-thailand-book-2">
               <img
                 src="@/assets/images/Cleaning-Up-Thailand-book2-thumbnail.webp"
@@ -203,7 +211,7 @@
               />
             </router-link>
             <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Cleaning Up Thailand Book 2
+              Clean Up Thailand (Book 2)
             </p>
           </div>
         </div>

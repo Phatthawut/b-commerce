@@ -98,7 +98,7 @@
                   Educational Resource
                 </h3>
                 <p class="text-gray-600">
-                  A learning tool that makes Dharma accessible to all, helping
+                  A learning tool that makes dharma accessible to all, helping
                   people apply it in daily life.
                 </p>
               </div>
@@ -128,7 +128,7 @@
               is science, and science is dharma." It integrates modern science
               with the ancient wisdom of dharma into a unified knowledge system
               called "Dharmoscience." This new framework enables readers to gain
-              a profound and comprehensive understanding of the ultimate truths
+              a profound and comprehensive understanding of the ultimate reality
               of nature.
             </p>
 
