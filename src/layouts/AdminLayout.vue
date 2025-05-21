@@ -404,9 +404,18 @@
             <div class="relative">
               <button
                 @click="toggleUserMenu"
-                class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 focus:outline-none"
+                class="flex items-center justify-center w-8 h-8 rounded-full focus:outline-none overflow-hidden"
               >
-                <span class="text-sm font-medium text-gray-600">
+                <img
+                  v-if="profilePicture"
+                  :src="profilePicture"
+                  :alt="userName"
+                  class="w-full h-full object-cover"
+                />
+                <span
+                  v-else
+                  class="flex items-center justify-center w-full h-full text-sm font-medium text-gray-600 bg-gray-200"
+                >
                   {{ userInitials }}
                 </span>
               </button>
@@ -471,6 +480,10 @@ const userInitials = computed(() => {
   const parts = name.split(" ");
   if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+});
+
+const profilePicture = computed(() => {
+  return authStore.user?.photoURL || null;
 });
 
 // Toggle sidebar for mobile

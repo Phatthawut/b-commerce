@@ -498,73 +498,6 @@
         </router-link>
       </div>
     </div>
-
-    <!-- Donation Distribution -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-xl font-semibold text-gray-900">
-          Donation Distribution
-        </h2>
-      </div>
-
-      <div v-if="loading" class="flex justify-center py-12">
-        <div
-          class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"
-        ></div>
-      </div>
-
-      <div v-else class="p-6">
-        <div class="mb-8">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">By Category</h3>
-          <div class="space-y-4">
-            <div v-for="(category, index) in donationCategories" :key="index">
-              <div class="flex justify-between mb-1">
-                <span class="text-sm font-medium text-gray-700">{{
-                  category.name
-                }}</span>
-                <span class="text-sm font-medium text-gray-700"
-                  >{{ category.percentage }}%</span
-                >
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  class="h-2.5 rounded-full"
-                  :style="{
-                    width: `${category.percentage}%`,
-                    backgroundColor: category.color,
-                  }"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-lg font-medium text-gray-900 mb-4">By Region</h3>
-          <div class="space-y-4">
-            <div v-for="(region, index) in donationRegions" :key="index">
-              <div class="flex justify-between mb-1">
-                <span class="text-sm font-medium text-gray-700">{{
-                  region.name
-                }}</span>
-                <span class="text-sm font-medium text-gray-700"
-                  >{{ region.percentage }}%</span
-                >
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  class="h-2.5 rounded-full"
-                  :style="{
-                    width: `${region.percentage}%`,
-                    backgroundColor: region.color,
-                  }"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -598,9 +531,9 @@ const recentShipments = ref([]);
 // Dashboard statistics
 const stats = ref({
   totalDonations: 0,
-  donationsTrend: 15,
+  donationsTrend: 0,
   totalAmount: 0,
-  amountTrend: 12,
+  amountTrend: 0,
   totalDonors: 0,
   newDonors: 0,
   completedDonations: 0,
@@ -613,21 +546,6 @@ const shipmentStats = ref({
   inProgressShipments: 0,
   deliveredShipments: 0,
 });
-
-// Donation categories
-const donationCategories = ref([
-  { name: "Universities", percentage: 45, color: "#4F46E5" },
-  { name: "Libraries", percentage: 30, color: "#10B981" },
-  { name: "Non-Profits", percentage: 25, color: "#F59E0B" },
-]);
-
-// Donation regions
-const donationRegions = ref([
-  { name: "Northern Thailand", percentage: 35, color: "#3B82F6" },
-  { name: "Central Thailand", percentage: 40, color: "#EC4899" },
-  { name: "Southern Thailand", percentage: 15, color: "#8B5CF6" },
-  { name: "Eastern Thailand", percentage: 10, color: "#F97316" },
-]);
 
 // Format date
 const formatDate = (timestamp) => {

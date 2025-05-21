@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/authStore";
 
+// List of admin emails that have access to backoffice
+const ADMIN_EMAILS = ["phatthawut.cnx@gmail.com", "pakinnoy@gmail.com"];
+
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
@@ -10,7 +13,8 @@ export const useUserStore = defineStore("user", {
 
   getters: {
     isAuthenticated: (state) => !!state.user,
-    isAdmin: (state) => state.user?.email === "phatthawut.cnx@gmail.com", // Replace with your admin logic
+    isAdmin: (state) =>
+      state.user?.email && ADMIN_EMAILS.includes(state.user.email),
     userPhotoURL: (state) => state.user?.photoURL || null,
   },
 

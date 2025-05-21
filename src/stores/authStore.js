@@ -25,10 +25,8 @@ export const useAuthStore = defineStore("auth", () => {
   // Getters
   const isAuthenticated = computed(() => !!user.value);
   const isAdmin = computed(() => {
-    return (
-      user.value?.email === "phatthawut.cnx@gmail.com" ||
-      user.value?.isAdmin === true
-    );
+    const ADMIN_EMAILS = ["phatthawut.cnx@gmail.com", "pakinnoy@gmail.com"];
+    return user.value?.email && ADMIN_EMAILS.includes(user.value.email);
   });
 
   // Initialize auth state
