@@ -249,23 +249,24 @@
                   Print Shipping Label
                 </button>
                 <button
-                  @click="debugRecipientInfo"
-                  class="bg-gray-500 text-white px-2 py-1 rounded text-xs"
+                  @click="toggleAddressEdit"
+                  class="bg-blue-500 text-white px-3 py-1 rounded text-sm"
                 >
-                  Debug
+                  {{ isEditingAddress ? "Cancel Edit" : "Edit Address" }}
                 </button>
               </div>
             </div>
 
             <!-- Recipient Display -->
-            <div>
+            <div v-if="!isEditingAddress">
               <div class="info-row">
                 <span class="info-label">Name:</span>
                 <span class="info-value">{{
                   selectedShipment.recipientName ||
                   (selectedShipment.recipients &&
                   selectedShipment.recipients.length > 0
-                    ? selectedShipment.recipients[0].recipientName ||
+                    ? selectedShipment.recipients[0].name ||
+                      selectedShipment.recipients[0].recipientName ||
                       selectedShipment.recipients[0].institutionName
                     : "N/A")
                 }}</span>
@@ -281,24 +282,338 @@
                     : "N/A")
                 }}</span>
               </div>
-              <div class="info-row">
-                <span class="info-label">Phone:</span>
-                <span class="info-value">{{
-                  selectedShipment.recipientPhone ||
-                  (selectedShipment.recipients &&
-                  selectedShipment.recipients.length > 0
-                    ? selectedShipment.recipients[0].phone ||
-                      selectedShipment.recipients[0].recipientPhone
-                    : "N/A")
-                }}</span>
+            </div>
+
+            <!-- Address Edit Form -->
+            <div v-else class="address-edit-form mt-4">
+              <!-- Recipient Type Selection -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Recipient Type
+                </label>
+                <select
+                  v-model="editedRecipient.category"
+                  class="w-full p-2 border border-gray-300 rounded-md"
+                  @change="onCategoryChange"
+                >
+                  <option value="">Select Recipient Type</option>
+                  <option value="university">Universities</option>
+                  <option value="library">Libraries</option>
+                  <option value="religious">Religious Organizations</option>
+                  <option value="church">Churches</option>
+                  <option value="wat">Wat</option>
+                  <option value="culturecenter">Cultural Centers</option>
+                  <option value="custom">Custom Recipient</option>
+                </select>
               </div>
-              <div class="info-row">
-                <span class="info-label">Quantity:</span>
-                <span class="info-value">1 book set</span>
+
+              <!-- Region Selection -->
+              <div
+                class="mb-4"
+                v-if="
+                  editedRecipient.category &&
+                  editedRecipient.category !== 'custom'
+                "
+              >
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Region
+                </label>
+                <select
+                  v-model="editedRecipient.region"
+                  class="w-full p-2 border border-gray-300 rounded-md"
+                  @change="onRegionChange"
+                >
+                  <option value="">Select Region</option>
+                  <option
+                    v-for="region in regions"
+                    :key="region.id"
+                    :value="region.id"
+                  >
+                    {{ region.name }}
+                  </option>
+                </select>
               </div>
-              <div class="text-sm text-blue-600 mt-1">
-                Each shipment contains 1 book set for a single recipient.
+
+              <!-- Country Selection -->
+              <div
+                class="mb-4"
+                v-if="
+                  editedRecipient.region &&
+                  editedRecipient.category !== 'custom'
+                "
+              >
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Country
+                </label>
+                <select
+                  v-model="editedRecipient.country"
+                  class="w-full p-2 border border-gray-300 rounded-md"
+                  @change="onCountryChange"
+                >
+                  <option value="">Select Country</option>
+                  <option
+                    v-for="country in getCountriesForRegion(
+                      editedRecipient.region
+                    )"
+                    :key="country"
+                    :value="country"
+                  >
+                    {{ country }}
+                  </option>
+                </select>
               </div>
+
+              <!-- Institution Selection -->
+              <div
+                class="mb-4 institution-dropdown-container"
+                v-if="
+                  editedRecipient.country &&
+                  editedRecipient.category !== 'custom'
+                "
+                @click.stop
+              >
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Institution
+                </label>
+
+                <!-- Show count of available institutions -->
+                <div
+                  v-if="!editedRecipient.institutionId"
+                  class="mb-2 text-sm text-gray-600"
+                >
+                  {{
+                    getFilteredInstitutionsForDropdown(
+                      editedRecipient.category,
+                      editedRecipient.region,
+                      editedRecipient.country,
+                      ""
+                    ).length
+                  }}
+                  institutions available in {{ editedRecipient.country }}
+                </div>
+
+                <!-- Improved search input for institutions with autocomplete -->
+                <div class="mb-2 relative">
+                  <input
+                    type="text"
+                    v-model="editedRecipient.institutionSearch"
+                    class="w-full p-3 pl-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Search and select institution..."
+                    autocomplete="off"
+                    @focus="
+                      $event.target.select();
+                      showInstitutionsList();
+                    "
+                    @input="handleInstitutionSearchInput"
+                    @blur="handleBlurWithDelay"
+                  />
+                  <div
+                    class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+                  <button
+                    v-if="editedRecipient.institutionSearch"
+                    @click="clearInstitutionSearch"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                    style="min-height: 44px; min-width: 44px"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+
+                  <!-- Autocomplete results dropdown -->
+                  <div
+                    v-if="
+                      showDropdown &&
+                      getFilteredInstitutionsForDropdown(
+                        editedRecipient.category,
+                        editedRecipient.region,
+                        editedRecipient.country,
+                        editedRecipient.institutionSearch || ''
+                      ).length > 0
+                    "
+                    class="absolute z-50 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  >
+                    <ul class="py-1">
+                      <li
+                        v-for="institution in getFilteredInstitutionsForDropdown(
+                          editedRecipient.category,
+                          editedRecipient.region,
+                          editedRecipient.country,
+                          editedRecipient.institutionSearch || ''
+                        ).slice(0, 250)"
+                        :key="institution.id"
+                        @click="selectInstitution(institution)"
+                        class="px-3 py-2 cursor-pointer hover:bg-blue-50 border-b border-gray-100 last:border-b-0"
+                      >
+                        <div class="font-medium text-gray-900">
+                          {{ institution.name }}
+                        </div>
+                        <div class="text-sm text-gray-600 truncate">
+                          {{ institution.address }}
+                        </div>
+                      </li>
+                      <li
+                        v-if="
+                          getFilteredInstitutionsForDropdown(
+                            editedRecipient.category,
+                            editedRecipient.region,
+                            editedRecipient.country,
+                            editedRecipient.institutionSearch || ''
+                          ).length > 250
+                        "
+                        class="px-3 py-2 text-center text-sm text-gray-500 bg-gray-50"
+                      >
+                        Type more to narrow down results
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div
+                  v-if="editedRecipient.institutionSearch"
+                  class="text-sm text-gray-600 mt-1 ml-1"
+                >
+                  {{
+                    getSearchResultsMessage(
+                      editedRecipient.category,
+                      editedRecipient.region,
+                      editedRecipient.country,
+                      editedRecipient.institutionSearch
+                    )
+                  }}
+                </div>
+
+                <!-- Selected institution display -->
+                <div
+                  v-if="editedRecipient.institutionId"
+                  class="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200"
+                >
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h4 class="font-medium text-gray-900">
+                        {{ editedRecipient.name }}
+                      </h4>
+                      <p class="text-sm text-gray-600 mt-1">
+                        {{ editedRecipient.address }}
+                      </p>
+                    </div>
+                    <button
+                      @click="clearSelectedInstitution"
+                      class="text-gray-500 hover:text-gray-700 ml-2 flex-shrink-0"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Custom Recipient Form -->
+              <div v-if="editedRecipient.category === 'custom'">
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Recipient Name
+                  </label>
+                  <input
+                    v-model="editedRecipient.name"
+                    type="text"
+                    class="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Enter recipient name"
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Street Address
+                  </label>
+                  <textarea
+                    v-model="editedRecipient.address"
+                    rows="3"
+                    class="w-full p-2 border border-gray-300 rounded-md"
+                    placeholder="Enter complete address"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-2">
+                <button
+                  @click="cancelAddressEdit"
+                  class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="saveAddressEdit"
+                  class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+                  :disabled="!isAddressValid"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+
+            <div v-if="addressHistory.length > 0" class="mt-4">
+              <h4 class="text-sm font-medium text-gray-700 mb-2">
+                Address History
+              </h4>
+              <div class="space-y-2">
+                <div
+                  v-for="(history, index) in addressHistory"
+                  :key="index"
+                  class="text-sm text-gray-600 bg-gray-50 p-2 rounded"
+                >
+                  <div class="flex justify-between">
+                    <span>{{ formatDate(history.timestamp) }}</span>
+                    <span class="text-gray-500"
+                      >by {{ history.updatedBy }}</span
+                    >
+                  </div>
+                  <div class="mt-1">{{ history.address }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-sm text-blue-600 mt-4">
+              Each shipment contains 1 book set for a single recipient.
             </div>
           </div>
 
@@ -536,15 +851,33 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useShipmentStore } from "@/stores/shipmentStore";
+import { useAuthStore } from "@/stores/authStore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+import { db } from "@/firebase/config";
+// Import JSON data
+import regionsData from "@/data/regions.json";
+import recipientsData from "@/data/recipients.json";
 
 // Initialize the shipment store
 const shipmentStore = useShipmentStore();
+const authStore = useAuthStore();
 
 // State variables
 const showModal = ref(false);
 const selectedShipment = ref(null);
 const showNewShipmentModal = ref(false);
 const selectedRecipientIndex = ref(0);
+const loading = ref(false);
+const error = ref(null);
 const newShipment = ref({
   donationId: "",
   recipientName: "",
@@ -564,6 +897,369 @@ const searchQuery = ref("");
 const sortField = ref("createdAt");
 const sortDirection = ref("desc");
 
+// New state variables for address editing
+const isEditingAddress = ref(false);
+const editedRecipient = ref({
+  name: "",
+  address: "",
+  phone: "",
+  category: "",
+  region: "",
+  country: "",
+  institutionId: "",
+  institutionSearch: "",
+});
+const addressErrors = ref({
+  name: "",
+  address: "",
+  phone: "",
+});
+const addressHistory = ref([]);
+
+// New state variables for recipient selection
+const regions = ref([]);
+const showDropdown = ref(false);
+const filteredInstitutions = ref([]);
+const countryCache = ref({});
+const recipientCache = ref({});
+
+// Get regions from recipientStore
+const fetchRegions = async () => {
+  try {
+    regions.value = regionsData;
+  } catch (error) {
+    console.error("Error loading regions:", error);
+  }
+};
+
+// Load data into localStorage
+const loadDataIntoStorage = () => {
+  // Check if data is already in localStorage
+  if (!localStorage.getItem("regions")) {
+    console.log("Loading regions into localStorage...");
+    localStorage.setItem("regions", JSON.stringify(regionsData));
+  }
+
+  // Check if recipients data is already in localStorage
+  if (!localStorage.getItem("recipients_categories")) {
+    console.log("Processing recipients data...");
+
+    // Extract unique categories
+    const categories = [...new Set(recipientsData.map((r) => r.category))];
+    localStorage.setItem("recipients_categories", JSON.stringify(categories));
+
+    // Store each category separately
+    categories.forEach((category) => {
+      const categoryRecipients = recipientsData.filter(
+        (r) => r.category === category
+      );
+      localStorage.setItem(
+        `recipients_${category}`,
+        JSON.stringify(categoryRecipients)
+      );
+    });
+
+    console.log("All data loaded into localStorage");
+  }
+};
+
+// Extract unique countries by region from localStorage or JSON data
+const extractUniqueCountriesByRegion = () => {
+  try {
+    // First try to get from localStorage
+    const storedRegionCountries = localStorage.getItem("region_countries");
+
+    if (storedRegionCountries) {
+      countryCache.value = JSON.parse(storedRegionCountries);
+      console.log("Loaded countries from localStorage");
+    } else {
+      // Fallback to processing from imported recipientsData
+      const regionCountries = {};
+
+      // Loop through all recipients from the imported JSON data and collect unique countries by region
+      for (const recipient of recipientsData) {
+        const regionId = recipient.regionId;
+        const country = recipient.country;
+
+        if (!regionId || !country) continue;
+
+        if (!regionCountries[regionId]) {
+          regionCountries[regionId] = new Set();
+        }
+
+        regionCountries[regionId].add(country);
+      }
+
+      // Convert Sets to arrays
+      for (const regionId of Object.keys(regionCountries)) {
+        countryCache.value[regionId] = Array.from(
+          regionCountries[regionId]
+        ).sort();
+      }
+
+      // Cache in localStorage for future
+      localStorage.setItem(
+        "region_countries",
+        JSON.stringify(countryCache.value)
+      );
+    }
+  } catch (error) {
+    console.error("Error extracting countries:", error);
+  }
+};
+
+// Function to get countries for a region
+const getCountriesForRegion = (regionId) => {
+  if (!regionId) return [];
+  return countryCache.value[regionId] || [];
+};
+
+// Update onMounted to include extractUniqueCountriesByRegion
+onMounted(() => {
+  loadDataIntoStorage();
+  fetchRegions();
+  extractUniqueCountriesByRegion();
+  fetchShipments();
+});
+
+// Handle category change
+const onCategoryChange = () => {
+  editedRecipient.value.region = "";
+  editedRecipient.value.country = "";
+  editedRecipient.value.institutionId = "";
+  editedRecipient.value.institutionSearch = "";
+  showDropdown.value = false;
+};
+
+// Handle country change
+const onCountryChange = () => {
+  editedRecipient.value.institutionId = "";
+  editedRecipient.value.institutionSearch = "";
+  showDropdown.value = false;
+};
+
+// Update onRegionChange to use the new country handling
+const onRegionChange = async () => {
+  editedRecipient.value.country = "";
+  editedRecipient.value.institutionId = "";
+  editedRecipient.value.institutionSearch = "";
+  showDropdown.value = false;
+};
+
+// Show institutions list
+const showInstitutionsList = () => {
+  showDropdown.value = true;
+  // Pre-populate the search if not already done
+  if (!editedRecipient.value.institutionSearch) {
+    editedRecipient.value.institutionSearch = "";
+  }
+};
+
+// Handle institution search input
+const handleInstitutionSearchInput = async () => {
+  showDropdown.value = true;
+  // The filtering is now handled by getFilteredInstitutionsForDropdown
+};
+
+// Select institution
+const selectInstitution = (institution) => {
+  editedRecipient.value.institutionId = institution.id;
+  editedRecipient.value.name = institution.name;
+  editedRecipient.value.address = institution.address;
+  editedRecipient.value.institutionSearch = "";
+  showDropdown.value = false;
+
+  // Update the selected shipment immediately to reflect changes in the UI
+  selectedShipment.value = {
+    ...selectedShipment.value,
+    recipientName: institution.name,
+    recipientAddress: institution.address,
+  };
+
+  console.log("Selected institution:", institution);
+};
+
+// Clear selected institution
+const clearSelectedInstitution = () => {
+  editedRecipient.value.institutionId = "";
+  editedRecipient.value.name = "";
+  editedRecipient.value.address = "";
+  editedRecipient.value.institutionSearch = "";
+
+  // Also clear the selected shipment's recipient info
+  selectedShipment.value = {
+    ...selectedShipment.value,
+    recipientName: "",
+    recipientAddress: "",
+  };
+};
+
+// Function to get filtered institutions for dropdown
+const getFilteredInstitutionsForDropdown = (
+  category,
+  regionId,
+  country,
+  searchTerm
+) => {
+  if (!category || !regionId || !country) return [];
+
+  try {
+    // First try to get from localStorage
+    const categoryKey = `recipients_${category}`;
+    const storedCategoryData = localStorage.getItem(categoryKey);
+
+    let institutions = [];
+    if (storedCategoryData) {
+      const categoryRecipients = JSON.parse(storedCategoryData);
+      institutions = categoryRecipients.filter(
+        (r) => r.regionId === regionId && r.country === country
+      );
+    } else {
+      // Fallback to the imported data (recipientsData should be available)
+      institutions = recipientsData.filter(
+        (recipient) =>
+          recipient.category === category &&
+          recipient.regionId === regionId &&
+          recipient.country === country
+      );
+    }
+
+    // If search term is provided, filter by name
+    if (searchTerm && searchTerm.trim() !== "") {
+      const search = searchTerm.toLowerCase();
+      institutions = institutions.filter((institution) =>
+        institution.name.toLowerCase().includes(search)
+      );
+    }
+
+    return institutions.map((r) => ({
+      id: r.id || r.name, // Fallback to name if id is not available
+      name: r.name,
+      address: r.address,
+      category: r.category,
+      region: r.regionId,
+      country: r.country,
+    }));
+  } catch (error) {
+    console.error("Error getting filtered institutions:", error);
+    return [];
+  }
+};
+
+// Function to get search results message
+const getSearchResultsMessage = (category, regionId, country, searchTerm) => {
+  if (!searchTerm) return "";
+
+  const results = getFilteredInstitutionsForDropdown(
+    category,
+    regionId,
+    country,
+    searchTerm
+  );
+  if (results.length === 0) {
+    return "No matching institutions found";
+  } else if (results.length === 1) {
+    return "1 institution found";
+  } else {
+    return `${results.length} institutions found`;
+  }
+};
+
+// Function to clear institution search
+const clearInstitutionSearch = () => {
+  editedRecipient.value.institutionSearch = "";
+  showDropdown.value = false;
+};
+
+// Function to handle blur with delay
+const handleBlurWithDelay = () => {
+  setTimeout(() => {
+    showDropdown.value = false;
+  }, 200);
+};
+
+// Update isAddressValid computed property
+const isAddressValid = computed(() => {
+  if (editedRecipient.value.category === "custom") {
+    return (
+      editedRecipient.value.name.trim() &&
+      editedRecipient.value.address.trim() &&
+      editedRecipient.value.phone.trim() &&
+      !addressErrors.value.name &&
+      !addressErrors.value.address &&
+      !addressErrors.value.phone
+    );
+  } else {
+    return (
+      editedRecipient.value.institutionId &&
+      editedRecipient.value.name &&
+      editedRecipient.value.address
+    );
+  }
+});
+
+// Save address changes
+const saveAddressEdit = async () => {
+  try {
+    let recipientData;
+
+    if (editedRecipient.value.category === "custom") {
+      // For custom recipients
+      recipientData = {
+        recipientName: editedRecipient.value.name.trim(),
+        recipientAddress: editedRecipient.value.address.trim(),
+      };
+    } else {
+      // For institution recipients
+      recipientData = {
+        recipientName: editedRecipient.value.name,
+        recipientAddress: editedRecipient.value.address,
+        recipientCategory: editedRecipient.value.category,
+        recipientRegion: editedRecipient.value.region,
+        recipientCountry: editedRecipient.value.country,
+        recipientId: editedRecipient.value.institutionId,
+      };
+    }
+
+    // Add to address history
+    const historyEntry = {
+      timestamp: new Date(),
+      address: recipientData.recipientAddress,
+      updatedBy: authStore.adminFirstName,
+      previousAddress: selectedShipment.value.recipientAddress,
+    };
+
+    // Update the shipment in Firestore
+    const shipmentRef = doc(db, "shipments", selectedShipment.value.id);
+    await updateDoc(shipmentRef, {
+      ...recipientData,
+      addressHistory: arrayUnion(historyEntry),
+    });
+
+    // Update local state
+    selectedShipment.value = {
+      ...selectedShipment.value,
+      ...recipientData,
+    };
+
+    if (!selectedShipment.value.addressHistory) {
+      selectedShipment.value.addressHistory = [];
+    }
+    selectedShipment.value.addressHistory.push(historyEntry);
+    addressHistory.value = selectedShipment.value.addressHistory;
+
+    // Close edit mode
+    isEditingAddress.value = false;
+    alert("Address updated successfully");
+
+    // Refresh the shipments list to reflect the changes
+    fetchShipments();
+  } catch (error) {
+    console.error("Error updating address:", error);
+    alert(`Error updating address: ${error.message}`);
+  }
+};
+
 // View shipment details
 const viewShipmentDetails = async (shipment) => {
   console.log("Viewing shipment details:", shipment);
@@ -571,50 +1267,42 @@ const viewShipmentDetails = async (shipment) => {
   // Reset the selected recipient index
   selectedRecipientIndex.value = 0;
 
-  // Set initial data from the list
-  selectedShipment.value = { ...shipment };
-
-  // Initialize tracking number and notes
-  trackingNumber.value = shipment.trackingNumber || "";
-  shipmentNotes.value = shipment.notes || "";
-
-  // Show the modal
-  showModal.value = true;
-
-  // Fetch the latest data from Firestore
   try {
-    await shipmentStore.fetchShipmentById(shipment.id);
+    // Fetch the latest data from Firestore
+    const shipmentRef = doc(db, "shipments", shipment.id);
+    const shipmentDoc = await getDoc(shipmentRef);
 
-    if (shipmentStore.currentShipment) {
-      console.log(
-        "Updated shipment data from Firestore:",
-        shipmentStore.currentShipment
-      );
+    if (shipmentDoc.exists()) {
+      const shipmentData = {
+        id: shipmentDoc.id,
+        ...shipmentDoc.data(),
+      };
+
+      console.log("Fetched shipment data:", shipmentData);
 
       // Update the selected shipment with the latest data
-      selectedShipment.value = { ...shipmentStore.currentShipment };
+      selectedShipment.value = shipmentData;
 
-      // Log the recipients array if it exists
-      if (
-        selectedShipment.value.recipients &&
-        selectedShipment.value.recipients.length > 0
-      ) {
-        console.log(
-          "Recipients array found:",
-          selectedShipment.value.recipients
-        );
-        console.log(
-          `Total recipients: ${selectedShipment.value.recipients.length}`
-        );
+      // Initialize tracking number and notes
+      trackingNumber.value = shipmentData.trackingNumber || "";
+      shipmentNotes.value = shipmentData.notes || "";
 
-        // Extract recipient information from the first recipient by default
-        updateSelectedRecipient();
-      } else {
-        console.log("No recipients array found in the shipment data");
-      }
+      // Reset address editing state
+      isEditingAddress.value = false;
+      addressErrors.value = { name: "", address: "" };
+
+      // Load address history
+      addressHistory.value = shipmentData.addressHistory || [];
+
+      // Show the modal
+      showModal.value = true;
+    } else {
+      console.error("Shipment not found");
+      alert("Error: Shipment not found");
     }
   } catch (err) {
     console.error("Error fetching shipment details:", err);
+    alert(`Error loading shipment details: ${err.message}`);
   }
 };
 
@@ -711,18 +1399,19 @@ const formatDate = shipmentStore.formatDate;
 const formatStatus = shipmentStore.formatStatus;
 const getStatusColor = shipmentStore.getStatusColor;
 
-// Fetch shipments on component mount
-onMounted(() => {
-  shipmentStore.fetchShipments();
-});
-
-// Computed properties for loading and error states
-const loading = computed(() => shipmentStore.loading);
-const error = computed(() => shipmentStore.error);
-
 // Fetch shipments
-const fetchShipments = () => {
-  shipmentStore.fetchShipments();
+const fetchShipments = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    await shipmentStore.fetchShipments();
+  } catch (err) {
+    console.error("Error fetching shipments:", err);
+    error.value = "Failed to load shipments. Please try again.";
+  } finally {
+    loading.value = false;
+  }
 };
 
 // Add item to new shipment
@@ -978,7 +1667,7 @@ const printShippingLabel = () => {
       
       <div class="shipping-label">
         <div class="header">
-          <div class="logo">B-COMMERCE BOOKS</div>
+          <div class="logo">Woody Prieb Knowledge Square</div>
           <div>Shipping Label</div>
         </div>
         
@@ -987,7 +1676,6 @@ const printShippingLabel = () => {
           <div class="address">
             <strong>${recipientName}</strong>
             ${recipientAddress}
-            Phone: ${recipientPhone}
           </div>
         </div>
         
@@ -1009,7 +1697,7 @@ const printShippingLabel = () => {
         </div>
         
         <div class="footer">
-          Thank you for your donation to B-Commerce Books!
+          Thank you for your donation to Woody Prieb Knowledge Square!
         </div>
       </div>
     </body>
@@ -1039,88 +1727,57 @@ const notifyDonorAboutShipment = async (shipment) => {
   // 3. Update the shipment with a notification sent flag
 };
 
-// Debug recipient information
-const debugRecipientInfo = async () => {
-  console.log("Current selectedShipment:", selectedShipment.value);
-
-  // Check for recipients array
-  if (
-    selectedShipment.value?.recipients &&
-    selectedShipment.value.recipients.length > 0
-  ) {
-    console.log("Recipients array found:", selectedShipment.value.recipients);
-    console.log(
-      `Total recipients: ${selectedShipment.value.recipients.length}`
-    );
-
-    // Show information about all recipients
-    let recipientInfo = "All Recipients:\n\n";
-    selectedShipment.value.recipients.forEach((recipient, index) => {
-      const name =
-        recipient.recipientName || recipient.institutionName || "N/A";
-      const address = recipient.address || recipient.recipientAddress || "N/A";
-      const phone = recipient.phone || recipient.recipientPhone || "N/A";
-
-      recipientInfo += `Recipient ${index + 1}:\n`;
-      recipientInfo += `Name: ${name}\n`;
-      recipientInfo += `Address: ${address}\n`;
-      recipientInfo += `Phone: ${phone}\n\n`;
-
-      console.log(`Recipient ${index + 1} details:`, {
-        name,
-        address,
-        phone,
-      });
-    });
-
-    // Show information about the currently selected recipient
-    const currentRecipient =
-      selectedShipment.value.recipients[selectedRecipientIndex.value];
-    const recipientName =
-      currentRecipient.recipientName ||
-      currentRecipient.institutionName ||
-      "N/A";
-    const recipientAddress =
-      currentRecipient.address || currentRecipient.recipientAddress || "N/A";
-    const recipientPhone =
-      currentRecipient.phone || currentRecipient.recipientPhone || "N/A";
-
-    // Update the selected shipment with the current recipient information
-    selectedShipment.value = {
-      ...selectedShipment.value,
-      recipientName,
-      recipientAddress,
-      recipientPhone,
+// Toggle address edit mode
+const toggleAddressEdit = () => {
+  if (!isEditingAddress.value) {
+    // Start editing - populate form with current values
+    editedRecipient.value = {
+      name: selectedShipment.value?.recipientName || "",
+      address: selectedShipment.value?.recipientAddress || "",
+      category: selectedShipment.value?.recipientCategory || "",
+      region: selectedShipment.value?.recipientRegion || "",
+      country: selectedShipment.value?.recipientCountry || "",
+      institutionId: selectedShipment.value?.recipientId || "",
+      institutionSearch: "",
     };
-
-    console.log(
-      `Currently selected recipient (${selectedRecipientIndex.value + 1}):`,
-      {
-        name: recipientName,
-        address: recipientAddress,
-        phone: recipientPhone,
-      }
-    );
-
-    // Show alert with all recipient info
-    alert(recipientInfo);
-  } else {
-    console.log("No recipients array found, checking direct properties");
-    console.log("Direct recipient properties:", {
-      name: selectedShipment.value?.recipientName,
-      address: selectedShipment.value?.recipientAddress,
-      phone: selectedShipment.value?.recipientPhone,
-    });
-
-    // Show alert with recipient info from direct properties
-    alert(
-      `Recipient Info (direct properties):\nName: ${
-        selectedShipment.value?.recipientName || "N/A"
-      }\nAddress: ${
-        selectedShipment.value?.recipientAddress || "N/A"
-      }\nPhone: ${selectedShipment.value?.recipientPhone || "N/A"}`
-    );
   }
+  isEditingAddress.value = !isEditingAddress.value;
+  addressErrors.value = { name: "", address: "" };
+  showDropdown.value = false;
+};
+
+// Cancel address edit
+const cancelAddressEdit = () => {
+  isEditingAddress.value = false;
+  addressErrors.value = { name: "", address: "" };
+};
+
+// Validate address fields
+const validateAddress = () => {
+  const errors = {
+    name: "",
+    address: "",
+    phone: "",
+  };
+
+  if (!editedRecipient.value.name.trim()) {
+    errors.name = "Recipient name is required";
+  }
+
+  if (!editedRecipient.value.address.trim()) {
+    errors.address = "Address is required";
+  } else if (editedRecipient.value.address.trim().length < 10) {
+    errors.address = "Please enter a complete address";
+  }
+
+  if (!editedRecipient.value.phone.trim()) {
+    errors.phone = "Phone number is required";
+  } else if (!/^\+?[\d\s-]{10,}$/.test(editedRecipient.value.phone.trim())) {
+    errors.phone = "Please enter a valid phone number";
+  }
+
+  addressErrors.value = errors;
+  return !errors.name && !errors.address && !errors.phone;
 };
 
 // Update selected recipient
@@ -1224,6 +1881,14 @@ const updateSelectedRecipient = () => {
   text-align: center;
   color: #dc3545;
   padding: 2rem;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+}
+
+.error-message p {
+  margin-bottom: 1rem;
 }
 
 .retry-button {
@@ -1665,6 +2330,67 @@ const updateSelectedRecipient = () => {
 
   .status-buttons {
     flex-direction: column;
+  }
+}
+
+/* Institution dropdown styling */
+.institution-dropdown-container {
+  position: relative;
+}
+
+.institution-dropdown-container .relative {
+  position: relative;
+}
+
+/* Improved dropdown styling */
+.institution-dropdown-container .absolute.z-50 {
+  position: absolute;
+  z-index: 50;
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Search input styling */
+.institution-dropdown-container input {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.institution-dropdown-container input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Dropdown items styling */
+.institution-dropdown-container ul li {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.institution-dropdown-container ul li:hover {
+  background-color: #eff6ff;
+}
+
+/* Selected institution display */
+.institution-dropdown-container .bg-blue-50 {
+  background-color: #eff6ff;
+  border-color: #93c5fd;
+}
+
+/* Clear button styling */
+.institution-dropdown-container button[style*="min-height"] {
+  transition: color 0.15s ease-in-out;
+}
+
+.institution-dropdown-container button[style*="min-height"]:hover {
+  color: #374151;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .institution-dropdown-container .absolute.z-50 {
+    left: 0;
+    right: 0;
+    width: 100%;
   }
 }
 

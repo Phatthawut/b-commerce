@@ -500,9 +500,7 @@
                       @input="
                         handleInstitutionSearchInput(index, $event.target.value)
                       "
-                      @blur="
-                        setTimeout(() => handleClickOutside($event, index), 200)
-                      "
+                      @blur="handleBlurWithDelay($event, index)"
                     />
                     <div
                       class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500"
@@ -1769,6 +1767,11 @@ const handleClickOutside = (event, index) => {
     recipient.dropdownVisible = false;
     refreshSearchResults();
   }
+};
+
+// Function to handle blur with delay
+const handleBlurWithDelay = (event, index) => {
+  setTimeout(() => handleClickOutside(event, index), 200);
 };
 
 // Preview what will be submitted

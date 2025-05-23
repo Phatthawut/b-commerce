@@ -100,6 +100,7 @@
 
             <router-link
               to="/admin/recipients"
+              v-if="hasRecipientAccess"
               class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
               active-class="bg-gray-700"
             >
@@ -118,28 +119,6 @@
                 />
               </svg>
               Recipients
-            </router-link>
-
-            <router-link
-              to="/admin/selections"
-              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
-              active-class="bg-gray-700"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 mr-3"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                />
-              </svg>
-              Admin Selections
             </router-link>
           </nav>
 
@@ -321,6 +300,7 @@
 
             <router-link
               to="/admin/recipients"
+              v-if="hasRecipientAccess"
               class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
               active-class="bg-gray-700"
             >
@@ -339,29 +319,6 @@
                 />
               </svg>
               Recipients
-            </router-link>
-
-            <router-link
-              to="/admin/selections"
-              class="flex items-center px-4 py-2 text-sm font-medium text-white rounded-lg hover:bg-gray-700"
-              active-class="bg-gray-700"
-              @click="closeSidebar"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 mr-3"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                />
-              </svg>
-              Admin Selections
             </router-link>
           </nav>
 
@@ -423,20 +380,6 @@
                 v-if="userMenuOpen"
                 class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
               >
-                <router-link
-                  to="/profile"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  @click="userMenuOpen = false"
-                >
-                  Your Profile
-                </router-link>
-                <router-link
-                  to="/admin/settings"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  @click="userMenuOpen = false"
-                >
-                  Settings
-                </router-link>
                 <button
                   @click="logout"
                   class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -473,6 +416,14 @@ const userName = computed(() => {
   return authStore.user?.displayName || "Admin User";
 });
 
+const userEmail = computed(() => {
+  return authStore.user?.email || "";
+});
+
+const hasRecipientAccess = computed(() => {
+  return userEmail.value === "phatthawut.cnx@gmail.com";
+});
+
 const userInitials = computed(() => {
   const name = userName.value;
   if (!name) return "A";
@@ -504,7 +455,7 @@ const toggleUserMenu = () => {
 const logout = async () => {
   try {
     await authStore.logout();
-    router.push("/login");
+    router.push("/");
   } catch (error) {
     console.error("Logout failed:", error);
   }

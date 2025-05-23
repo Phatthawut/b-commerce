@@ -132,8 +132,7 @@ export const useShipmentStore = defineStore("shipment", () => {
     try {
       const shipmentsQuery = query(
         collection(db, "shipments"),
-        where("donationId", "==", donationId),
-        orderBy("createdAt", "desc")
+        where("donationId", "==", donationId)
       );
 
       const querySnapshot = await getDocs(shipmentsQuery);
@@ -144,6 +143,17 @@ export const useShipmentStore = defineStore("shipment", () => {
           id: doc.id,
           ...doc.data(),
         });
+      });
+
+      // Sort locally by createdAt in descending order
+      shipmentsList.sort((a, b) => {
+        const dateA = a.createdAt?.toDate
+          ? a.createdAt.toDate()
+          : new Date(a.createdAt || 0);
+        const dateB = b.createdAt?.toDate
+          ? b.createdAt.toDate()
+          : new Date(b.createdAt || 0);
+        return dateB - dateA;
       });
 
       shipments.value = shipmentsList;

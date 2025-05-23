@@ -89,30 +89,55 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/userStore";
+import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 
+const route = useRoute();
 const router = useRouter();
-const userStore = useUserStore();
 const authStore = useAuthStore();
 
-const loading = computed(() => userStore.loading);
-const error = computed(() => userStore.error);
+// State
+const loading = ref(false);
+const error = computed(() => authStore.error);
+
+// Get redirect path from route query or default to home
+const redirectPath = ref(route.query.redirect || "/");
 
 // Handle Google login
 const handleGoogleLogin = async () => {
+  loading.value = true;
+
   try {
-    await userStore.loginWithGoogle();
-    // Use authStore to check admin status
+    const user = await authStore.loginWithGoogle();
+
+    if (user) {
+      // Check if user is admin and redirect accordingly
+      if (authStore.isAdmin) {
+        router.push("/admin");
+      } else {
+        router.push(redirectPath.value);
+      }
+    }
+  } catch (err) {
+    console.error("Google login error:", err);
+    // Error is handled by authStore
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Check if user is already logged in
+onMounted(async () => {
+  await authStore.initAuth();
+
+  if (authStore.isAuthenticated) {
+    // User is already logged in, redirect to the target page
     if (authStore.isAdmin) {
       router.push("/admin");
     } else {
-      router.push("/");
+      router.push(redirectPath.value);
     }
-  } catch (err) {
-    // Error is already handled in the store
   }
-};
+});
 </script>

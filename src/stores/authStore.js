@@ -1,15 +1,11 @@
 import { auth, db } from "../firebase/config";
 import { defineStore } from "pinia";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  updateProfile,
   GoogleAuthProvider,
   signInWithPopup,
   getAuth,
-  sendPasswordResetEmail,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { ref, computed } from "vue";
@@ -25,8 +21,13 @@ export const useAuthStore = defineStore("auth", () => {
   // Getters
   const isAuthenticated = computed(() => !!user.value);
   const isAdmin = computed(() => {
-    const ADMIN_EMAILS = ["phatthawut.cnx@gmail.com", "pakinnoy@gmail.com"];
-    return user.value?.email && ADMIN_EMAILS.includes(user.value.email);
+    const allowedEmails = import.meta.env.VITE_ALLOWED_EMAILS?.split(",") || [];
+    return user.value?.email && allowedEmails.includes(user.value.email);
+  });
+  const adminFirstName = computed(() => {
+    if (!user.value?.displayName) return "Admin";
+    // Extract first name from display name (e.g., "John Doe" -> "John")
+    return user.value.displayName.split(" ")[0] || "Admin";
   });
 
   // Initialize auth state
@@ -79,6 +80,17 @@ export const useAuthStore = defineStore("auth", () => {
       const result = await signInWithPopup(auth, provider);
       const firebaseUser = result.user;
 
+      // Check if user's email is allowed
+      const allowedEmails =
+        import.meta.env.VITE_ALLOWED_EMAILS?.split(",") || [];
+      if (!allowedEmails.includes(firebaseUser.email)) {
+        // Sign out the user immediately
+        await signOut(auth);
+        throw new Error(
+          "Access denied. Please contact administrator for access."
+        );
+      }
+
       // Create or update user document in Firestore
       await setDoc(
         doc(db, "users", firebaseUser.uid),
@@ -107,104 +119,15 @@ export const useAuthStore = defineStore("auth", () => {
         { merge: true }
       );
 
-      return true;
+      // Update the user state
+      user.value = firebaseUser;
+
+      // Return the user object
+      return firebaseUser;
     } catch (err) {
       console.error("Login with Google error:", err);
       error.value = err.message;
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // Sign in with email and password
-  const loginWithEmail = async (email, password) => {
-    loading.value = true;
-    error.value = "";
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      // Update last login timestamp
-      await setDoc(
-        doc(db, "users", userCredential.user.uid),
-        {
-          lastLogin: serverTimestamp(),
-        },
-        { merge: true }
-      );
-
-      return true;
-    } catch (err) {
-      console.error("Login with email error:", err);
-      error.value = err.message;
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // Register with email and password
-  const register = async (email, password, displayName, phoneNumber = "") => {
-    loading.value = true;
-    error.value = "";
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const firebaseUser = userCredential.user;
-
-      // Update profile
-      await updateProfile(firebaseUser, { displayName });
-
-      // Create user document in Firestore
-      await setDoc(doc(db, "users", firebaseUser.uid), {
-        email,
-        displayName,
-        phoneNumber,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        lastLogin: serverTimestamp(),
-      });
-
-      // Also create donor record
-      await setDoc(doc(db, "donors", firebaseUser.uid), {
-        email,
-        name: displayName,
-        telephone: phoneNumber,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
-
-      return true;
-    } catch (err) {
-      console.error("Registration error:", err);
-      error.value = err.message;
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // Reset password
-  const resetPassword = async (email) => {
-    loading.value = true;
-    error.value = "";
-
-    try {
-      await sendPasswordResetEmail(auth, email);
-      return true;
-    } catch (err) {
-      console.error("Password reset error:", err);
-      error.value = err.message;
-      return false;
+      throw err;
     } finally {
       loading.value = false;
     }
@@ -214,6 +137,7 @@ export const useAuthStore = defineStore("auth", () => {
   const logout = async () => {
     try {
       await signOut(auth);
+      user.value = null;
       return true;
     } catch (err) {
       console.error("Logout error:", err);
@@ -281,13 +205,11 @@ export const useAuthStore = defineStore("auth", () => {
     // Getters
     isAuthenticated,
     isAdmin,
+    adminFirstName,
 
     // Actions
     initAuth,
     loginWithGoogle,
-    loginWithEmail,
-    register,
-    resetPassword,
     logout,
     updateUserProfile,
   };
