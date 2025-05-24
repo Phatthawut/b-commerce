@@ -42,7 +42,26 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or Postman)
+    if (!origin) return callback(null, true);
+
+    // In production, specify allowed origins
+    const allowedOrigins = process.env.ALLOWED_ORIGINS
+      ? process.env.ALLOWED_ORIGINS.split(",")
+      : ["http://localhost:5173", "http://localhost:3000"]; // Development fallback
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // Important: Use JSON parser for all routes EXCEPT the webhook route
 // This is because Stripe needs the raw request body for signature verification
@@ -82,7 +101,13 @@ app.get("/api/health", (req, res) => {
 // Create payment intent endpoint
 app.post("/api/create-payment-intent", async (req, res) => {
   try {
-    const { amount, currency, donationId, metadata } = req.body;
+    const {
+      amount,
+      currency,
+      donationId,
+      metadata,
+      automatic_payment_methods,
+    } = req.body;
 
     // Validate required fields
     if (!amount || !currency || !donationId) {
@@ -93,15 +118,34 @@ app.post("/api/create-payment-intent", async (req, res) => {
       `Creating payment intent for donation ${donationId} with amount ${amount} ${currency}`
     );
 
-    // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
+    // Prepare payment intent options
+    const paymentIntentOptions = {
       amount: Math.round(amount * 100), // Stripe expects amount in cents
       currency: currency.toLowerCase(),
       metadata: {
         donationId,
         ...metadata,
       },
-    });
+    };
+
+    // Enable automatic payment methods if requested (includes PromptPay for THB)
+    if (automatic_payment_methods && automatic_payment_methods.enabled) {
+      paymentIntentOptions.automatic_payment_methods = {
+        enabled: true,
+      };
+    } else {
+      // Fallback: For THB currency, explicitly include PromptPay and card
+      if (currency.toLowerCase() === "thb") {
+        paymentIntentOptions.payment_method_types = ["card", "promptpay"];
+      } else {
+        paymentIntentOptions.payment_method_types = ["card"];
+      }
+    }
+
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create(
+      paymentIntentOptions
+    );
 
     console.log(`Payment intent created: ${paymentIntent.id}`);
 

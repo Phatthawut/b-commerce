@@ -78,7 +78,7 @@
       <div
         class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-sm my-4 text-black"
       >
-        <h2 class="text-xl mb-6">Payment Channels:</h2>
+        <h2 class="text-xl mb-6">Payment Method:</h2>
 
         <div class="space-y-4">
           <div class="flex items-center">
@@ -92,37 +92,19 @@
             />
             <label for="bank-transfer" class="text-lg">Bank Transfer</label>
           </div>
-          <!-- Credit card replace flex items-center waiting for stripe api from client-->
-          <div class="items-center hidden">
+          <!-- Stripe Payment (Credit Card + PromptPay) -->
+          <div class="flex items-center">
             <input
               type="radio"
-              id="credit-card"
+              id="stripe-payment"
               name="payment-method"
-              value="credit-card"
+              value="stripe-payment"
               v-model="paymentMethod"
               class="mr-3 h-5 w-5 accent-button-blue"
             />
-            <label for="credit-card" class="text-lg flex items-center">
-              Credit Card
-              <img
-                src="/images/mastercard-logo.svg"
-                alt="Mastercard"
-                class="h-8 ml-2"
-              />
-              <img src="/images/visa-logo.svg" alt="Visa" class="h-8 ml-2" />
+            <label for="stripe-payment" class="text-lg flex items-center">
+              Credit Card / PromptPay
             </label>
-          </div>
-          <!-- PromptPay replace flex items-center waiting for promptpay api from client-->
-          <div class="items-center hidden">
-            <input
-              type="radio"
-              id="promptpay"
-              name="payment-method"
-              value="promptpay"
-              v-model="paymentMethod"
-              class="mr-3 h-5 w-5 accent-button-blue"
-            />
-            <label for="promptpay" class="text-lg">PromptPay</label>
           </div>
         </div>
 
@@ -197,7 +179,7 @@
 
         <!-- Credit card form (shown when credit card is selected) -->
         <div
-          v-if="paymentMethod === 'credit-card'"
+          v-if="paymentMethod === 'stripe-payment'"
           class="mt-6 p-4 bg-gray-50 rounded"
         >
           <div v-if="stripeLoading" class="text-center py-4">
@@ -227,10 +209,10 @@
                 Card Information
               </label>
               <div
-                id="card-element"
+                id="payment-element"
                 class="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               >
-                <!-- Stripe Card Element will be mounted here -->
+                <!-- Stripe Payment Element will be mounted here -->
               </div>
               <div v-if="stripeError" class="text-red-500 text-sm mt-2">
                 {{ stripeError }}
@@ -240,57 +222,6 @@
                 store your full card details.
               </p>
             </div>
-          </div>
-        </div>
-
-        <!-- PromptPay form (shown when PromptPay is selected) -->
-        <div
-          v-if="paymentMethod === 'promptpay'"
-          class="mt-6 p-4 bg-gray-50 rounded"
-        >
-          <div v-if="promptpayLoading" class="text-center py-4">
-            <div class="spinner mb-2"></div>
-            <p>Generating PromptPay QR code...</p>
-          </div>
-
-          <div v-else-if="promptpayError" class="text-red-500 text-sm mt-2">
-            {{ promptpayError }}
-          </div>
-
-          <div v-else-if="promptpayData" class="text-center">
-            <h3 class="font-semibold mb-2">Scan QR Code with Banking App</h3>
-
-            <div class="mt-4 mb-4">
-              <img
-                :src="promptpayData.qrCode"
-                alt="PromptPay QR Code"
-                class="max-w-full h-auto max-h-64 mx-auto border rounded-md"
-              />
-            </div>
-
-            <p class="text-sm text-gray-700 mb-1">
-              Amount: {{ formatCurrency(donationAmount) }}
-            </p>
-            <p class="text-sm text-gray-700 mb-4">
-              After scanning, please wait for payment confirmation.
-            </p>
-
-            <div
-              v-if="promptpayPolling"
-              class="flex justify-center items-center mt-3 text-sm"
-            >
-              <div class="spinner mr-2"></div>
-              <p>Checking payment status...</p>
-            </div>
-          </div>
-
-          <div v-else class="text-center">
-            <button
-              class="bg-[#7ECAD1] hover:bg-[#6BB8BF] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              @click="generatePromptPayQR"
-            >
-              Generate PromptPay QR Code
-            </button>
           </div>
         </div>
 
@@ -318,11 +249,13 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useDonationStore } from "@/stores/donationStore";
+import { useShipmentStore } from "@/stores/shipmentStore";
 import { loadStripe } from "@stripe/stripe-js";
 
 const router = useRouter();
 const route = useRoute();
 const donationStore = useDonationStore();
+const shipmentStore = useShipmentStore();
 const paymentMethod = ref("");
 const paymentSlip = ref(null);
 const paymentSlipPreview = ref(null);
@@ -341,51 +274,98 @@ const loading = ref(false);
 const stripeLoading = ref(false);
 const stripeError = ref("");
 
-// PromptPay variables
-const promptpayLoading = ref(false);
-const promptpayError = ref("");
-const promptpayData = ref(null);
-const promptpayPolling = ref(false);
-const pollingInterval = ref(null);
-
 // Stripe configuration
 const STRIPE_PUBLIC_KEY =
-  "pk_test_51R1VDH01oGcDuhY0GoareBWdcQMmp4ai7AQbtydydt3MCL1BnvXVEEb3jxSX5QOk1apFMBmldRmtXgu3KAcMGv8f00NpBQeJZM"; // Replace with your actual Stripe public key
+  import.meta.env.VITE_STRIPE_PUBLIC_KEY ||
+  "pk_test_51R1VDH01oGcDuhY0GoareBWdcQMmp4ai7AQbtydydt3MCL1BnvXVEEb3jxSX5QOk1apFMBmldRmtXgu3KAcMGv8f00NpBQeJZM"; // Fallback to test key
 const stripe = ref(null);
 const elements = ref(null);
-const cardElement = ref(null);
+const paymentElement = ref(null);
 
 // Initialize Stripe on component mount
 const initializeStripe = async () => {
   try {
     stripeLoading.value = true;
     stripe.value = await loadStripe(STRIPE_PUBLIC_KEY);
-    elements.value = stripe.value.elements();
 
-    // Create card element
-    cardElement.value = elements.value.create("card", {
-      style: {
-        base: {
-          color: "#32325d",
-          fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-          fontSmoothing: "antialiased",
-          fontSize: "16px",
-          "::placeholder": {
-            color: "#aab7c4",
-          },
+    // Calculate the donation amount
+    let donationAmount;
+    if (donationStore.currentDonation && donationStore.currentDonation.amount) {
+      donationAmount = donationStore.currentDonation.amount;
+    } else if (donationData.value && donationData.value.rawTotal) {
+      donationAmount = donationData.value.rawTotal;
+    } else if (donationData.value && donationData.value.formattedTotal) {
+      const formattedTotal = donationData.value.formattedTotal;
+      const numericValue = formattedTotal.replace(/[^0-9]/g, "");
+      donationAmount = parseInt(numericValue);
+    } else if (donationData.value && donationData.value.quantity) {
+      const quantity = parseInt(donationData.value.quantity);
+      donationAmount = quantity * 1500;
+    } else {
+      donationAmount = 1500; // Default amount
+    }
+
+    // Create Payment Intent on the server first
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_API_URL || "http://localhost:3000"
+      }/api/create-payment-intent`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        invalid: {
-          color: "#fa755a",
-          iconColor: "#fa755a",
+        body: JSON.stringify({
+          amount: donationAmount,
+          currency: "thb", // Thai Baht - this enables PromptPay automatically
+          donationId: donationId.value,
+          automatic_payment_methods: {
+            enabled: true, // This enables PromptPay and other local payment methods
+          },
+          metadata: {
+            donorName:
+              donationData.value?.name ||
+              (donationStore.currentDonation
+                ? donationStore.currentDonation.donorName
+                : ""),
+            donorEmail:
+              donationData.value?.email ||
+              (donationStore.currentDonation
+                ? donationStore.currentDonation.donorEmail
+                : ""),
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to create payment intent");
+    }
+
+    const { clientSecret } = await response.json();
+
+    // Create Elements instance with the client secret
+    elements.value = stripe.value.elements({
+      clientSecret: clientSecret,
+      appearance: {
+        theme: "stripe",
+        variables: {
+          colorPrimary: "#7ECAD1",
         },
       },
     });
 
-    // Mount the card element to the DOM
+    // Create payment element (automatically includes PromptPay for THB)
+    paymentElement.value = elements.value.create("payment", {
+      layout: "tabs",
+    });
+
+    // Mount the payment element to the DOM
     setTimeout(() => {
-      if (document.getElementById("card-element")) {
-        cardElement.value.mount("#card-element");
-        cardElement.value.on("change", (event) => {
+      if (document.getElementById("payment-element")) {
+        paymentElement.value.mount("#payment-element");
+        paymentElement.value.on("change", (event) => {
           if (event.error) {
             stripeError.value = event.error.message;
           } else {
@@ -532,7 +512,7 @@ onMounted(async () => {
 
   // Initialize Stripe when payment method is set to credit card
   watch(paymentMethod, (newValue) => {
-    if (newValue === "credit-card") {
+    if (newValue === "stripe-payment") {
       initializeStripe();
     }
   });
@@ -819,112 +799,14 @@ const processStripePayment = async () => {
   loading.value = true;
 
   try {
-    // Get the donation amount from the store or from local data
-    let donationAmount;
-
-    if (donationStore.currentDonation && donationStore.currentDonation.amount) {
-      // Use amount from Firestore
-      donationAmount = donationStore.currentDonation.amount;
-      console.log("Using donation amount from Firestore:", donationAmount);
-    } else if (donationData.value && donationData.value.rawTotal) {
-      // Try to get amount from local data
-      donationAmount = donationData.value.rawTotal;
-      console.log(
-        "Using donation amount from local data (rawTotal):",
-        donationAmount
-      );
-    } else if (donationData.value && donationData.value.formattedTotal) {
-      // Try to parse from formatted total
-      try {
-        const formattedTotal = donationData.value.formattedTotal;
-        // Extract numeric value from formatted string (e.g., "1,500 THB" -> 1500)
-        const numericValue = formattedTotal.replace(/[^0-9]/g, "");
-        donationAmount = parseInt(numericValue);
-        console.log(
-          "Parsed donation amount from formatted total:",
-          donationAmount
-        );
-      } catch (parseError) {
-        console.error("Error parsing amount from formatted total:", parseError);
-      }
-    }
-
-    // If we still don't have an amount, try to calculate it from quantity
-    if (!donationAmount && donationData.value && donationData.value.quantity) {
-      const quantity = parseInt(donationData.value.quantity);
-      if (!isNaN(quantity) && quantity > 0) {
-        donationAmount = quantity * 1500; // Using the standard price per set
-        console.log(
-          "Calculated donation amount from quantity:",
-          donationAmount
-        );
-      }
-    }
-
-    if (!donationAmount) {
-      throw new Error(
-        "Donation amount not found. Please try again or contact support."
-      );
-    }
-
-    // Step 1: Create a PaymentIntent on the server
-    const response = await fetch(
-      "http://localhost:3000/api/create-payment-intent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: donationAmount,
-          currency: "thb", // Thai Baht
-          donationId: donationId.value,
-          metadata: {
-            donorName:
-              donationData.value?.name ||
-              (donationStore.currentDonation
-                ? donationStore.currentDonation.donorName
-                : ""),
-            donorEmail:
-              donationData.value?.email ||
-              (donationStore.currentDonation
-                ? donationStore.currentDonation.donorEmail
-                : ""),
-            recipientCount:
-              donationStore.currentDonation &&
-              donationStore.currentDonation.recipients
-                ? donationStore.currentDonation.recipients.length
-                : donationData.value && donationData.value.recipients
-                ? donationData.value.recipients.length
-                : 0,
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to create payment intent");
-    }
-
-    const { clientSecret, paymentIntentId } = await response.json();
-
-    // Step 2: Confirm the PaymentIntent with the card element
-    const { error: confirmError } = await stripe.value.confirmCardPayment(
-      clientSecret,
-      {
-        payment_method: {
-          card: cardElement.value,
-          billing_details: {
-            name: cardDetails.value.name,
-            email:
-              donationData.value?.email ||
-              donationStore.currentDonation.donorEmail ||
-              "",
-          },
-        },
-      }
-    );
+    // Confirm payment with the Payment Element
+    const { error: confirmError } = await stripe.value.confirmPayment({
+      elements: elements.value,
+      confirmParams: {
+        return_url: `${window.location.origin}/thank-you?donationId=${donationId.value}`,
+      },
+      redirect: "if_required",
+    });
 
     if (confirmError) {
       throw new Error(confirmError.message);
@@ -933,8 +815,7 @@ const processStripePayment = async () => {
     // Payment succeeded!
     return {
       success: true,
-      paymentIntentId: paymentIntentId,
-      // The card details will be updated by the webhook
+      // The payment details will be handled by the webhook
     };
   } catch (error) {
     console.error("Error processing payment:", error);
@@ -943,166 +824,6 @@ const processStripePayment = async () => {
     loading.value = false;
     return false;
   }
-};
-
-// Function to generate PromptPay QR code
-const generatePromptPayQR = async () => {
-  if (!donationId.value) {
-    promptpayError.value = "Donation ID is missing. Please try again.";
-    return;
-  }
-
-  promptpayLoading.value = true;
-  promptpayError.value = "";
-
-  try {
-    // Calculate the donation amount if not already set
-    if (!donationAmount.value) {
-      if (
-        donationStore.currentDonation &&
-        donationStore.currentDonation.amount
-      ) {
-        donationAmount.value = donationStore.currentDonation.amount;
-      } else if (donationData.value && donationData.value.rawTotal) {
-        donationAmount.value = donationData.value.rawTotal;
-      } else if (donationData.value && donationData.value.formattedTotal) {
-        // Extract numeric value from formatted total (e.g., "1,500 THB" -> 1500)
-        const formattedTotal = donationData.value.formattedTotal;
-        const numericValue = formattedTotal.replace(/[^0-9]/g, "");
-        donationAmount.value = parseInt(numericValue);
-      } else if (donationData.value && donationData.value.quantity) {
-        const quantity = parseInt(donationData.value.quantity);
-        donationAmount.value = quantity * 2000; // Using the standard price per set
-      }
-    }
-
-    // Call backend to create PromptPay payment intent
-    const response = await fetch(
-      "http://localhost:3000/api/create-promptpay-payment",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: donationAmount.value,
-          currency: "thb",
-          donationId: donationId.value,
-          metadata: {
-            donorName:
-              donationData.value?.name ||
-              (donationStore.currentDonation
-                ? donationStore.currentDonation.donorName
-                : ""),
-            donorEmail:
-              donationData.value?.email ||
-              (donationStore.currentDonation
-                ? donationStore.currentDonation.donorEmail
-                : ""),
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to create PromptPay payment");
-    }
-
-    const { clientSecret, paymentIntentId } = await response.json();
-
-    // Mock QR code for now - in production, your backend would generate a real PromptPay QR
-    // This is a placeholder. In a real implementation, the QR code would be generated by your backend
-    // and returned in the response.
-    promptpayData.value = {
-      qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=PromptPay:${donationAmount.value}THB:DonationID:${donationId.value}`,
-      paymentIntentId: paymentIntentId,
-    };
-
-    // Start polling for payment status
-    startPollingPaymentStatus(paymentIntentId);
-  } catch (error) {
-    console.error("Error generating PromptPay QR:", error);
-    promptpayError.value =
-      error.message ||
-      "Failed to generate PromptPay QR code. Please try again.";
-  } finally {
-    promptpayLoading.value = false;
-  }
-};
-
-// Function to poll payment status
-const startPollingPaymentStatus = (paymentIntentId) => {
-  // Clear any existing polling
-  if (pollingInterval.value) {
-    clearInterval(pollingInterval.value);
-  }
-
-  promptpayPolling.value = true;
-
-  // Poll every 3 seconds
-  pollingInterval.value = setInterval(async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/check-payment-status?paymentIntentId=${paymentIntentId}`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to check payment status");
-      }
-
-      const data = await response.json();
-      console.log(`PromptPay payment status: ${data.status}`);
-
-      // Check payment status
-      if (data.status === "succeeded") {
-        // Payment successful
-        clearInterval(pollingInterval.value);
-        promptpayPolling.value = false;
-
-        // Update donation with payment information
-        await donationStore.updateDonationPayment(donationId.value, {
-          paymentMethod: "promptpay",
-          paymentStatus: "completed",
-          stripePaymentIntentId: paymentIntentId,
-          paymentDate: serverTimestamp(),
-          status: "completed",
-        });
-
-        // Redirect to thank you page
-        localStorage.removeItem("pendingDonation");
-        localStorage.removeItem("pendingDonationId");
-        localStorage.setItem("donationId", donationId.value);
-        router.push("/thank-you");
-      } else if (
-        ["canceled", "failed", "requires_payment_method"].includes(data.status)
-      ) {
-        // Payment failed or canceled
-        clearInterval(pollingInterval.value);
-        promptpayPolling.value = false;
-        promptpayError.value =
-          "Payment failed or was canceled. Please try again.";
-      }
-      // For other statuses (like processing, requires_action, etc.), continue polling
-    } catch (error) {
-      console.error("Error checking payment status:", error);
-      // Don't stop polling on network errors, just log them
-    }
-  }, 5000);
-
-  // Stop polling after 10 minutes (600000 ms) to prevent indefinite polling
-  setTimeout(() => {
-    if (pollingInterval.value) {
-      clearInterval(pollingInterval.value);
-      promptpayPolling.value = false;
-
-      // Only show error if we're still on this page and haven't received a successful payment
-      if (promptpayPolling.value) {
-        promptpayError.value =
-          "Payment timeout. Please check your banking app to see if the payment was processed.";
-      }
-    }
-  }, 600000);
 };
 
 // Modify confirmPayment to handle PromptPay
@@ -1129,23 +850,20 @@ const confirmPayment = async () => {
     // Prepare payment data
     const paymentData = {
       paymentMethod: paymentMethod.value,
-      paymentStatus: "pending", // Will be updated by webhook for credit cards
+      paymentStatus: "pending", // Will be updated by webhook for Stripe payments
       paymentDate: serverTimestamp(),
-      status: "pending", // Will be updated by webhook for credit cards
+      status: "pending", // Will be updated by webhook for Stripe payments
     };
 
-    if (paymentMethod.value === "credit-card") {
-      // Process payment with Stripe
+    if (paymentMethod.value === "stripe-payment") {
+      // Process payment with Stripe (includes PromptPay, Credit Cards, etc.)
       const paymentResult = await processStripePayment();
 
       if (!paymentResult) {
         return; // Error already handled in processStripePayment
       }
 
-      // Update payment data with Stripe payment intent ID
-      paymentData.stripePaymentIntentId = paymentResult.paymentIntentId;
-
-      // For credit card payments, we can immediately create a shipment since payment is verified
+      // For Stripe payments, we can immediately create a shipment since payment is verified
       paymentData.paymentStatus = "completed";
       paymentData.status = "completed";
     } else if (paymentMethod.value === "bank-transfer") {
@@ -1164,15 +882,6 @@ const confirmPayment = async () => {
           return;
         }
       }
-    } else if (paymentMethod.value === "promptpay") {
-      // For PromptPay, we don't need to do anything special here
-      // Just generate the QR code if not already done
-      if (!promptpayData.value) {
-        loading.value = false;
-        await generatePromptPayQR();
-        return;
-      }
-      return; // Don't proceed with the rest of the function
     }
 
     // Update donation with payment information
@@ -1185,32 +894,19 @@ const confirmPayment = async () => {
       throw new Error("Failed to update donation payment information");
     }
 
-    // Create a shipment for the donation if payment is completed (credit card)
-    // or if it's a bank transfer (admin will verify later)
-    try {
-      // Import the shipment store
-      const { useShipmentStore } = await import("@/stores/shipmentStore");
-      const shipmentStore = useShipmentStore();
+    // Create shipment only if payment is confirmed/completed
+    if (paymentData.paymentStatus === "completed") {
+      try {
+        console.log("Payment confirmed, creating shipment...");
 
-      // Fetch the latest donation data to ensure we have all the information
-      await donationStore.fetchDonationById(donationId.value);
-
-      if (donationStore.currentDonation) {
-        console.log(
-          "Creating shipment for donation:",
-          donationStore.currentDonation
-        );
-
-        // Make sure we have the recipients data
+        // Ensure we have recipient information
         if (
           !donationStore.currentDonation.recipients ||
           donationStore.currentDonation.recipients.length === 0
         ) {
-          console.log(
-            "No recipients array in donation, creating one from available data"
-          );
+          console.log("No recipients found, creating from donation data");
 
-          // If we have recipient data in the donation form, create a recipients array
+          // Create recipients array from donationData
           if (
             donationData.value &&
             donationData.value.recipients &&
@@ -1306,11 +1002,15 @@ const confirmPayment = async () => {
             donationId.value
           );
         }
+      } catch (shipmentError) {
+        console.error("Error creating shipment:", shipmentError);
+        // Don't throw error here, as we still want to proceed to thank you page
+        // even if shipment creation fails
       }
-    } catch (shipmentError) {
-      console.error("Error creating shipment:", shipmentError);
-      // Don't throw error here, as we still want to proceed to thank you page
-      // even if shipment creation fails
+    } else {
+      console.log(
+        "Payment not yet confirmed, shipment will be created after admin approval"
+      );
     }
 
     // Clear localStorage after successful payment
@@ -1321,7 +1021,7 @@ const confirmPayment = async () => {
     localStorage.setItem("donationId", donationId.value);
 
     // Show success message
-    if (paymentMethod.value === "credit-card") {
+    if (paymentMethod.value === "stripe-payment") {
       alert(
         "Thank you for your donation! Your payment has been processed successfully."
       );
@@ -1349,11 +1049,9 @@ const formatCurrency = (amount) => {
   }).format(amount || 0);
 };
 
-// Clear polling interval when component is unmounted
+// Clear any intervals when component is unmounted
 onUnmounted(() => {
-  if (pollingInterval.value) {
-    clearInterval(pollingInterval.value);
-  }
+  // No cleanup needed for Stripe Elements - handled automatically
 });
 </script>
 
@@ -1392,7 +1090,7 @@ button {
 }
 
 /* Stripe element styles */
-#card-element {
+#payment-element {
   background-color: white;
   padding: 10px 12px;
   border-radius: 4px;
@@ -1400,7 +1098,7 @@ button {
   transition: box-shadow 150ms ease;
 }
 
-#card-element:focus {
+#payment-element:focus {
   box-shadow: 0 0 0 2px #7ecad1;
 }
 
