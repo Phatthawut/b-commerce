@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import TyrantThumbnail from "@/assets/images/Tyrant-Handbook-thumbnail.webp";
 import theWayOutThumbnail from "@/assets/images/The-Way-Out-thumbnail.webp";
@@ -14,18 +16,16 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const politicsBook = {
-  title: "Tyrant's Handbook",
+const { t } = useI18n();
+
+const politicsBook = computed(() => ({
+  title: t("pages.bookDetails.tyrantHandbook.title"),
   image: TyrantThumbnail,
-  shortDescription:
-    "Comprehensive analysis of political systems and effective governance.",
-  description:
-    "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
-  additionalInfo1:
-    "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
-  additionalInfo2:
-    "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
-  series: "Politics & Public Policy Series",
+  shortDescription: t("pages.bookDetails.tyrantHandbook.shortDescription"),
+  description: t("pages.bookDetails.tyrantHandbook.description"),
+  additionalInfo1: t("pages.bookDetails.tyrantHandbook.additionalInfo1"),
+  additionalInfo2: t("pages.bookDetails.tyrantHandbook.additionalInfo2"),
+  series: t("pages.bookDetails.tyrantHandbook.series"),
   colorScheme: "blue",
   backgroundColor: "blue",
   relatedBooks: [
@@ -72,5 +72,5 @@ const politicsBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>

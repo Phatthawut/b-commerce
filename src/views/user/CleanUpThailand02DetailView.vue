@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import TyrantThumbnail from "@/assets/images/Tyrant-Handbook-thumbnail.webp";
 import theWayOutThumbnail from "@/assets/images/The-Way-Out-thumbnail.webp";
@@ -14,33 +16,37 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const politicsBook = {
-  title: "Cleaning Up Thailand Book 2",
+const { t } = useI18n();
+
+const politicsBook = computed(() => ({
+  title: t("pages.bookDetails.cleaningUpThailandBook2.title"),
   image: cleaningUpThailandBook2Thumbnail,
-  shortDescription:
-    "Comprehensive analysis of political systems and effective governance.",
-  description:
-    "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
-  additionalInfo1:
-    "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
-  additionalInfo2:
-    "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
-  series: "Politics & Public Policy Series",
-  colorScheme: "blue",
-  backgroundColor: "blue",
+  shortDescription: t(
+    "pages.bookDetails.cleaningUpThailandBook2.shortDescription"
+  ),
+  description: t("pages.bookDetails.cleaningUpThailandBook2.description"),
+  additionalInfo1: t(
+    "pages.bookDetails.cleaningUpThailandBook2.additionalInfo1"
+  ),
+  additionalInfo2: t(
+    "pages.bookDetails.cleaningUpThailandBook2.additionalInfo2"
+  ),
+  series: t("pages.bookDetails.cleaningUpThailandBook2.series"),
+  colorScheme: "teal",
+  backgroundColor: "teal",
   relatedBooks: [
     {
-      title: "Tyrant's Handbook",
+      title: t("pages.bookDetails.tyrantHandbook.title"),
       image: TyrantThumbnail,
       link: "tyrant-handbook",
     },
     {
-      title: "The Way Out",
+      title: t("pages.bookDetails.theWayOut.title"),
       image: theWayOutThumbnail,
       link: "the-way-out",
     },
     {
-      title: "Cleaning Up Thailand Book 1",
+      title: t("pages.bookDetails.cleaningUpThailandBook1.title"),
       image: cleaningUpThailandBook1Thumbnail,
       link: "cleaning-up-thailand-book-1",
     },
@@ -72,5 +78,5 @@ const politicsBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>

@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import drawYourThoughtsThumbnail from "@/assets/images/draw-your-thoughts-thumbnail.webp";
 import dharmaScienceThumb from "@/assets/images/dharmoscience-thumbnail.webp";
@@ -15,14 +17,16 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const drawYourThoughtsBook = {
-  title: "Draw Your Thoughts",
+const { t } = useI18n();
+
+const drawYourThoughtsBook = computed(() => ({
+  title: t("pages.bookDetails.drawYourThoughts.title"),
   image: drawYourThoughtsThumbnail,
-  shortDescription: "",
-  description:
-    "Within this book, diagrams and pictorial symbols-termed here as the visual language-- are extensively and seamlessly employed to depict, formulate, analyse, discuss, think through and solve many diverse problems in equally diverse areas of interest, such as : economics, business management, accounting, project management, decision science, public policy, public finance as well as politics, and surprisingly even religions and metaphysics. This visual thinking handbook will likely open up many new ways of looking at the same old world; and therefore will broaden your perspective and elevate enrich your thought, your work, as well as your mind and ultimately your life. This book is equally useful as a stand - alone read or as accompanying material for training courses on the subject matter",
-  additionalInfo1: "",
-  additionalInfo2: "",
+  shortDescription: t("pages.bookDetails.drawYourThoughts.shortDescription"),
+  description: t("pages.bookDetails.drawYourThoughts.description"),
+  additionalInfo1: t("pages.bookDetails.drawYourThoughts.additionalInfo1"),
+  additionalInfo2: t("pages.bookDetails.drawYourThoughts.additionalInfo2"),
+  series: t("pages.bookDetails.drawYourThoughts.series"),
   colorScheme: "blue", // Will use the blue gradient
   relatedBooks: [], // No related books for this example
   stores: [
@@ -52,5 +56,5 @@ const drawYourThoughtsBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>

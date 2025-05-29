@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-white">
+  <div class="bg-white font-thai">
     <div class="container mx-auto">
       <section class="text-center mb-8">
-        <h1 class="text-4xl font-montserrat font-bold text-gray-800 mt-12 mb-6">
-          Our Books
+        <h1 :class="titleClass">
+          {{ $t("pages.ourBooks.title") }}
         </h1>
         <div class="w-1/2 h-[2px] line-blue mx-auto mb-4"></div>
       </section>
@@ -13,18 +13,11 @@
     <div class="container mx-auto">
       <div class="gradient-background-red py-8 px-4" id="dharmoscience">
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
-          <h3
-            class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-4"
-          >
-            Dharmoscience Series
+          <h3 :class="headingClass">
+            {{ $t("pages.ourBooks.series.dharmoscience.title") }}
           </h3>
-          <p class="text-gray-700 text-justify font-montserrat mb-8 w-[60%]">
-            The main content of this book series (4 volumes) explains that, in
-            essence, "Dharma is Science, and Science is Dharma." It merges
-            modern science with the ancient wisdom of dharma into a unified
-            whole, calling this new body of knowledge "Dharmoscience." This will
-            enable readers to deeply and profoundly understand the ultimate
-            reality of nature.
+          <p :class="bodyTextClass">
+            {{ $t("pages.ourBooks.series.dharmoscience.description") }}
           </p>
         </div>
         <!-- Book Images -->
@@ -39,11 +32,17 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p
-              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
-            >
-              Neodharma<br />
-              <span class="text-sm font-normal"> From Atom to Anatta </span>
+            <p :class="bookTitleClass">
+              {{
+                $t("pages.ourBooks.series.dharmoscience.books.neodharma.title")
+              }}<br />
+              <span class="text-sm font-normal" :class="bookSubtitleClass">
+                {{
+                  $t(
+                    "pages.ourBooks.series.dharmoscience.books.neodharma.subtitle"
+                  )
+                }}
+              </span>
             </p>
           </div>
           <div class="flex flex-col items-center gap-4">
@@ -54,12 +53,18 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p
-              class="text-gray-700 text-center font-montserrat font-semibold mb-8"
-            >
-              Dharmoscience<br />
-              <span class="text-sm font-normal">
-                The Fusion of Science and Dharma.
+            <p :class="bookTitleClass">
+              {{
+                $t(
+                  "pages.ourBooks.series.dharmoscience.books.dharmoscience.title"
+                )
+              }}<br />
+              <span class="text-sm font-normal" :class="bookSubtitleClass">
+                {{
+                  $t(
+                    "pages.ourBooks.series.dharmoscience.books.dharmoscience.subtitle"
+                  )
+                }}
               </span>
             </p>
           </div>
@@ -67,20 +72,21 @@
             <router-link to="book-detail/sankhara">
               <img
                 src="@/assets/images/sankhara-thumbnail.webp"
-                alt="Sankhara Book 4"
+                alt="Dharmascience Book 1"
                 class="w-40 h-auto"
               />
             </router-link>
-            <div class="flex flex-col items-center mb-8">
-              <p
-                class="text-gray-700 text-center font-montserrat font-semibold"
-              >
-                Sankhara
-              </p>
-              <p class="text-gray-700 text-center font-montserrat w-[80%]">
-                The Theory of Everything and Nothing.
-              </p>
-            </div>
+            <p :class="bookTitleClass">
+              {{ $t("pages.ourBooks.series.dharmoscience.books.sankhara.title")
+              }}<br />
+              <span class="text-sm font-normal" :class="bookSubtitleClass">
+                {{
+                  $t(
+                    "pages.ourBooks.series.dharmoscience.books.sankhara.subtitle"
+                  )
+                }}
+              </span>
+            </p>
           </div>
           <div class="flex flex-col items-center gap-4">
             <router-link to="book-detail/nirvana">
@@ -90,16 +96,17 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <div class="flex flex-col items-center mb-8 w-[80%]">
-              <p
-                class="text-gray-700 text-center font-montserrat font-semibold"
-              >
-                Nirvana
-              </p>
-              <p class="text-gray-700 text-center font-montserrat">
-                Roadmap to Spiritual Enlightenment
-              </p>
-            </div>
+            <p :class="bookTitleClass">
+              {{ $t("pages.ourBooks.series.dharmoscience.books.nirvana.title")
+              }}<br />
+              <span class="text-sm font-normal" :class="bookSubtitleClass">
+                {{
+                  $t(
+                    "pages.ourBooks.series.dharmoscience.books.nirvana.subtitle"
+                  )
+                }}
+              </span>
+            </p>
           </div>
         </div>
       </div>
@@ -109,16 +116,11 @@
     <div class="container mx-auto">
       <div class="gradient-background-blue py-8 px-4" id="draw-your-thoughts">
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
-          <h3
-            class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-4"
-          >
-            Draw Your Thoughts
+          <h3 :class="headingClass">
+            {{ $t("pages.ourBooks.series.drawYourThoughts.title") }}
           </h3>
-          <p class="text-gray-700 text-justify font-montserrat mb-8 w-[60%]">
-            Unlocks the power of visual thinking to solve problems across
-            diverse fields, from business and politics to metaphysics. This book
-            offers fresh perspectives, enhancing decision-making and enriching
-            both work and life.
+          <p :class="bodyTextClass">
+            {{ $t("pages.ourBooks.series.drawYourThoughts.description") }}
           </p>
         </div>
         <!-- Book Images -->
@@ -131,8 +133,12 @@
                 class="w-60 h-auto"
               />
             </router-link>
-            <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Draw Your Thoughts
+            <p :class="bookTitleClass">
+              {{
+                $t(
+                  "pages.ourBooks.series.drawYourThoughts.books.drawYourThoughts.title"
+                )
+              }}
             </p>
           </div>
         </div>
@@ -146,20 +152,11 @@
         id="politics-public-policy"
       >
         <div class="flex flex-col items-center gap-4 max-w-3xl mx-auto">
-          <h3
-            class="text-2xl lg:text-3xl font-montserrat font-bold text-gray-800 mb-8"
-          >
-            Politics & Public Policy Series
+          <h3 :class="headingLargeClass">
+            {{ $t("pages.ourBooks.series.politicsPublicPolicy.title") }}
           </h3>
-          <p
-            class="text-gray-700 text-justify font-montserrat mb-8 w-[60%] hidden"
-          >
-            The main content of this book series (4 volumes) explains that, in
-            essence, "Dharma is Science, and Science is Dharma." It merges
-            modern science with the traditional wisdom of Dharma into a unified
-            whole, calling this new body of knowledge "Dharmoscience." This will
-            enable readers to deeply and profoundly understand the truths of
-            nature.
+          <p :class="bodyTextHiddenClass">
+            {{ $t("pages.ourBooks.series.politicsPublicPolicy.description") }}
           </p>
         </div>
         <!-- Book Images -->
@@ -174,8 +171,12 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Handbook for Tyrants
+            <p :class="bookTitleClass">
+              {{
+                $t(
+                  "pages.ourBooks.series.politicsPublicPolicy.books.tyrantHandbook.title"
+                )
+              }}
             </p>
           </div>
           <div class="flex flex-col items-center gap-4">
@@ -186,8 +187,12 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Handbook for Thailand Recovery
+            <p :class="bookTitleClass">
+              {{
+                $t(
+                  "pages.ourBooks.series.politicsPublicPolicy.books.theWayOut.title"
+                )
+              }}
             </p>
           </div>
           <div class="flex flex-col items-center gap-4">
@@ -198,8 +203,12 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Clean Up Thailand (Book 1)
+            <p :class="bookTitleClass">
+              {{
+                $t(
+                  "pages.ourBooks.series.politicsPublicPolicy.books.cleaningUpThailandBook1.title"
+                )
+              }}
             </p>
           </div>
           <div class="flex flex-col items-center gap-4">
@@ -210,8 +219,12 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p class="text-gray-700 text-center font-montserrat mb-8 w-[80%]">
-              Clean Up Thailand (Book 2)
+            <p :class="bookTitleClass">
+              {{
+                $t(
+                  "pages.ourBooks.series.politicsPublicPolicy.books.cleaningUpThailandBook2.title"
+                )
+              }}
             </p>
           </div>
         </div>
@@ -219,7 +232,9 @@
     </div>
     <!--where to buy-->
     <div class="flex flex-col gap-4 items-center py-24">
-      <h3 class="text-3xl font-bold text-black pb-8">Buy / Download at</h3>
+      <h3 :class="buyTitleClass">
+        {{ $t("pages.ourBooks.buyDownload") }}
+      </h3>
       <div class="flex flex-col md:flex-row gap-4 items-center">
         <img src="@/assets/images/buy-01.webp" alt="buy-01" class="w-24 h-24" />
         <img src="@/assets/images/buy-02.webp" alt="buy-02" class="w-24 h-24" />
@@ -231,7 +246,54 @@
   </div>
 </template>
 
-<script></script>
+<script setup>
+import { computed } from "vue";
+import { useDynamicFont } from "@/composables/useDynamicFont";
+
+const { titleClasses, headingClasses, bodyClasses, bodyClassesWithAlignment } =
+  useDynamicFont();
+
+// Computed classes to avoid template literal issues
+const titleClass = computed(
+  () => "text-4xl font-bold text-gray-800 mt-12 mb-6 " + titleClasses.value
+);
+const headingClass = computed(
+  () =>
+    "text-2xl lg:text-3xl font-bold text-gray-800 mb-4 " + headingClasses.value
+);
+const headingLargeClass = computed(
+  () =>
+    "text-2xl lg:text-3xl font-bold text-gray-800 mb-8 " + headingClasses.value
+);
+const bodyTextClass = computed(
+  () =>
+    "text-gray-700 mb-8 w-[60%] preserve-whitespace " +
+    bodyClassesWithAlignment.value
+);
+const bodyTextHiddenClass = computed(
+  () =>
+    "text-gray-700 mb-8 w-[60%] hidden preserve-whitespace " +
+    bodyClassesWithAlignment.value
+);
+const bookTitleClass = computed(
+  () => "text-gray-700 text-center font-semibold mb-8 " + bodyClasses.value
+);
+const bookTextClass = computed(
+  () => "text-gray-700 text-center mb-8 w-[80%] " + bodyClasses.value
+);
+const bookSubtitleClass = computed(
+  () => "text-gray-700 text-center block mx-auto w-[80%] " + bodyClasses.value
+);
+const bookSubtitleBoldClass = computed(
+  () => "text-gray-700 text-center font-semibold " + bodyClasses.value
+);
+const bookSubtitleRegularClass = computed(
+  () => "text-gray-700 text-center " + bodyClasses.value
+);
+const buyTitleClass = computed(
+  () => "text-3xl font-bold text-black pb-8 " + headingClasses.value
+);
+</script>
 
 <style scoped>
 .gradient-background-teal {

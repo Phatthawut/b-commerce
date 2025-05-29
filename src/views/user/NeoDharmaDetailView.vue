@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import dharmoscienceThumbnail from "@/assets/images/dharmoscience-thumbnail.webp";
 import neodharmaThumb from "@/assets/images/neodharma-thumbnail.webp";
@@ -14,15 +16,16 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const dharmaScienceBook = {
-  title: "Neodharma",
+const { t } = useI18n();
+
+const dharmaScienceBook = computed(() => ({
+  title: t("pages.bookDetails.neodharma.title"),
   image: neodharmaThumb,
-  shortDescription: "",
-  description:
-    "Unarguably, science has long been the authoritative voice in story-telling about practically everything --from the universe to stars and galaxies; the big bang and black holes; atoms and quarks, matter and energy; plants, animals and humans; chromosomes and DNA; body and mind; life and death; etc. This book retells those same stories but from a rather different voice, dharma. After having read the book, those stories may never sound the same again.",
-  additionalInfo1: "",
-  additionalInfo2: "",
-  series: "Dharmoscience Series",
+  shortDescription: t("pages.bookDetails.neodharma.shortDescription"),
+  description: t("pages.bookDetails.neodharma.description"),
+  additionalInfo1: t("pages.bookDetails.neodharma.additionalInfo1"),
+  additionalInfo2: t("pages.bookDetails.neodharma.additionalInfo2"),
+  series: t("pages.bookDetails.neodharma.series"),
   colorScheme: "blue",
   backgroundColor: "blue",
   relatedBooks: [
@@ -69,5 +72,5 @@ const dharmaScienceBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>

@@ -3,13 +3,17 @@
     <div class="container relative mx-auto px-4 font-thai">
       <div class="flex flex-col items-center gap-8 mx-auto px-4">
         <div>
-          <h2 class="text-4xl font-bold pt-12">Our Services</h2>
+          <h2 :class="`text-4xl font-bold pt-12 ${titleClasses}`">
+            {{ $t("pages.services.title") }}
+          </h2>
         </div>
         <div class="border-t-2 border-border-blue w-[60%]"></div>
         <div class="flex flex-col gap-2 items-center">
-          <h3 class="text-3xl font-bold">Talks</h3>
-          <p class="md:text-lg font-merriweather">
-            Lectures / Seminars / Events
+          <h3 :class="`text-3xl font-bold ${headingClasses}`">
+            {{ $t("pages.services.talks.title") }}
+          </h3>
+          <p :class="`md:text-lg ${bodyClasses}`">
+            {{ $t("pages.services.talks.subtitle") }}
           </p>
         </div>
 
@@ -31,13 +35,10 @@
             <div
               class="flex flex-col justify-center items-center py-12 px-4 text-background-blue"
             >
-              <p class="px-4 text-sm md:text-lg">
-                Engaging and thought-provoking, these talks are designed to
-                inspire a new way of thinking. Through powerful storytelling and
-                insights, they explore the impact of thought management on
-                personal growth, leadership, and mindset transformation. Each
-                session sparks fresh perspectives and motivation for positive
-                change.
+              <p
+                :class="`px-4 text-sm md:text-lg preserve-whitespace ${bodyClassesWithAlignment}`"
+              >
+                {{ $t("pages.services.talks.description") }}
               </p>
             </div>
           </div>
@@ -59,9 +60,11 @@
       </div>
       <div class="flex flex-col items-center gap-8 mx-auto px-4 pt-12">
         <div class="flex flex-col gap-2 items-center">
-          <h3 class="text-3xl font-bold">Workshops</h3>
-          <p class="md:text-lg font-merriweather">
-            Visual Thinking / Business Strategy / Political Chess & Strategy
+          <h3 :class="`text-3xl font-bold ${headingClasses}`">
+            {{ $t("pages.services.workshops.title") }}
+          </h3>
+          <p :class="`md:text-lg ${bodyClasses}`">
+            {{ $t("pages.services.workshops.subtitle") }}
           </p>
         </div>
 
@@ -83,13 +86,10 @@
             <div
               class="flex flex-col justify-center items-center py-12 px-4 text-background-blue"
             >
-              <p class="px-4 text-sm md:text-lg">
-                Hands-on and interactive, these workshops offer practical tools
-                to master thought management. Participants will engage in
-                exercises that enhance clarity, decision-making, and resilience.
-                With actionable strategies, they will learn how to boost
-                productivity, creativity, and emotional intelligence in both
-                personal and professional life.
+              <p
+                :class="`px-4 text-sm md:text-lg preserve-whitespace ${bodyClassesWithAlignment}`"
+              >
+                {{ $t("pages.services.workshops.description") }}
               </p>
             </div>
           </div>
@@ -112,7 +112,9 @@
     </div>
     <div class="flex flex-col items-center gap-8 mx-auto pt-12 pb-16">
       <div class="flex flex-col gap-2 items-center">
-        <h3 class="text-3xl font-bold">Contact Us</h3>
+        <h3 :class="`text-3xl font-bold ${headingClasses}`">
+          {{ $t("pages.services.contact.title") }}
+        </h3>
         <div class="border-t-2 border-border-blue w-[80%]"></div>
       </div>
 
@@ -133,55 +135,63 @@
         </div>
         <form class="shadow-md rounded px-8 pt-6 pb-8">
           <div class="mb-4">
-            <label class="sr-only" for="name"> Name </label>
+            <label class="sr-only" for="name">{{ $t("forms.name") }}</label>
             <input
-              class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              :class="`w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase ${bodyClasses}`"
               id="name"
               type="text"
-              placeholder="Your Name"
+              :placeholder="$t('pages.services.contact.form.namePlaceholder')"
               v-model="formData.name"
             />
           </div>
 
           <div class="mb-4">
-            <label class="sr-only" for="email"> Email </label>
+            <label class="sr-only" for="email">{{ $t("forms.email") }}</label>
             <input
-              class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              :class="`w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase ${bodyClasses}`"
               id="email"
               type="email"
-              placeholder="your.email@example.com"
+              :placeholder="$t('pages.services.contact.form.emailPlaceholder')"
               v-model="formData.email"
             />
           </div>
 
           <div class="mb-4">
-            <label class="sr-only" for="subject"> Subject </label>
+            <label class="sr-only" for="subject">{{
+              $t("forms.message")
+            }}</label>
             <input
-              class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              :class="`w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase ${bodyClasses}`"
               id="subject"
               type="text"
-              placeholder="Message Subject"
+              :placeholder="
+                $t('pages.services.contact.form.subjectPlaceholder')
+              "
               v-model="formData.subject"
             />
           </div>
 
           <div class="mb-6">
-            <label class="sr-only" for="message"> Message </label>
+            <label class="sr-only" for="message">{{
+              $t("forms.message")
+            }}</label>
             <textarea
-              class="w-full py-4 px-3 h-[150px] bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
+              :class="`w-full py-4 px-3 h-[150px] bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase ${bodyClasses}`"
               id="message"
-              placeholder="Your Message"
+              :placeholder="
+                $t('pages.services.contact.form.messagePlaceholder')
+              "
               v-model="formData.message"
             ></textarea>
           </div>
 
           <div class="flex items-center justify-end">
             <button
-              class="bg-button-blue hover:bg-button-blue-hover text-white font-bold py-2 px-8 rounded focus:outline-2 outline-button-blue focus:shadow-outline"
+              :class="`bg-button-blue hover:bg-button-blue-hover text-white font-bold py-2 px-8 rounded focus:outline-2 outline-button-blue focus:shadow-outline ${bodyClasses}`"
               type="button"
               @click="handleSubmit"
             >
-              Send Message
+              {{ $t("pages.services.contact.form.sendButton") }}
             </button>
           </div>
         </form>
@@ -192,6 +202,10 @@
 
 <script setup>
 import { ref } from "vue";
+import { useDynamicFont } from "@/composables/useDynamicFont";
+
+const { titleClasses, headingClasses, bodyClasses, bodyClassesWithAlignment } =
+  useDynamicFont();
 
 const formData = ref({
   name: "",

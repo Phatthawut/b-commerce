@@ -1,5 +1,5 @@
 <template>
-  <nav class="mx-auto w-full bg-mainbg uppercase">
+  <nav class="mx-auto w-full bg-mainbg uppercase font-thai">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Mobile Menu Button -->
       <div class="md:hidden bg-mainbg w-full fixed top-0 left-0 px-4 py-2 z-50">
@@ -35,7 +35,7 @@
                 to="/"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Home
+                {{ $t("nav.home") }}
               </router-link>
             </li>
             <li>
@@ -43,7 +43,7 @@
                 to="/about"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                About
+                {{ $t("nav.about") }}
               </router-link>
             </li>
             <li>
@@ -51,7 +51,7 @@
                 to="/our-book"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Our Books
+                {{ $t("nav.ourBooks") }}
               </router-link>
             </li>
             <li>
@@ -59,7 +59,7 @@
                 to="/service"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Our Services
+                {{ $t("nav.ourServices") }}
               </router-link>
             </li>
             <li>
@@ -67,7 +67,7 @@
                 to="/donation-campaign"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Donation Campaign
+                {{ $t("nav.donationCampaign") }}
               </router-link>
             </li>
             <li>
@@ -75,8 +75,11 @@
                 to="/contact"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Contact Us
+                {{ $t("nav.contactUs") }}
               </router-link>
+            </li>
+            <li>
+              <LanguageSwitcher />
             </li>
           </ul>
         </div>
@@ -86,36 +89,41 @@
     <!-- Mobile Menu -->
     <div
       v-if="isMenuOpen"
-      class="md:hidden fixed top-12 left-0 w-[80%] bg-mainbg z-40 w-full"
+      class="md:hidden fixed top-12 left-0 w-[80%] bg-mainbg z-40"
     >
       <ul class="px-8 pt-2 pb-3 space-y-2 sm:px-4 font-semibold">
         <li>
-          <router-link to="/" class="block text-gray-600"> Home </router-link>
+          <router-link to="/" class="block text-gray-600">{{
+            $t("nav.home")
+          }}</router-link>
         </li>
         <li>
           <router-link to="/about" class="block text-gray-600">
-            About
+            {{ $t("nav.about") }}
           </router-link>
         </li>
         <li>
           <router-link to="/our-book" class="block text-gray-600">
-            Our Books
+            {{ $t("nav.ourBooks") }}
           </router-link>
         </li>
         <li>
           <router-link to="/service" class="block text-gray-600">
-            Our Services
+            {{ $t("nav.ourServices") }}
           </router-link>
         </li>
         <li>
           <router-link to="/donation-campaign" class="block text-gray-600">
-            Donation Campaign
+            {{ $t("nav.donationCampaign") }}
           </router-link>
         </li>
         <li>
           <router-link to="/contact" class="block text-gray-600">
-            Contact Us
+            {{ $t("nav.contactUs") }}
           </router-link>
+        </li>
+        <li class="pt-2">
+          <LanguageSwitcher />
         </li>
       </ul>
     </div>
@@ -125,6 +133,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import LanguageSwitcher from "../LanguageSwitcher.vue";
 
 const router = useRouter();
 const isMenuOpen = ref(false);

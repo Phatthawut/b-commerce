@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import dharmoscienceThumbnail from "@/assets/images/dharmoscience-thumbnail.webp";
 import neodharmaThumb from "@/assets/images/neodharma-thumbnail.webp";
@@ -14,32 +16,30 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const dharmaScienceBook = {
-  title: "Dharmascience",
+const { t } = useI18n();
+
+const dharmaScienceBook = computed(() => ({
+  title: t("pages.bookDetails.dharmoscience.title"),
   image: dharmoscienceThumbnail,
-  shortDescription:
-    "Modern science, without a doubt, can be regarded as the pinnacle of human intellectual pursuit. Considering its recent emergence of only four or five hundred years since Galileo or Copernicus, science certainly has made remarkable progress and impact when compared to other intellectual traditions, either religious or secular. Aside from countless products and artifacts only made possible by modern technology, our way of looking at the world is also profoundly influenced by science. With this enormous success, science has become so confident in itself (sometimes bordering on arrogance) that it tends to overlook what other intellectual or spiritual traditions --particularly the age-old wisdom of religions and metaphysics – have to say.",
-  description:
-    "In another vein, the word dharma in Sanskrit, in its original and strictest sense, does not mean ethics or morality as commonly understood nowadays; but it means nature. The spiritual core of various eastern religions--particularly Buddhism, Taoism, Jainism and Hinduism-- is in fact the pursuit of true understanding of nature and its immutable laws in order for us to reach spiritual enlightenment and liberation. This is also the ultimate mission of science. In this sense, dharma is science; and science is dharma.",
-  additionalInfo1:
-    "This four-book set is an effort to combine and integrate modern science and age-old dharma into one fuller body of knowledge --dharmoscience-- in order to better describe the ultimate reality of nature. In other words, this is a novel attempt to scientifically formulate dharma; and at the same time broaden the horizon of modern science beyond the confines of the material realm.",
-  additionalInfo2:
-    "The four books making up this dharmoscience tetralogy are as follows: (1) Neodharma, (2) Dharmascience, (3) Sankhara, and (4) Nirvana. Within these books is where modern science and dharma converge.",
-  series: "Dharmoscience Series",
+  shortDescription: t("pages.bookDetails.dharmoscience.shortDescription"),
+  description: t("pages.bookDetails.dharmoscience.description"),
+  additionalInfo1: t("pages.bookDetails.dharmoscience.additionalInfo1"),
+  additionalInfo2: t("pages.bookDetails.dharmoscience.additionalInfo2"),
+  series: t("pages.bookDetails.dharmoscience.series"),
   colorScheme: "red",
   relatedBooks: [
     {
-      title: "Neodharma",
+      title: t("pages.bookDetails.neodharma.title"),
       image: neodharmaThumb,
       link: "neodharma",
     },
     {
-      title: "Sankhara",
+      title: t("pages.bookDetails.sankhara.title"),
       image: sankharaThumb,
       link: "sankhara",
     },
     {
-      title: "Nirvana",
+      title: t("pages.bookDetails.nirvana.title"),
       image: nirvanaThumb,
       link: "nirvana",
     },
@@ -71,5 +71,5 @@ const dharmaScienceBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>

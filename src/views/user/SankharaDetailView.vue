@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import dharmoscienceThumbnail from "@/assets/images/dharmoscience-thumbnail.webp";
 import neodharmaThumb from "@/assets/images/neodharma-thumbnail.webp";
@@ -14,15 +16,16 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const dharmaScienceBook = {
-  title: "Sankhara",
+const { t } = useI18n();
+
+const dharmaScienceBook = computed(() => ({
+  title: t("pages.bookDetails.sankhara.title"),
   image: sankharaThumb,
-  shortDescription: "",
-  description:
-    "This book challenges the predominantly analysis-based perspective of today's science in explaining the ultimate reality of nature. It does so by reintroducing an ancient yet amazingly powerful concept from eastern religions and philosophy called sankhara in plain scientific formulation. A Pali word, sankhara denotes the act of joining the various pertinent parts into a complete and functional whole. When properly assembled, the whole exhibits brand new qualities that were nonexistent before. Sankhara is therefore the logical bedrocks of the holistic worldview. Hopefully, the sankhara worldview would provoke and at the same time enrich the mainstream scientific mindset, which is largely reductionist and narrowly focused on the material aspect of nature.",
-  additionalInfo1: "",
-  additionalInfo2: "",
-  series: "Dharmoscience Series",
+  shortDescription: t("pages.bookDetails.sankhara.shortDescription"),
+  description: t("pages.bookDetails.sankhara.description"),
+  additionalInfo1: t("pages.bookDetails.sankhara.additionalInfo1"),
+  additionalInfo2: t("pages.bookDetails.sankhara.additionalInfo2"),
+  series: t("pages.bookDetails.sankhara.series"),
   colorScheme: "teal",
   backgroundColor: "teal",
   relatedBooks: [
@@ -69,5 +72,5 @@ const dharmaScienceBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>

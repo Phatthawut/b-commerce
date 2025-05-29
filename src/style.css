@@ -4,6 +4,7 @@
   --font-playfair: "Playfair Display", "serif";
   --font-merriweather: "Merriweather", "serif";
   --font-montserrat: "Montserrat", "sans-serif";
+  --font-prompt: "Prompt", "sans-serif";
   --color-mainbg: #f3feff;
   --color-borderline: #90bec4;
   --color-button-blue: #81c1c6;
@@ -18,4 +19,14 @@
   prefersdark: true; /* disable dark mode preference */
   color-scheme: dark;
   --color-info: #81c1c6;
+}
+
+/* Global utility for handling line breaks in translations */
+.preserve-whitespace {
+  white-space: pre-line;
+}
+
+/* Dynamic font classes */
+.font-prompt {
+  font-family: "Prompt", sans-serif;
 }

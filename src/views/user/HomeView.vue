@@ -23,8 +23,7 @@
         <p
           class="font-merriweather text-xl md:text-2xl mx-auto text-center w-full"
         >
-          Discover the wisdom in learning about how science and dharma
-          beautifully intertwine.
+          {{ $t("pages.home.heroQuote") }}
         </p>
         <div class="flex w-full justify-end mt-4">
           <svg
@@ -54,22 +53,21 @@
           <div
             class="flex flex-col items-start text-background-blue shadow-md px-4 py-8 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
           >
-            <p class="text-black text-xs">15 May 2020</p>
-            <h2 class="text-2xl font-bold text-black">Dharmoscience Series</h2>
+            <p class="text-black text-xs">
+              {{ $t("pages.home.books.dharmoscience.date") }}
+            </p>
+            <h2 class="text-2xl font-bold text-black">
+              {{ $t("pages.home.books.dharmoscience.title") }}
+            </h2>
             <div class="divider divider-info my-2"></div>
-            <p class="text-black">
-              This four-book series, "Dharmoscience," is an effort to merge
-              modern scientific knowledge with ancient dharma into a unified
-              framework. The goal is to offer a more comprehensive explanation
-              of the ultimate reality of nature. This approach seeks to
-              scientifically formulate dharma; while simultaneously expanding
-              the scope of modern science beyond the limits of materialism.
+            <p class="text-black preserve-whitespace">
+              {{ $t("pages.home.books.dharmoscience.description") }}
             </p>
             <router-link
               to="/our-book#dharmoscience"
               class="bg-button-blue hover:bg-button-blue-hover text-white px-8 py-4 mt-4"
             >
-              Learn More
+              {{ $t("buttons.learnMore") }}
             </router-link>
           </div>
         </div>
@@ -86,20 +84,21 @@
           <div
             class="flex flex-col items-start justify-center text-background-blue shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-mr-8 lg:-mr-16 z-10"
           >
-            <p class="text-black text-xs">15 May 2020</p>
-            <h2 class="text-2xl font-bold text-black">Draw Your Thoughts</h2>
+            <p class="text-black text-xs">
+              {{ $t("pages.home.books.drawYourThoughts.date") }}
+            </p>
+            <h2 class="text-2xl font-bold text-black">
+              {{ $t("pages.home.books.drawYourThoughts.title") }}
+            </h2>
             <div class="divider divider-info my-2"></div>
-            <p class="text-black">
-              Unlocks the power of visual thinking to solve problems across
-              diverse fields: from business and politics to metaphysics. This
-              book offers fresh perspectives, enhancing decision-making and
-              enriching both work and life.
+            <p class="text-black preserve-whitespace">
+              {{ $t("pages.home.books.drawYourThoughts.description") }}
             </p>
             <router-link
               to="/our-book#draw-your-thoughts"
-              class="bg-button-blue hover:bg-button-blue-hover text-white px-6 py-2 mt-4"
+              class="bg-button-blue hover:bg-button-blue-hover text-white px-8 py-4 mt-4"
             >
-              Learn More
+              {{ $t("buttons.learnMore") }}
             </router-link>
           </div>
         </div>
@@ -114,22 +113,21 @@
           <div
             class="flex flex-col items-start justify-center text-background-blue shadow-md px-4 py-8 mx-4 -mt-2 w-[90%] md:w-1/2 md:-ml-8 lg:-ml-16"
           >
-            <p class="text-black text-xs">15 May 2020</p>
+            <p class="text-black text-xs">
+              {{ $t("pages.home.books.politicsPublicPolicy.date") }}
+            </p>
             <h2 class="text-2xl font-bold text-black">
-              Politics & Public Policy Series
+              {{ $t("pages.home.books.politicsPublicPolicy.title") }}
             </h2>
             <div class="divider divider-info my-2"></div>
-            <p class="text-black">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-              quos. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quisquam,
+            <p class="text-black preserve-whitespace">
+              {{ $t("pages.home.books.politicsPublicPolicy.description") }}
             </p>
             <router-link
               to="/our-book#politics-public-policy"
-              class="bg-button-blue hover:bg-button-blue-hover text-white px-6 py-2 mt-4"
+              class="bg-button-blue hover:bg-button-blue-hover text-white px-8 py-4 mt-4"
             >
-              Learn More
+              {{ $t("buttons.learnMore") }}
             </router-link>
           </div>
         </div>
@@ -141,9 +139,11 @@
       <div class="flex flex-col gap-8">
         <div class="flex flex-col">
           <div class="flex flex-col justify-center items-center pt-8">
-            <h3 class="text-2xl font-bold text-black">Woody Prieb</h3>
+            <h3 class="text-2xl font-bold text-black">
+              {{ $t("pages.home.author.name") }}
+            </h3>
             <p class="text-black font-merriweather">
-              ( Dr. Vuthiphong Priebjrivat )
+              {{ $t("pages.home.author.fullName") }}
             </p>
           </div>
           <div class="pt-4 pb-6 px-8 mx-auto">
@@ -157,13 +157,13 @@
             class="flex flex-col justify-center items-center pt-4 pb-6 px-4 mx-auto -mt-14 text-background-blue md:w-1/3"
           >
             <p class="text-black font-montserrat text-center">
-              Knowledge Square
+              {{ $t("pages.home.author.organization") }}
             </p>
             <router-link
               to="/about"
               class="bg-button-blue hover:bg-button-blue-hover text-white px-6 py-2 mt-4"
             >
-              Learn More
+              {{ $t("buttons.learnMore") }}
             </router-link>
           </div>
         </div>
@@ -190,18 +190,18 @@
           <h3
             class="text-2xl lg:text-4xl font-semibold mb-2 font-montserrat text-black"
           >
-            Join Our Donation Campaign
+            {{ $t("pages.home.donation.title") }}
           </h3>
           <h3
             class="font-light uppercase text-center text-black max-w-md font-montserrat text-sm lg:text-lg"
           >
-            Learn about the why, where and how of our book donation
+            {{ $t("pages.home.donation.subtitle") }}
           </h3>
           <router-link
             to="donation-campaign"
             class="bg-button-blue hover:bg-button-blue-hover text-white px-8 p-4 mt-6"
           >
-            Donate Now
+            {{ $t("buttons.donateNow") }}
           </router-link>
         </div>
       </div>
@@ -212,6 +212,9 @@
 <script setup>
 import Hero from "@/components/hero/Hero.vue";
 import heroImage from "@/assets/images/hero-image.webp";
+import { useDynamicFont } from "@/composables/useDynamicFont";
+
+const { titleClasses, headingClasses, bodyClasses } = useDynamicFont();
 </script>
 
 <style scoped>

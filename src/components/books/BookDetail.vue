@@ -1,29 +1,41 @@
 <template>
-  <div class="mx-auto">
+  <div class="mx-auto font-thai">
     <div :class="bgClass" class="py-24 w-full">
       <!-- Book Images -->
-      <div class="flex justify-center items-center gap-4 mx-auto">
+      <div
+        class="flex flex-col sm:flex-row justify-center items-center gap-4 mx-auto"
+      >
         <div class="flex flex-col items-center w-1/2">
           <img :src="bookData.image" :alt="bookData.title" class="h-auto" />
           <p
-            class="sr-only text-gray-700 text-center font-montserrat py-8 w-[80%]"
+            :class="`sr-only text-gray-700 text-center py-8 w-[80%] ${bodyClasses}`"
           >
             {{ bookData.title }}
           </p>
         </div>
 
         <!-- Book Details -->
-        <div class="flex flex-col items-center gap-4 w-1/2 mr-16">
-          <p class="text-black text-justify font-montserrat w-[60%]">
+        <div
+          class="flex flex-col items-center gap-4 w-full sm:w-1/2 md:mr-16 mx-auto"
+        >
+          <p
+            :class="`text-black w-[60%] preserve-whitespace ${bodyClassesWithAlignment}`"
+          >
             {{ bookData.shortDescription }}
           </p>
-          <p class="text-black text-justify font-montserrat w-[80%]">
+          <p
+            :class="`text-black w-[80%] preserve-whitespace ${bodyClassesWithAlignment}`"
+          >
             {{ bookData.description }}
           </p>
-          <p class="text-black text-justify font-montserrat w-[80%]">
+          <p
+            :class="`text-black w-[80%] preserve-whitespace ${bodyClassesWithAlignment}`"
+          >
             {{ bookData.additionalInfo1 }}
           </p>
-          <p class="text-black text-justify font-montserrat w-[80%]">
+          <p
+            :class="`text-black w-[80%] preserve-whitespace ${bodyClassesWithAlignment}`"
+          >
             {{ bookData.additionalInfo2 }}
           </p>
         </div>
@@ -36,9 +48,9 @@
     :class="bgdClass"
   >
     <h3
-      class="text-2xl lg:text-3xl font-montserrat font-semibold text-white mb-6"
+      :class="`text-2xl lg:text-3xl font-semibold text-white mb-6 ${headingClasses}`"
     >
-      Explore Series
+      {{ $t("pages.bookDetail.exploreSeriesTitle") }}
     </h3>
     <div class="flex flex-wrap justify-center gap-12">
       <router-link
@@ -49,7 +61,7 @@
       >
         <img :src="book.image" :alt="book.title" class="w-40 h-auto" />
         <p
-          class="sr-only text-gray-700 text-center font-montserrat mb-8 w-[80%]"
+          :class="`sr-only text-gray-700 text-center mb-8 w-[80%] ${bodyClasses}`"
         >
           {{ book.title }}
         </p>
@@ -58,7 +70,9 @@
   </div>
   <!--where to buy-->
   <div class="flex flex-col gap-4 items-center py-8">
-    <h3 class="text-3xl font-bold text-black pb-8">Buy / Download at</h3>
+    <h3 :class="`text-3xl font-bold text-black pb-8 ${headingClasses}`">
+      {{ $t("pages.ourBooks.buyDownload") }}
+    </h3>
     <div class="flex flex-col md:flex-row gap-4 items-center">
       <a
         v-for="(store, index) in bookData.stores || defaultStores"
@@ -75,6 +89,10 @@
 
 <script setup>
 import { computed } from "vue";
+import { useDynamicFont } from "@/composables/useDynamicFont";
+
+const { headingClasses, bodyClasses, bodyClassesWithAlignment } =
+  useDynamicFont();
 
 const props = defineProps({
   bookData: {
@@ -86,7 +104,7 @@ const props = defineProps({
       shortDescription:
         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
       description:
-        'The main content of this book series (4 volumes) explains that, in essence, "Dharma is Science, and Science is Dharma." It merges modern science with the traditional wisdom of Dharma into a unified whole, calling this new body of knowledge "Dharmoscience." This will enable readers to deeply and profoundly understand the truths of nature.',
+        "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
       additionalInfo1:
         "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat",
       additionalInfo2:

@@ -3,12 +3,14 @@
     <!-- Hero Section -->
     <div class="container mx-auto">
       <section class="text-center mb-8">
-        <h1 class="text-4xl font-montserrat font-bold text-gray-800 mt-12 mb-6">
-          Book Donation Campaign
+        <h1
+          :class="`text-4xl font-bold text-gray-800 mt-12 mb-6 ${titleClasses}`"
+        >
+          {{ $t("pages.donationCampaign.title") }}
         </h1>
         <div class="w-1/2 h-[2px] line-blue mx-auto mb-4"></div>
-        <p class="text-xl text-gray-700 font-merriweather italic">
-          For Worldwide Dissemination of Dharma
+        <p :class="`text-xl text-gray-700 italic ${bodyClasses}`">
+          {{ $t("pages.donationCampaign.subtitle") }}
         </p>
       </section>
 
@@ -25,9 +27,9 @@
         <div class="flex justify-center">
           <router-link
             to="/donate"
-            class="button-blue hover:bg-red-600 text-white font-medium py-3 px-8 transition duration-300 ease-in-out"
+            :class="`button-blue hover:bg-red-600 text-white font-medium py-3 px-8 transition duration-300 ease-in-out ${bodyClasses}`"
           >
-            Donate Now
+            {{ $t("buttons.donateNow") }}
           </router-link>
         </div>
       </div>
@@ -35,9 +37,9 @@
       <!-- Our Objectives Section -->
       <section class="w-full mx-auto py-8">
         <h3
-          class="text-center text-2xl lg:text-4xl font-semibold mb-2 font-montserrat text-black pb-8"
+          :class="`text-center text-2xl lg:text-4xl font-semibold mb-2 text-black pb-8 ${headingClasses}`"
         >
-          Our Objectives
+          {{ $t("pages.donationCampaign.objectives.title") }}
         </h3>
         <div class="relative mx-auto w-[90%] lg:w-[60%]">
           <!-- Top-left border -->
@@ -60,11 +62,17 @@
                 <span class="text-4xl font-bold text-gray-800">01</span>
               </div>
               <div class="w-3/4">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Global Knowledge Sharing
+                <h3
+                  :class="`text-xl font-semibold text-gray-800 mb-2 ${headingClasses}`"
+                >
+                  {{ $t("pages.donationCampaign.objectives.objective1.title") }}
                 </h3>
-                <p class="text-gray-600">
-                  Available in English for recipients around the world
+                <p :class="`text-gray-600 ${bodyClassesWithAlignment}`">
+                  {{
+                    $t(
+                      "pages.donationCampaign.objectives.objective1.description"
+                    )
+                  }}
                 </p>
               </div>
             </div>
@@ -76,14 +84,16 @@
               </div>
               <div class="w-3/4">
                 <h3
-                  class="font-montserrat text-xl font-semibold text-gray-800 mb-2"
+                  :class="`text-xl font-semibold text-gray-800 mb-2 ${headingClasses}`"
                 >
-                  Cultural Exchange & Understanding
+                  {{ $t("pages.donationCampaign.objectives.objective2.title") }}
                 </h3>
-                <p class="text-gray-600">
-                  Using a simple language, universal examples, and scientific
-                  discoveries to help readers from all cultures apply the
-                  teachings to everyday life.
+                <p :class="`text-gray-600 ${bodyClassesWithAlignment}`">
+                  {{
+                    $t(
+                      "pages.donationCampaign.objectives.objective2.description"
+                    )
+                  }}
                 </p>
               </div>
             </div>
@@ -94,12 +104,17 @@
                 <span class="text-4xl font-bold text-gray-800">03</span>
               </div>
               <div class="w-3/4">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Educational Resource
+                <h3
+                  :class="`text-xl font-semibold text-gray-800 mb-2 ${headingClasses}`"
+                >
+                  {{ $t("pages.donationCampaign.objectives.objective3.title") }}
                 </h3>
-                <p class="text-gray-600">
-                  A learning tool that makes dharma accessible to all, helping
-                  people apply it in daily life.
+                <p :class="`text-gray-600 ${bodyClassesWithAlignment}`">
+                  {{
+                    $t(
+                      "pages.donationCampaign.objectives.objective3.description"
+                    )
+                  }}
                 </p>
               </div>
             </div>
@@ -113,23 +128,20 @@
       <div class="container mx-auto">
         <div class="flex flex-col items-center gap-4 py-12">
           <h2
-            class="text-2xl lg:text-4xl font-montserrat font-bold text-black text-center"
+            :class="`text-2xl lg:text-4xl font-bold text-black text-center ${titleClasses}`"
           >
-            Donate Dharmoscience Series
+            {{ $t("pages.donationCampaign.dharmoscienceSeries.title") }}
           </h2>
-          <p class="text-xl font-merriweather italic text-black text-center">
-            Where Modern Science and Dharma Converge
+          <p :class="`text-xl italic text-black text-center ${bodyClasses}`">
+            {{ $t("pages.donationCampaign.dharmoscienceSeries.subtitle") }}
           </p>
         </div>
         <div class="gradient-background-red py-16 px-4">
           <div class="max-w-3xl mx-auto">
-            <p class="text-gray-700 text-center font-montserrat mb-8">
-              The core concept of this four-book series is the idea that "Dharma
-              is science, and science is dharma." It integrates modern science
-              with the ancient wisdom of dharma into a unified knowledge system
-              called "Dharmoscience." This new framework enables readers to gain
-              a profound and comprehensive understanding of the ultimate reality
-              of nature.
+            <p
+              :class="`text-gray-700 text-center mb-8 preserve-whitespace ${bodyClassesWithAlignment}`"
+            >
+              {{ $t("pages.donationCampaign.dharmoscienceSeries.description") }}
             </p>
 
             <!-- Book Images -->
@@ -168,9 +180,9 @@
             <div class="flex pt-12 justify-center">
               <router-link
                 to="/donate"
-                class="button-red hover:button-red-hover text-white font-medium py-3 px-8 transition duration-300 ease-in-out"
+                :class="`button-red hover:button-red-hover text-white font-medium py-3 px-8 transition duration-300 ease-in-out ${bodyClasses}`"
               >
-                Donate Now
+                {{ $t("buttons.donateNow") }}
               </router-link>
             </div>
           </div>
@@ -180,13 +192,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "DonationCampaignView",
-  mounted() {
-    window.scrollTo(0, 0);
-  },
-};
+<script setup>
+import { useDynamicFont } from "@/composables/useDynamicFont";
+
+const { titleClasses, headingClasses, bodyClasses, bodyClassesWithAlignment } =
+  useDynamicFont();
 </script>
 
 <style scoped>

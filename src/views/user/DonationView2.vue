@@ -3,7 +3,9 @@
     <div
       class="container grid grid-cols-1 mx-auto md:p-8 font-thai text-gray-700"
     >
-      <h1 class="text-4xl font-bold text-black text-center">Donor Form</h1>
+      <h1 class="text-4xl font-bold text-black text-center">
+        {{ $t("pages.donation.form.title") }}
+      </h1>
       <div class="divider divider-info w-1/2 mx-auto"></div>
 
       <!-- Loading indicator when checking for pending donations -->
@@ -18,77 +20,93 @@
         <div class="text-background-blue p-2 md:p-6 md:w-[80%] mx-auto">
           <form class="px-2 md:px-8 pt-6 pb-8">
             <div class="flex items-center mb-4">
-              <label for="name" class="w-1/4">Name:</label>
+              <label for="name" class="w-1/4">{{
+                $t("pages.donation.form.name")
+              }}</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="name"
                 type="text"
-                placeholder="Donor Name"
+                :placeholder="$t('pages.donation.form.placeholders.donorName')"
                 v-model="formData.name"
               />
             </div>
 
             <div class="flex items-center mb-4">
-              <label class="w-1/4" for="address">Address:</label>
+              <label class="w-1/4" for="address">{{
+                $t("pages.donation.form.address")
+              }}</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="address"
                 type="text"
-                placeholder="Donor Address (Optional)"
+                :placeholder="
+                  $t('pages.donation.form.placeholders.donorAddress')
+                "
                 v-model="formData.address"
               />
             </div>
 
             <div class="flex items-center mb-4">
-              <label class="w-1/4" for="telephone">Telephone:</label>
+              <label class="w-1/4" for="telephone">{{
+                $t("pages.donation.form.telephone")
+              }}</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="telephone"
                 type="text"
-                placeholder="Telephone"
+                :placeholder="$t('pages.donation.form.placeholders.telephone')"
                 v-model="formData.telephone"
                 aria-label="Telephone"
               />
             </div>
 
             <div class="flex items-center mb-4">
-              <label class="w-1/4" for="email">Email:</label>
+              <label class="w-1/4" for="email">{{
+                $t("pages.donation.form.email")
+              }}</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="email"
                 type="email"
-                placeholder="Email (Require)"
+                :placeholder="$t('pages.donation.form.placeholders.email')"
                 v-model="formData.email"
                 required
               />
             </div>
 
             <div class="flex items-center mb-4">
-              <label class="w-1/4" for="quantity">Amount:</label>
+              <label class="w-1/4" for="quantity">{{
+                $t("pages.donation.form.amount")
+              }}</label>
               <input
                 class="w-full py-4 px-3 bg-white text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="quantity"
                 type="number"
                 min="1"
-                placeholder="Amount"
+                :placeholder="$t('pages.donation.form.placeholders.amount')"
                 v-model="formData.quantity"
                 @input="onQuantityChange"
                 aria-label="Quantity"
               />
             </div>
             <p class="text-sm text-gray-600 mb-4 ml-4">
-              You can select
-              <span v-text="formData.quantity || 0"></span> different
-              recipients.
+              {{
+                $t("pages.donation.form.messages.selectRecipients", {
+                  count: formData.quantity || 0,
+                })
+              }}
             </p>
 
             <div class="mb-4">
-              <label class="sr-only" for="total"> Total </label>
+              <label class="sr-only" for="total">{{
+                $t("pages.donation.form.total")
+              }}</label>
               <input
                 class="w-full py-4 px-3 bg-gray-100 text-gray-700 leading-tight focus:outline-2 outline-button-blue focus:shadow-outline uppercase"
                 id="total"
                 type="text"
-                placeholder="TOTAL (THB)"
+                :placeholder="$t('pages.donation.form.placeholders.total')"
                 v-model="formData.total"
                 readonly
                 aria-label="Total"
@@ -97,7 +115,9 @@
 
             <!-- Donation Type Selection -->
             <div class="mb-6 p-4 bg-blue-50 rounded-lg">
-              <h3 class="font-semibold text-md mb-3">Recipient</h3>
+              <h3 class="font-semibold text-md mb-3">
+                {{ $t("pages.donation.form.recipient") }}
+              </h3>
               <p class="sr-only text-sm text-gray-600 mb-4">
                 Please specify how you would like to distribute your donation of
                 {{ formData.quantity }} sets.
@@ -110,9 +130,9 @@
                   v-model="formData.isSpecified"
                   class="w-5 h-5 text-blue-600"
                 />
-                <label for="specified-checkbox" class="font-medium"
-                  >Specified</label
-                >
+                <label for="specified-checkbox" class="font-medium">{{
+                  $t("pages.donation.form.specified")
+                }}</label>
                 <input
                   type="number"
                   min="0"
@@ -121,7 +141,9 @@
                   :disabled="!formData.isSpecified"
                   class="w-20 py-2 px-3 bg-white border border-gray-300 rounded-md"
                 />
-                <span class="text-gray-700">SETS</span>
+                <span class="text-gray-700">{{
+                  $t("pages.donation.form.sets")
+                }}</span>
               </div>
 
               <div class="flex items-center space-x-4">
@@ -131,9 +153,9 @@
                   v-model="formData.isUnspecified"
                   class="w-5 h-5 text-blue-600"
                 />
-                <label for="unspecified-checkbox" class="font-medium"
-                  >Unspecified</label
-                >
+                <label for="unspecified-checkbox" class="font-medium">{{
+                  $t("pages.donation.form.unspecified")
+                }}</label>
                 <input
                   type="number"
                   min="0"
@@ -142,7 +164,9 @@
                   :disabled="!formData.isUnspecified"
                   class="w-20 py-2 px-3 bg-white border border-gray-300 rounded-md"
                 />
-                <span class="text-gray-700">SETS</span>
+                <span class="text-gray-700">{{
+                  $t("pages.donation.form.sets")
+                }}</span>
               </div>
 
               <div
@@ -174,14 +198,14 @@
               class="mb-6 p-4 bg-blue-50 rounded-lg"
             >
               <h3 class="sr-only font-semibold text-md mb-3">
-                Categories for Unspecified Donations
+                {{ $t("pages.donation.form.unspecifiedCategories.title") }}
               </h3>
               <p class="sr-only text-sm text-gray-600 mb-3">
                 Please select which categories you would like your unspecified
                 donations to be distributed to:
               </p>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
                 <div
                   v-for="(value, category) in unspecifiedCategories"
                   :key="category"
@@ -197,7 +221,7 @@
                     :for="`category-${category}`"
                     class="text-gray-700 font-medium flex-1"
                   >
-                    {{ categoryNames[category] }}
+                    {{ getCategoryLabel(category) }}
                   </label>
                   <div
                     v-if="unspecifiedCategories[category].selected"
@@ -222,8 +246,7 @@
                 "
                 class="mt-2 text-sm text-red-500"
               >
-                Please select at least one category for your unspecified
-                donations.
+                {{ $t("pages.donation.form.messages.selectAtLeastOne") }}
               </div>
 
               <div
@@ -232,10 +255,15 @@
                 "
                 class="mt-2 text-sm text-amber-600"
               >
-                You have allocated {{ totalCategoryAmount }} of
-                {{ formData.unspecifiedAmount }} sets. The remaining
-                {{ parseInt(formData.unspecifiedAmount) - totalCategoryAmount }}
-                sets will be distributed according to your selected categories.
+                {{
+                  $t("pages.donation.form.messages.allocatedSets", {
+                    allocated: totalCategoryAmount,
+                    total: formData.unspecifiedAmount,
+                    remaining:
+                      parseInt(formData.unspecifiedAmount) -
+                      totalCategoryAmount,
+                  })
+                }}
               </div>
 
               <div
@@ -244,9 +272,12 @@
                 "
                 class="mt-2 text-sm text-red-500"
               >
-                You have allocated too many sets ({{ totalCategoryAmount }} of
-                {{ formData.unspecifiedAmount }}). Please reduce your
-                allocations to match your unspecified donation amount.
+                {{
+                  $t("pages.donation.form.messages.tooManySets", {
+                    allocated: totalCategoryAmount,
+                    total: formData.unspecifiedAmount,
+                  })
+                }}
               </div>
             </div>
 
@@ -259,8 +290,11 @@
             >
               <h3 class="font-semibold text-lg mb-3">Specified Recipients</h3>
               <p class="sr-only text-sm text-gray-600 mb-4">
-                Please provide details for each of your
-                {{ formData.specifiedAmount }} specified recipients.
+                {{
+                  $t("pages.donation.form.messages.provideDetails", {
+                    count: formData.specifiedAmount,
+                  })
+                }}
               </p>
 
               <div
@@ -269,14 +303,18 @@
                 class="mb-8 p-4 bg-gray-50 rounded-lg"
               >
                 <h3 class="font-semibold text-lg mb-4">
-                  Recipient Details #{{ index + 1 }}
+                  {{
+                    $t("pages.donation.form.messages.recipientDetailsTitle", {
+                      number: index + 1,
+                    })
+                  }}
                 </h3>
 
                 <!-- Recipient Type Selection - Always visible -->
                 <div class="mb-4">
-                  <label for="category" class="block mb-2 font-medium"
-                    >Recipient Type</label
-                  >
+                  <label for="category" class="block mb-2 font-medium">{{
+                    $t("pages.donation.form.category")
+                  }}</label>
                   <select
                     id="category"
                     v-model="recipient.category"
@@ -301,7 +339,9 @@
                     <label
                       for="custom-recipient-name"
                       class="block mb-2 font-medium"
-                      >Custom Recipient Name</label
+                      >{{
+                        $t("pages.donation.form.customRecipient.name")
+                      }}</label
                     >
                     <input
                       id="custom-recipient-name"
@@ -309,21 +349,27 @@
                       type="text"
                       required
                       class="w-full p-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Enter recipient name"
+                      :placeholder="
+                        $t(
+                          'pages.donation.form.customRecipient.namePlaceholder'
+                        )
+                      "
                     />
                   </div>
 
                   <div class="mb-4">
-                    <label for="custom-region" class="block mb-2 font-medium"
-                      >Region</label
-                    >
+                    <label for="custom-region" class="block mb-2 font-medium">{{
+                      $t("pages.donation.form.customRegion")
+                    }}</label>
                     <select
                       id="custom-region"
                       v-model="recipient.region"
                       required
                       class="w-full p-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="">Select Region</option>
+                      <option value="">
+                        {{ $t("pages.donation.form.search.selectRegion") }}
+                      </option>
                       <option
                         v-for="region in regions"
                         :key="region.id"
@@ -335,8 +381,10 @@
                   </div>
 
                   <div class="mb-4">
-                    <label for="custom-country" class="block mb-2 font-medium"
-                      >Country</label
+                    <label
+                      for="custom-country"
+                      class="block mb-2 font-medium"
+                      >{{ $t("pages.donation.form.customCountry") }}</label
                     >
                     <input
                       id="custom-country"
@@ -344,20 +392,31 @@
                       type="text"
                       required
                       class="w-full p-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Enter country"
+                      :placeholder="
+                        $t(
+                          'pages.donation.form.customRecipient.countryPlaceholder'
+                        )
+                      "
                     />
                   </div>
 
                   <div class="mb-4">
-                    <label for="custom-address" class="block mb-2 font-medium"
-                      >Address</label
+                    <label
+                      for="custom-address"
+                      class="block mb-2 font-medium"
+                      >{{ $t("pages.donation.form.customAddress") }}</label
                     >
+
                     <textarea
                       id="custom-address"
                       v-model="recipient.address"
                       required
                       class="w-full p-3 bg-white border border-gray-300 rounded-md min-h-[80px] resize-y"
-                      placeholder="Enter complete address"
+                      :placeholder="
+                        $t(
+                          'pages.donation.form.customRecipient.addressPlaceholder'
+                        )
+                      "
                     ></textarea>
                   </div>
                 </div>
@@ -396,9 +455,9 @@
                     recipient.category !== 'admin-select'
                   "
                 >
-                  <label for="region" class="block mb-2 font-medium"
-                    >Region</label
-                  >
+                  <label for="region" class="block mb-2 font-medium">{{
+                    $t("pages.donation.form.region")
+                  }}</label>
                   <select
                     id="region"
                     v-model="recipient.region"
@@ -406,7 +465,9 @@
                     required
                     class="w-full p-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select Region</option>
+                    <option value="">
+                      {{ $t("pages.donation.form.search.selectRegion") }}
+                    </option>
                     <option
                       v-for="region in regions"
                       :key="region.id"
@@ -428,9 +489,9 @@
 
                 <!-- Country Selection - Only visible after region is selected -->
                 <div class="mb-4" v-if="recipient.region">
-                  <label for="country" class="block mb-2 font-medium"
-                    >Country</label
-                  >
+                  <label for="country" class="block mb-2 font-medium">{{
+                    $t("pages.donation.form.country")
+                  }}</label>
                   <select
                     id="country"
                     v-model="recipient.country"
@@ -438,7 +499,9 @@
                     required
                     class="w-full p-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="">Select Country</option>
+                    <option value="">
+                      {{ $t("pages.donation.form.search.selectCountry") }}
+                    </option>
                     <option
                       v-for="country in getCountriesForRegion(recipient.region)"
                       :key="country"
@@ -464,9 +527,9 @@
                   v-if="recipient.country"
                   @click.stop
                 >
-                  <label for="institution" class="block mb-2 font-medium"
-                    >Institution</label
-                  >
+                  <label for="institution" class="block mb-2 font-medium">{{
+                    $t("pages.donation.form.institution")
+                  }}</label>
 
                   <!-- Show count of available institutions -->
                   <div
@@ -491,7 +554,9 @@
                       type="text"
                       v-model="recipient.institutionSearch"
                       class="w-full p-3 pl-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Search and select institution..."
+                      :placeholder="
+                        $t('pages.donation.form.search.placeholder')
+                      "
                       autocomplete="off"
                       @focus="
                         $event.target.select();
@@ -583,7 +648,9 @@
                           "
                           class="px-3 py-2 text-center text-sm text-gray-500"
                         >
-                          Type more to narrow down results
+                          {{
+                            $t("pages.donation.form.messages.typeMoreResults")
+                          }}
                         </li>
                       </ul>
                     </div>
@@ -642,7 +709,7 @@
                   <label
                     for="institution-address"
                     class="block mb-2 font-medium"
-                    >Institution Address</label
+                    >{{ $t("pages.donation.form.institutionAddress") }}</label
                   >
                   <textarea
                     id="institution-address"
@@ -661,7 +728,7 @@
                   type="button"
                   @click="clearForm"
                 >
-                  Clear Form
+                  {{ $t("pages.donation.form.buttons.clearForm") }}
                 </button>
                 <button
                   :class="[
@@ -682,20 +749,28 @@
                       class="h-5 w-5 border-t-2 border-b-2 border-white rounded-full animate-spin"
                     ></div>
                   </span>
-                  <span :class="{ invisible: submitting }">Donate</span>
+                  <span :class="{ invisible: submitting }">{{
+                    $t("pages.donation.form.buttons.donate")
+                  }}</span>
                 </button>
               </div>
 
               <!-- Validation Message -->
               <div v-if="!isFormValid" class="text-center text-red-500 text-sm">
-                <p>Please complete all required fields before donating</p>
+                <p>
+                  {{
+                    $t("pages.donation.form.messages.completeRequiredFields")
+                  }}
+                </p>
                 <p
                   v-if="
                     formData.isSpecified &&
                     parseInt(formData.specifiedAmount) > 0
                   "
                 >
-                  Don't forget to complete all recipient details
+                  {{
+                    $t("pages.donation.form.messages.completeRecipientDetails")
+                  }}
                 </p>
               </div>
             </div>
@@ -714,10 +789,15 @@ import recipientsData from "@/data/recipients.json";
 // Import stores and router
 import { useDonationStore } from "@/stores/donationStore";
 import { useRouter } from "vue-router";
+// Import useI18n
+import { useI18n } from "vue-i18n";
 
 // Initialize stores and router
 const donationStore = useDonationStore();
 const router = useRouter();
+
+// In the setup function
+const { t } = useI18n();
 
 // Form data object
 const formData = ref({
@@ -744,17 +824,6 @@ const unspecifiedCategories = ref({
   culturecenter: { selected: false, amount: 0 },
   other: { selected: false, amount: 0 },
 });
-
-// Category display names for UI
-const categoryNames = {
-  university: "Universities",
-  library: "Libraries",
-  religious: "Religious Organizations",
-  church: "Churches",
-  wat: "Wat",
-  culturecenter: "Cultural Centers",
-  other: "Please Select For Me",
-};
 
 // Loading state for form submission
 const submitting = ref(false);
@@ -1673,9 +1742,9 @@ const handleSubmit = async () => {
         for (let i = 0; i < cat.amount; i++) {
           recipientsData.push({
             recipientCategory: "unspecified",
-            recipientName: `To be determined by admin (${
-              categoryNames[cat.category]
-            })`,
+            recipientName: `To be determined by admin (${getCategoryLabel(
+              cat.category
+            )})`,
             preferredCategories: [cat.category],
             specificCategory: true,
           });
@@ -1836,6 +1905,11 @@ const getSubmitPreview = () => {
     unspecifiedAmount: parseInt(formData.value.unspecifiedAmount) || 0,
     recipients: recipientsData,
   };
+};
+
+// For displaying category names, use the translation:
+const getCategoryLabel = (categoryKey) => {
+  return t(`pages.donation.form.unspecifiedCategories.${categoryKey}`);
 };
 </script>
 

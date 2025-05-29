@@ -1,0 +1,379 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "ourBooks": "Our Books",
+    "ourServices": "Our Services",
+    "donationCampaign": "Donation Campaign",
+    "contactUs": "Contact Us"
+  },
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "thai": "Thai",
+    "close": "Close",
+    "menu": "Menu",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "welcome": "Welcome",
+    "search": "Search",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register"
+  },
+  "buttons": {
+    "learnMore": "Learn More",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "donateNow": "Donate Now"
+  },
+  "pages": {
+    "home": {
+      "title": "Welcome to Woody Prieb",
+      "subtitle": "Discover amazing books and services",
+      "heroQuote": "Discover the wisdom in learning about how science and dharma beautifully intertwine.",
+      "books": {
+        "dharmoscience": {
+          "date": "15 May 2020",
+          "title": "Dharmoscience Series",
+          "description": "This four-book series, \"Dharmoscience,\" is an effort to merge modern scientific knowledge with ancient dharma into a unified framework. The goal is to offer a more comprehensive explanation of the ultimate reality of nature. This approach seeks to scientifically formulate dharma; while simultaneously expanding the scope of modern science beyond the limits of materialism."
+        },
+        "drawYourThoughts": {
+          "date": "15 May 2020",
+          "title": "Draw Your Thoughts",
+          "description": "Unlocks the power of visual thinking to solve problems across diverse fields: from business and politics to metaphysics. This book offers fresh perspectives, enhancing decision-making and enriching both work and life."
+        },
+        "politicsPublicPolicy": {
+          "date": "15 May 2020",
+          "title": "Politics & Public Policy Series",
+          "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,"
+        }
+      },
+      "author": {
+        "name": "Woody Prieb",
+        "fullName": "( Dr. Vuthiphong Priebjrivat )",
+        "organization": "Knowledge Square"
+      },
+      "donation": {
+        "title": "Join Our Donation Campaign",
+        "subtitle": "Learn about the why, where and how of our book donation"
+      }
+    },
+    "about": {
+      "title": "About Us",
+      "subtitle": "Learn more about our mission and vision",
+      "authorSection": {
+        "heading": "About the Author",
+        "name": "Woody Prieb",
+        "fullName": "( Dr. Vuthiphong Priebjrivat )",
+        "biography": {
+          "paragraph1": "After having ranked first in Thailand's national examination in 1970, Woody went to the United States to further his education under the patronage of the King's Scholarship of Thailand and the Rockefeller Scholarship. He received a B.S. in civil engineering from Massachusetts Institute of Technology or MIT (1975); an M.S. in environmental engineering from Stanford University (1976); as well as an M.B.A. and a Ph.D. in economics and public management from the University of Chicago (1979 and 1984).",
+          "paragraph2": "Woody has been quite successful in a rather diverse career spanning roughly four decades: as a university professor, corporate executive, law maker, political critic, religious scholar, public speaker and best-selling author. His deep interest in eastern religions and metaphysics together with a brief period of monkhood, when coupled with his rigorous scientific background, culminated in a series of books concerning the interconnections between modern science and the age-old wisdom of dharma: Dharmadynamics (2004), Neodharma (2012 and 2020), Dharmoscience (2012 and 2020), Sankhara (2014 and 2020) and Nirvana (2024). At present, he regularly lectures on the subject matter to monks and the lay public alike, both in Thailand and overseas."
+        }
+      }
+    },
+    "ourBooks": {
+      "title": "Our Books",
+      "buyDownload": "Buy / Download at",
+      "series": {
+        "dharmoscience": {
+          "title": "Dharmoscience Series",
+          "description": "The main content of this book series (4 volumes) explains that, in essence, \"Dharma is Science, and Science is Dharma.\" It merges modern science with the ancient wisdom of dharma into a unified whole, calling this new body of knowledge \"Dharmoscience.\" This will enable readers to deeply and profoundly understand the ultimate reality of nature.",
+          "books": {
+            "neodharma": {
+              "title": "Neodharma",
+              "subtitle": "From Atom to Anatta"
+            },
+            "dharmoscience": {
+              "title": "Dharmoscience",
+              "subtitle": "The Fusion of Science and Dharma."
+            },
+            "sankhara": {
+              "title": "Sankhara",
+              "subtitle": "The Theory of Everything and Nothing."
+            },
+            "nirvana": {
+              "title": "Nirvana",
+              "subtitle": "Roadmap to Spiritual Enlightenment"
+            }
+          }
+        },
+        "drawYourThoughts": {
+          "title": "Draw Your Thoughts",
+          "description": "Unlocks the power of visual thinking to solve problems across diverse fields, from business and politics to metaphysics. This book offers fresh perspectives, enhancing decision-making and enriching both work and life.",
+          "books": {
+            "drawYourThoughts": {
+              "title": "Draw Your Thoughts"
+            }
+          }
+        },
+        "politicsPublicPolicy": {
+          "title": "Politics & Public Policy Series",
+          "description": "The main content of this book series (4 volumes) explains that, in essence, \"Dharma is Science, and Science is Dharma.\" It merges modern science with the traditional wisdom of Dharma into a unified whole, calling this new body of knowledge \"Dharmoscience.\" This will enable readers to deeply and profoundly understand the truths of nature.",
+          "books": {
+            "tyrantHandbook": {
+              "title": "Handbook for Tyrants"
+            },
+            "theWayOut": {
+              "title": "Handbook for Thailand Recovery"
+            },
+            "cleaningUpThailandBook1": {
+              "title": "Clean Up Thailand (Book 1)"
+            },
+            "cleaningUpThailandBook2": {
+              "title": "Clean Up Thailand (Book 2)"
+            }
+          }
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "Get in touch with us"
+    },
+    "services": {
+      "title": "Our Services",
+      "talks": {
+        "title": "Talks",
+        "subtitle": "Lectures / Seminars / Events",
+        "description": "Engaging and thought-provoking, these talks are designed to inspire a new way of thinking. Through powerful storytelling and insights, they explore the impact of thought management on personal growth, leadership, and mindset transformation. Each session sparks fresh perspectives and motivation for positive change."
+      },
+      "workshops": {
+        "title": "Workshops",
+        "subtitle": "Visual Thinking / Business Strategy / Political Chess & Strategy",
+        "description": "Hands-on and interactive, these workshops offer practical tools to master thought management. Participants will engage in exercises that enhance clarity, decision-making, and resilience. With actionable strategies, they will learn how to boost productivity, creativity, and emotional intelligence in both personal and professional life."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "form": {
+          "namePlaceholder": "Your Name",
+          "emailPlaceholder": "your.email@example.com",
+          "subjectPlaceholder": "Message Subject",
+          "messagePlaceholder": "Your Message",
+          "sendButton": "Send Message"
+        }
+      }
+    },
+    "donationCampaign": {
+      "title": "Book Donation Campaign",
+      "subtitle": "For Worldwide Dissemination of Dharma",
+      "objectives": {
+        "title": "Our Objectives",
+        "objective1": {
+          "title": "Global Knowledge Sharing",
+          "description": "Available in English for recipients around the world"
+        },
+        "objective2": {
+          "title": "Cultural Exchange & Understanding",
+          "description": "Using a simple language, universal examples, and scientific discoveries to help readers from all cultures apply the teachings to everyday life."
+        },
+        "objective3": {
+          "title": "Educational Resource",
+          "description": "A learning tool that makes dharma accessible to all, helping people apply it in daily life."
+        }
+      },
+      "dharmoscienceSeries": {
+        "title": "Donate Dharmoscience Series",
+        "subtitle": "Where Modern Science and Dharma Converge",
+        "description": "The core concept of this four-book series is the idea that \"Dharma is science, and science is dharma.\" It integrates modern science with the ancient wisdom of dharma into a unified knowledge system called \"Dharmoscience.\" This new framework enables readers to gain a profound and comprehensive understanding of the ultimate reality of nature."
+      }
+    },
+    "donation": {
+      "form": {
+        "title": "Donor Form",
+        "name": "Name:",
+        "address": "Address:",
+        "telephone": "Telephone:",
+        "email": "Email:",
+        "amount": "Amount:",
+        "total": "Total",
+        "recipient": "Recipient",
+        "specified": "Specified",
+        "unspecified": "Unspecified",
+        "sets": "SETS",
+        "category": "Category",
+        "region": "Region",
+        "country": "Country",
+        "institution": "Institution",
+        "customRegion": "Custom Region",
+        "customCountry": "Custom Country",
+        "customAddress": "Custom Address",
+        "placeholders": {
+          "donorName": "Donor Name",
+          "donorAddress": "Donor Address (Optional)",
+          "telephone": "Telephone Number",
+          "email": "Email (Required)",
+          "amount": "Amount",
+          "total": "Total (THB)"
+        },
+        "messages": {
+          "selectRecipients": "You can select {count} different recipients.",
+          "specifyDistribution": "Please specify how you would like to distribute your donation of {count} sets.",
+          "totalSetsMismatch": "Total sets must equal {total}. Currently allocated: {allocated} sets.",
+          "categoriesTitle": "Categories for Unspecified Donations",
+          "selectCategories": "Please select which categories you would like your unspecified donations to be distributed to:",
+          "setsLabel": "Sets:",
+          "selectAtLeastOne": "Please select at least one category for your unspecified donations.",
+          "allocatedSets": "You have allocated {allocated} of {total} sets. The remaining {remaining} sets will be distributed according to your selected categories.",
+          "tooManySets": "You have allocated too many sets ({allocated} of {total}). Please reduce your allocations to match your unspecified donation amount.",
+          "specifiedRecipientsTitle": "Specified Recipients",
+          "provideDetails": "Please provide details for each of your {count} specified recipients.",
+          "recipientDetailsTitle": "Recipient Details #{number}",
+          "institutionsAvailable": "{count} institutions available in {country}",
+          "typeMoreResults": "Type more to narrow down results",
+          "institutionAlreadySelected": "This institution has already been selected for another recipient. Please choose a different institution.",
+          "noMatchingInstitutions": "No matching institutions found or all institutions have been selected",
+          "oneInstitutionFound": "1 institution found",
+          "multipleInstitutionsFound": "{count} institutions found",
+          "completedDonationPrompt": "You have a completed donation. Would you like to view it? Click 'OK' to view your completed donation or 'Cancel' to start a new one.",
+          "pendingDonationPrompt": "You have a pending donation. Would you like to resume it? Click 'OK' to resume or 'Cancel' to start a new one.",
+          "donationCompletedPrompt": "Your donation has been completed. Would you like to view it? Click 'OK' to view your completed donation or 'Cancel' to start a new one.",
+          "checkingPreviousDonations": "Checking for previous donations...",
+          "completeRequiredFields": "Please complete all required fields before donating",
+          "completeRecipientDetails": "Don't forget to complete all recipient details"
+        },
+        "recipientTypes": {
+          "selectType": "Select Recipient Type",
+          "university": "Universities",
+          "library": "Libraries",
+          "religious": "Religious Organizations",
+          "church": "Churches",
+          "wat": "Wat",
+          "culturecenter": "Cultural Centers",
+          "custom": "Custom Recipient",
+          "other": "Other"
+        },
+        "unspecifiedCategories": {
+          "university": "Universities",
+          "library": "Libraries",
+          "church": "Churches",
+          "wat": "Wat",
+          "religious": "Religious Organizations",
+          "culturecenter": "Cultural Centers",
+          "other": "Other"
+        },
+        "customRecipient": {
+          "name": "Custom Recipient Name",
+          "namePlaceholder": "Enter recipient name",
+          "countryPlaceholder": "Enter country",
+          "addressPlaceholder": "Enter complete address"
+        },
+        "adminSelection": {
+          "note": "Note:",
+          "description": "Our team will select an appropriate recipient for your donation. If you have any preferences or requests, please mention them below.",
+          "notesLabel": "Notes for Selection (Optional)",
+          "notesPlaceholder": "Any preferences for your donation? (e.g., 'Please select a school in rural areas')"
+        },
+        "search": {
+          "placeholder": "Search and select institution...",
+          "selectRegion": "Select Region",
+          "selectCountry": "Select Country"
+        },
+        "institutionAddress": "Institution Address",
+        "buttons": {
+          "clearForm": "Clear Form",
+          "donate": "Donate"
+        },
+        "loading": "Loading..."
+      }
+    },
+    "notFound": {
+      "title": "Page Not Found",
+      "message": "The page you are looking for does not exist.",
+      "goHome": "Go to Home"
+    },
+    "bookDetails": {
+      "dharmoscience": {
+        "title": "Dharmascience",
+        "shortDescription": "Modern science, without a doubt, can be regarded as the pinnacle of human intellectual pursuit. Considering its recent emergence of only four or five hundred years since Galileo or Copernicus, science certainly has made remarkable progress and impact when compared to other intellectual traditions, either religious or secular. Aside from countless products and artifacts only made possible by modern technology, our way of looking at the world is also profoundly influenced by science. With this enormous success, science has become so confident in itself (sometimes bordering on arrogance) that it tends to overlook what other intellectual or spiritual traditions --particularly the age-old wisdom of religions and metaphysics – have to say.",
+        "description": "In another vein, the word dharma in Sanskrit, in its original and strictest sense, does not mean ethics or morality as commonly understood nowadays; but it means nature. The spiritual core of various eastern religions--particularly Buddhism, Taoism, Jainism and Hinduism-- is in fact the pursuit of true understanding of nature and its immutable laws in order for us to reach spiritual enlightenment and liberation. This is also the ultimate mission of science. In this sense, dharma is science; and science is dharma.",
+        "additionalInfo1": "This four-book set is an effort to combine and integrate modern science and age-old dharma into one fuller body of knowledge --dharmoscience-- in order to better describe the ultimate reality of nature. In other words, this is a novel attempt to scientifically formulate dharma; and at the same time broaden the horizon of modern science beyond the confines of the material realm.",
+        "additionalInfo2": "The four books making up this dharmoscience tetralogy are as follows: (1) Neodharma, (2) Dharmascience, (3) Sankhara, and (4) Nirvana. Within these books is where modern science and dharma converge.",
+        "series": "Dharmoscience Series"
+      },
+      "neodharma": {
+        "title": "Neodharma",
+        "shortDescription": "Neodharma represents a revolutionary synthesis of ancient wisdom and modern scientific understanding, bridging the gap between traditional dharma teachings and contemporary knowledge.",
+        "description": "This foundational work explores how fundamental scientific principles align with dharmic wisdom, creating a new framework for understanding reality that encompasses both material and spiritual dimensions.",
+        "additionalInfo1": "Through careful analysis of quantum physics, consciousness studies, and ancient texts, Neodharma presents a unified theory that validates both scientific inquiry and spiritual insight.",
+        "additionalInfo2": "Essential for readers seeking to understand the convergence of modern science with timeless wisdom traditions, this book lays the groundwork for the entire Dharmoscience series.",
+        "series": "Dharmoscience Series"
+      },
+      "sankhara": {
+        "title": "Sankhara",
+        "shortDescription": "An exploration of the Buddhist concept of Sankhara through the lens of modern physics and systems theory, revealing the interconnected nature of all phenomena.",
+        "description": "Sankhara examines the formations and constructions that shape our reality, both at the quantum level and in consciousness, demonstrating how ancient Buddhist insights align with cutting-edge scientific discoveries.",
+        "additionalInfo1": "This volume delves deep into the nature of conditioned existence, using both scientific methodology and contemplative analysis to understand how reality is constructed.",
+        "additionalInfo2": "Readers will discover how the principle of Sankhara operates across multiple scales, from subatomic particles to cosmic structures, revealing the unified nature of existence.",
+        "series": "Dharmoscience Series"
+      },
+      "nirvana": {
+        "title": "Nirvana",
+        "shortDescription": "The culminating volume that presents Nirvana not as a mystical concept but as a scientifically understandable state of consciousness and being.",
+        "description": "Nirvana bridges the final gap between scientific understanding and spiritual realization, presenting liberation as both a psychological and physical phenomenon that can be approached through rigorous inquiry.",
+        "additionalInfo1": "Using insights from neuroscience, quantum physics, and meditation research, this book demonstrates how the state of Nirvana represents the natural conclusion of both scientific and spiritual investigation.",
+        "additionalInfo2": "This final volume synthesizes all previous insights into a comprehensive understanding of ultimate reality and the path to complete understanding and liberation.",
+        "series": "Dharmoscience Series"
+      },
+      "drawYourThoughts": {
+        "title": "Draw Your Thoughts",
+        "shortDescription": "Unlocks the power of visual thinking to solve problems across diverse fields, from business and politics to metaphysics. This book offers fresh perspectives, enhancing decision-making and enriching both work and life.",
+        "description": "Draw Your Thoughts is a practical guide to harnessing visual thinking methodologies for enhanced problem-solving and creative analysis across multiple disciplines and life situations.",
+        "additionalInfo1": "Through proven techniques and real-world applications, readers learn to translate complex concepts into visual representations that facilitate deeper understanding and more effective communication.",
+        "additionalInfo2": "This comprehensive approach to visual thinking has been successfully applied in business strategy, policy development, and personal growth, making it an invaluable tool for professionals and lifelong learners.",
+        "series": "Standalone"
+      },
+      "tyrantHandbook": {
+        "title": "Handbook for Tyrants",
+        "shortDescription": "Comprehensive analysis of political systems and effective governance.",
+        "description": "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
+        "additionalInfo1": "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
+        "additionalInfo2": "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
+        "series": "Politics & Public Policy Series"
+      },
+      "theWayOut": {
+        "title": "Handbook for Thailand Recovery",
+        "shortDescription": "A comprehensive roadmap for national recovery and sustainable development in Thailand.",
+        "description": "This handbook provides detailed strategies and actionable solutions for addressing Thailand's complex socio-economic challenges through systematic reform and policy innovation.",
+        "additionalInfo1": "Based on thorough analysis of successful recovery models from around the world, adapted specifically for Thailand's unique cultural and economic context.",
+        "additionalInfo2": "An essential resource for policy makers, business leaders, and citizens committed to Thailand's sustainable development and prosperity.",
+        "series": "Politics & Public Policy Series"
+      },
+      "cleaningUpThailandBook1": {
+        "title": "Clean Up Thailand (Book 1)",
+        "shortDescription": "Comprehensive analysis of political systems and effective governance.",
+        "description": "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
+        "additionalInfo1": "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
+        "additionalInfo2": "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
+        "series": "Politics & Public Policy Series"
+      },
+      "cleaningUpThailandBook2": {
+        "title": "Clean Up Thailand (Book 2)",
+        "shortDescription": "The continuation of comprehensive reforms for Thailand's political and social transformation.",
+        "description": "Building on the foundation laid in Book 1, this volume delves deeper into implementation strategies and long-term solutions for sustainable governance reform.",
+        "additionalInfo1": "Advanced frameworks for institutional reform, transparency measures, and citizen engagement that build upon the foundational concepts from the first volume.",
+        "additionalInfo2": "Critical for understanding the complete transformation process and ensuring successful implementation of comprehensive reforms across all levels of governance.",
+        "series": "Politics & Public Policy Series"
+      }
+    },
+    "bookDetail": {
+      "exploreSeriesTitle": "Explore Series"
+    }
+  },
+  "forms": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "message": "Message",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email"
+  }
+}

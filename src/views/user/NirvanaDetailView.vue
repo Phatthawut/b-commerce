@@ -3,6 +3,8 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import BookDetail from "@/components/books/BookDetail.vue";
 import dharmoscienceThumbnail from "@/assets/images/dharmoscience-thumbnail.webp";
 import neodharmaThumb from "@/assets/images/neodharma-thumbnail.webp";
@@ -14,15 +16,16 @@ import buy03 from "@/assets/images/buy-03.webp";
 import buy04 from "@/assets/images/buy-04.webp";
 import buy05 from "@/assets/images/buy-05.webp";
 
-const dharmaScienceBook = {
-  title: "Nirvana",
+const { t } = useI18n();
+
+const dharmaScienceBook = computed(() => ({
+  title: t("pages.bookDetails.nirvana.title"),
   image: nirvanaThumb,
-  shortDescription: "",
-  description:
-    "Spiritual enlightenment, nirvana, is the ultimate spiritual goal among the eastern religions, philosophy and metaphysics. Within the book, this profound, complex and often misunderstood concept from the various religions and differing schools of thought as well as modern science, are brought together in order to create a common conceptual framework. The concept is then elaborated and visually illustrated with several simple diagrams for easy understanding. Visual nirvana roadmaps are also provided as the navigating tool for spiritual seekers on their ultimate journey.",
-  additionalInfo1: "",
-  additionalInfo2: "",
-  series: "Dharmoscience Series",
+  shortDescription: t("pages.bookDetails.nirvana.shortDescription"),
+  description: t("pages.bookDetails.nirvana.description"),
+  additionalInfo1: t("pages.bookDetails.nirvana.additionalInfo1"),
+  additionalInfo2: t("pages.bookDetails.nirvana.additionalInfo2"),
+  series: t("pages.bookDetails.nirvana.series"),
   colorScheme: "purple",
   backgroundColor: "purple",
   relatedBooks: [
@@ -69,5 +72,5 @@ const dharmaScienceBook = {
       link: "https://kobo.com",
     },
   ],
-};
+}));
 </script>
