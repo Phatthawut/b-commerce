@@ -155,7 +155,7 @@
         "title": "Contact Us",
         "form": {
           "namePlaceholder": "Your Name",
-          "emailPlaceholder": "your.email@example.com",
+          "emailPlaceholder": "Your Email",
           "subjectPlaceholder": "Message Subject",
           "messagePlaceholder": "Your Message",
           "sendButton": "Send Message"
