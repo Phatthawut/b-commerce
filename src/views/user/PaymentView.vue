@@ -92,7 +92,8 @@
             />
             <label for="bank-transfer" class="text-lg">Bank Transfer</label>
           </div>
-          <!-- Stripe Payment (Credit Card + PromptPay) -->
+          <!-- Stripe Payment (Credit Card + PromptPay) - DISABLED FOR BANK TRANSFER ONLY VERSION -->
+          <!-- 
           <div class="flex items-center">
             <input
               type="radio"
@@ -106,6 +107,7 @@
               Credit Card / PromptPay
             </label>
           </div>
+          -->
         </div>
 
         <!-- Bank transfer details (shown when bank transfer is selected) -->
@@ -114,9 +116,10 @@
           class="mt-6 p-4 bg-gray-50 rounded"
         >
           <h3 class="font-semibold mb-2">Bank Transfer Information</h3>
-          <p>Bank: Siam Commercial Bank</p>
-          <p>Account Name: Woody Prieb Knowledge Square</p>
-          <p>Account Number: 123-4-56789-0</p>
+          <p>Bank: ธนาคารกรุงเทพ</p>
+          <p>Account Name: นายวุฒิพงษ์ เพรียบจริยวัฒน์</p>
+          <p>Account Number: 101-957220-3</p>
+          <p>Branch: สำนักงานใหญ่สีลม</p>
           <p class="mt-4 text-sm text-gray-600">
             Please upload your payment slip below:
           </p>
@@ -127,7 +130,7 @@
               type="file"
               id="payment-slip"
               class="hidden"
-              accept="image/*"
+              accept="image/jpeg,image/png,.jpg,.jpeg,.png"
               @change="handleFileUpload"
               ref="fileInput"
             />
@@ -256,7 +259,7 @@ const router = useRouter();
 const route = useRoute();
 const donationStore = useDonationStore();
 const shipmentStore = useShipmentStore();
-const paymentMethod = ref("");
+const paymentMethod = ref("bank-transfer"); // Auto-select bank transfer for old server deployment
 const paymentSlip = ref(null);
 const paymentSlipPreview = ref(null);
 const fileInput = ref(null);
@@ -308,8 +311,9 @@ const initializeStripe = async () => {
     // Create Payment Intent on the server first
     const response = await fetch(
       `${
-        import.meta.env.VITE_API_URL || "http://localhost:3000"
-      }/api/create-payment-intent`,
+        import.meta.env.VITE_API_URL ||
+        "https://your-project-id-default-rtdb.asia-southeast1.firebasedatabase.app/api"
+      }/create-payment-intent`,
       {
         method: "POST",
         headers: {
@@ -433,10 +437,10 @@ onMounted(async () => {
           cardDetails.value.name = donationStore.currentDonation.donorName;
         }
 
-        // Initialize Stripe if needed
-        if (!stripe.value) {
-          initializeStripe();
-        }
+        // Initialize Stripe if needed - DISABLED FOR BANK TRANSFER ONLY VERSION
+        // if (!stripe.value) {
+        //   initializeStripe();
+        // }
       } else {
         // Donation not found, show error
         alert("Donation not found. Please try again.");
@@ -492,10 +496,10 @@ onMounted(async () => {
           donationStore.currentDonation
         );
 
-        // Initialize Stripe
-        if (!stripe.value) {
-          initializeStripe();
-        }
+        // Initialize Stripe - DISABLED FOR BANK TRANSFER ONLY VERSION
+        // if (!stripe.value) {
+        //   initializeStripe();
+        // }
       } catch (error) {
         console.error("Error loading donation data:", error);
         alert("Error loading donation data. Please try again.");
@@ -510,12 +514,12 @@ onMounted(async () => {
     }
   }
 
-  // Initialize Stripe when payment method is set to credit card
-  watch(paymentMethod, (newValue) => {
-    if (newValue === "stripe-payment") {
-      initializeStripe();
-    }
-  });
+  // Initialize Stripe when payment method is set to credit card - DISABLED FOR BANK TRANSFER ONLY VERSION
+  // watch(paymentMethod, (newValue) => {
+  //   if (newValue === "stripe-payment") {
+  //     initializeStripe();
+  //   }
+  // });
 });
 
 const handleFileUpload = async (event) => {
@@ -525,11 +529,11 @@ const handleFileUpload = async (event) => {
   // Reset any previous error
   fileError.value = "";
 
-  // Validate file type with stronger checks
-  const validTypes = ["image/jpeg", "image/png", "image/gif"];
+  // Validate file type - only JPG and PNG allowed (matching Storage rules)
+  const validTypes = ["image/jpeg", "image/png"];
 
   if (!validTypes.includes(file.type)) {
-    fileError.value = "Please upload an image file (JPEG, PNG)";
+    fileError.value = "Please upload only JPG or PNG files";
     return;
   }
 
@@ -541,7 +545,7 @@ const handleFileUpload = async (event) => {
   );
 
   if (!hasValidExtension) {
-    fileError.value = "Invalid file type. Please use only JPG, PNG files.";
+    fileError.value = "Invalid file type. Please use only JPG or PNG files.";
     return;
   }
 
@@ -565,7 +569,7 @@ const handleFileUpload = async (event) => {
   // Store the original file
   let fileToUpload = file;
 
-  // Compress image if it's over 250KB and is an image (not PDF)
+  // Compress image if it's over 250KB and is an image
   if (file.type.startsWith("image/") && file.size > 250 * 1024) {
     try {
       fileError.value = "Compressing image...";
@@ -593,9 +597,6 @@ const handleFileUpload = async (event) => {
       paymentSlipPreview.value = e.target.result;
     };
     reader.readAsDataURL(file);
-  } else {
-    // For PDF files, show a generic icon
-    paymentSlipPreview.value = "/images/pdf-icon.png";
   }
 };
 
@@ -621,17 +622,14 @@ const validateImageContent = (file) => {
         byteArray[2] === 0x4e &&
         byteArray[3] === 0x47;
 
-      // GIF signature: either "GIF87a" or "GIF89a"
-      const isGif =
-        arrayBuffer.byteLength >= 6 &&
-        byteArray[0] === 0x47 &&
-        byteArray[1] === 0x49 &&
-        byteArray[2] === 0x46;
-
-      if (isJpeg || isPng || isGif) {
+      if (isJpeg || isPng) {
         resolve();
       } else {
-        reject(new Error("The file appears to be invalid or corrupted"));
+        reject(
+          new Error(
+            "The file appears to be invalid or corrupted. Only JPG and PNG files are allowed."
+          )
+        );
       }
     };
 
@@ -752,7 +750,7 @@ const uploadPaymentSlip = async (file, donationId) => {
 
     // Generate a unique filename with timestamp and random string
     const randomString = Math.random().toString(36).substring(2, 10);
-    const fileName = `payment_slips/${donationId}_${Date.now()}_${randomString}.${fileExtension}`;
+    const fileName = `donations/${donationId}/payment_slip_${Date.now()}_${randomString}.${fileExtension}`;
 
     const fileRef = storageRef(storage, fileName);
 
