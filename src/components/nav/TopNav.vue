@@ -51,7 +51,7 @@
                 to="/our-book"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Our Book
+                Our Books
               </router-link>
             </li>
             <li>
@@ -59,7 +59,7 @@
                 to="/service"
                 class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
-                Our Service
+                Our Services
               </router-link>
             </li>
             <li>
@@ -99,12 +99,12 @@
         </li>
         <li>
           <router-link to="/our-book" class="block text-gray-600">
-            Our Book
+            Our Books
           </router-link>
         </li>
         <li>
           <router-link to="/service" class="block text-gray-600">
-            Our Service
+            Our Services
           </router-link>
         </li>
         <li>
