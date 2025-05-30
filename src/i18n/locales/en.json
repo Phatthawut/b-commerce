@@ -366,6 +366,129 @@
     },
     "bookDetail": {
       "exploreSeriesTitle": "Explore Series"
+    },
+    "payment": {
+      "title": "Payment",
+      "donationSummary": {
+        "title": "Donation Summary",
+        "donor": "Donor:",
+        "quantity": "Quantity:",
+        "totalAmount": "Total Amount:",
+        "recipients": "Recipients",
+        "recipient": "Recipient:",
+        "recipientNumber": "Recipient #{number}:",
+        "category": "Category:",
+        "region": "Region:"
+      },
+      "paymentMethod": {
+        "title": "Payment Method:",
+        "bankTransfer": "Bank Transfer",
+        "creditCard": "Credit Card / PromptPay"
+      },
+      "bankTransfer": {
+        "title": "Bank Transfer Information",
+        "bank": "Bank:",
+        "accountName": "Account Name:",
+        "accountNumber": "Account Number:",
+        "branch": "Branch:",
+        "uploadInstruction": "Please upload your payment slip below:",
+        "selectSlip": "Select Payment Slip",
+        "changeSlip": "Change Payment Slip",
+        "removeSlip": "Remove payment slip"
+      },
+      "creditCard": {
+        "cardholderName": "Cardholder Name",
+        "nameOnCard": "Name on card",
+        "cardInformation": "Card Information",
+        "securityNotice": "Your card information is securely processed by Stripe. We never store your full card details.",
+        "loadingPayment": "Loading payment system..."
+      },
+      "buttons": {
+        "confirm": "Confirm"
+      },
+      "loading": "Loading...",
+      "fileUpload": {
+        "errorInvalidType": "Please upload only JPG or PNG files",
+        "errorInvalidExtension": "Invalid file type. Please use only JPG or PNG files.",
+        "errorFileSize": "File size should not exceed 1MB",
+        "errorInvalidImage": "The file appears to be invalid or corrupted. Only JPG and PNG files are allowed.",
+        "errorReadFailed": "Failed to read the file",
+        "compressing": "Compressing image...",
+        "compressed": "Image compressed from {originalSize} to {newSize}"
+      },
+      "messages": {
+        "selectPaymentMethod": "Please select a payment method",
+        "uploadPaymentSlip": "Please upload your payment slip",
+        "donationIdNotFound": "Donation ID not found",
+        "paymentProcessed": "Thank you for your donation! Your payment has been processed successfully.",
+        "paymentPending": "Thank you for your donation! Your payment is pending verification.",
+        "errorProcessing": "There was an error processing your donation. Please try again.",
+        "errorUploadSlip": "Failed to upload payment slip. Please try again.",
+        "errorUpdatePayment": "Failed to update donation payment information"
+      }
+    },
+    "thankYou": {
+      "title": "Thank You!",
+      "subtitle": "Your donation has been received and is greatly appreciated.",
+      "loading": "Loading donation details...",
+      "error": {
+        "title": "Oops! Something went wrong",
+        "noDonation": "No donation information found. Please make a new donation.",
+        "loadingError": "Error loading donation details. Please try again later.",
+        "notFound": "Donation not found. Please contact support for assistance."
+      },
+      "buttons": {
+        "newDonation": "Make a New Donation",
+        "returnHome": "Return to Home"
+      },
+      "status": {
+        "completed": "Payment Completed",
+        "pending": "Payment Pending",
+        "failed": "Payment Failed"
+      },
+      "donationDetails": {
+        "title": "Donation Details",
+        "donationId": "Donation ID",
+        "date": "Date",
+        "amount": "Amount",
+        "paymentMethod": "Payment Method",
+        "status": "Status",
+        "quantity": "Quantity",
+        "sets": "sets"
+      },
+      "donorInformation": {
+        "title": "Donor Information",
+        "name": "Name:",
+        "email": "Email:",
+        "phone": "Phone:",
+        "address": "Address:"
+      },
+      "recipients": {
+        "title": "Recipients",
+        "recipientNumber": "Recipient #{number}",
+        "name": "Name:",
+        "category": "Category:",
+        "region": "Region:",
+        "address": "Address:",
+        "noRecipients": "No recipient information available."
+      },
+      "paymentInformation": {
+        "title": "Payment Information",
+        "method": "Method:",
+        "status": "Status:",
+        "date": "Date:",
+        "paymentSlip": "Payment Slip:",
+        "clickToView": "Click on the image to view in full size",
+        "card": "Card:",
+        "cardType": "Card Type:"
+      },
+      "nextSteps": {
+        "title": "Next Steps",
+        "completed": "Your donation has been processed successfully. You will receive a confirmation email shortly.",
+        "pending": "Your donation is pending confirmation. We will notify you once the payment has been verified.",
+        "failed": "There was an issue with your payment. Please contact our support team for assistance."
+      },
+      "noInformation": "No donation information found. Please try again later."
     }
   },
   "forms": {

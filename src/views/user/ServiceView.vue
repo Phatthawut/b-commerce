@@ -17,7 +17,7 @@
           </p>
         </div>
 
-        <div class="mx-auto px-6 pt-4 pb-12 w-[95%] md:w-[80%]">
+        <div class="mx-auto px-6 pt-4 pb-12 sm:w-[85%]">
           <div class="relative">
             <!-- Top-left border -->
             <div class="absolute bottom-0 left-0">
@@ -68,7 +68,7 @@
           </p>
         </div>
 
-        <div class="mx-auto px-6 pt-4 pb-12 w-[95%] md:w-[80%]">
+        <div class="mx-auto px-6 pt-4 pb-12 sm:w-[85%]">
           <div class="relative">
             <!-- Top-left border -->
             <div class="absolute bottom-0 left-0">

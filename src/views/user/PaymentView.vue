@@ -1,7 +1,9 @@
 <template>
   <section class="bg-white">
     <div class="container mx-auto md:p-8 font-thai">
-      <h1 class="text-4xl font-bold py-4 text-black text-center">Payment</h1>
+      <h1 class="text-4xl font-bold py-4 text-black text-center">
+        {{ $t("pages.payment.title") }}
+      </h1>
       <div class="divider divider-info w-1/2 mx-auto"></div>
 
       <!-- Donation Summary -->
@@ -9,21 +11,32 @@
         v-if="donationData"
         class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-sm my-4 text-black"
       >
-        <h2 class="text-xl font-semibold mb-4">Donation Summary</h2>
+        <h2 class="text-xl font-semibold mb-4">
+          {{ $t("pages.payment.donationSummary.title") }}
+        </h2>
 
         <div class="bg-gray-50 p-4 rounded mb-6">
           <div class="flex justify-between py-2 border-b border-gray-200">
-            <span class="text-gray-600">Donor:</span>
+            <span class="text-gray-600">{{
+              $t("pages.payment.donationSummary.donor")
+            }}</span>
             <span class="font-medium">{{ donationData.name }}</span>
           </div>
 
           <div class="flex justify-between py-2 border-b border-gray-200">
-            <span class="text-gray-600">Quantity:</span>
-            <span class="font-medium">{{ donationData.quantity }} sets</span>
+            <span class="text-gray-600">{{
+              $t("pages.payment.donationSummary.quantity")
+            }}</span>
+            <span class="font-medium"
+              >{{ donationData.quantity }}
+              {{ $t("pages.thankYou.donationDetails.sets") }}</span
+            >
           </div>
 
           <div class="flex justify-between py-2">
-            <span class="text-gray-600 font-semibold">Total Amount:</span>
+            <span class="text-gray-600 font-semibold">{{
+              $t("pages.payment.donationSummary.totalAmount")
+            }}</span>
             <span class="font-bold text-[#7ECAD1]">{{
               donationData.formattedTotal
             }}</span>
@@ -34,24 +47,34 @@
         <div
           v-if="donationData.recipients && donationData.recipients.length > 0"
         >
-          <h3 class="text-lg font-semibold mb-2">Recipients</h3>
+          <h3 class="text-lg font-semibold mb-2">
+            {{ $t("pages.payment.donationSummary.recipients") }}
+          </h3>
           <div
             v-for="(recipient, index) in donationData.recipients"
             :key="index"
             class="bg-gray-50 p-3 rounded mb-2"
           >
             <div class="flex justify-between py-1 border-b border-gray-200">
-              <span class="text-gray-600">Recipient #{{ index + 1 }}:</span>
+              <span class="text-gray-600">{{
+                $t("pages.payment.donationSummary.recipientNumber", {
+                  number: index + 1,
+                })
+              }}</span>
               <span class="font-medium">{{ recipient.recipientName }}</span>
             </div>
             <div class="flex justify-between py-1 border-b border-gray-200">
-              <span class="text-gray-600">Category:</span>
+              <span class="text-gray-600">{{
+                $t("pages.payment.donationSummary.category")
+              }}</span>
               <span class="font-medium capitalize">{{
                 recipient.recipientCategory
               }}</span>
             </div>
             <div class="flex justify-between py-1">
-              <span class="text-gray-600">Region:</span>
+              <span class="text-gray-600">{{
+                $t("pages.payment.donationSummary.region")
+              }}</span>
               <span class="font-medium">{{ recipient.recipientRegion }}</span>
             </div>
           </div>
@@ -62,12 +85,16 @@
           class="bg-gray-50 p-4 rounded mb-2"
         >
           <div class="flex justify-between py-2 border-b border-gray-200">
-            <span class="text-gray-600">Recipient:</span>
+            <span class="text-gray-600">{{
+              $t("pages.payment.donationSummary.recipient")
+            }}</span>
             <span class="font-medium">{{ donationData.recipientName }}</span>
           </div>
 
           <div class="flex justify-between py-2 border-b border-gray-200">
-            <span class="text-gray-600">Category:</span>
+            <span class="text-gray-600">{{
+              $t("pages.payment.donationSummary.category")
+            }}</span>
             <span class="font-medium capitalize">{{
               donationData.recipientCategory
             }}</span>
@@ -78,7 +105,9 @@
       <div
         class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-sm my-4 text-black"
       >
-        <h2 class="text-xl mb-6">Payment Method:</h2>
+        <h2 class="text-xl mb-6">
+          {{ $t("pages.payment.paymentMethod.title") }}
+        </h2>
 
         <div class="space-y-4">
           <div class="flex items-center">
@@ -90,7 +119,9 @@
               v-model="paymentMethod"
               class="mr-3 h-5 w-5 accent-button-blue"
             />
-            <label for="bank-transfer" class="text-lg">Bank Transfer</label>
+            <label for="bank-transfer" class="text-lg">{{
+              $t("pages.payment.paymentMethod.bankTransfer")
+            }}</label>
           </div>
           <!-- Stripe Payment (Credit Card + PromptPay) - DISABLED FOR BANK TRANSFER ONLY VERSION -->
           <!-- 
@@ -104,7 +135,7 @@
               class="mr-3 h-5 w-5 accent-button-blue"
             />
             <label for="stripe-payment" class="text-lg flex items-center">
-              Credit Card / PromptPay
+              {{ $t('pages.payment.paymentMethod.creditCard') }}
             </label>
           </div>
           -->
@@ -115,13 +146,20 @@
           v-if="paymentMethod === 'bank-transfer'"
           class="mt-6 p-4 bg-gray-50 rounded"
         >
-          <h3 class="font-semibold mb-2">Bank Transfer Information</h3>
-          <p>Bank: ธนาคารกรุงเทพ</p>
-          <p>Account Name: นายวุฒิพงษ์ เพรียบจริยวัฒน์</p>
-          <p>Account Number: 101-957220-3</p>
-          <p>Branch: สำนักงานใหญ่สีลม</p>
+          <h3 class="font-semibold mb-2">
+            {{ $t("pages.payment.bankTransfer.title") }}
+          </h3>
+          <p>{{ $t("pages.payment.bankTransfer.bank") }} ธนาคารกรุงเทพ</p>
+          <p>
+            {{ $t("pages.payment.bankTransfer.accountName") }} นายวุฒิพงษ์
+            เพรียบจริยวัฒน์
+          </p>
+          <p>
+            {{ $t("pages.payment.bankTransfer.accountNumber") }} 101-957220-3
+          </p>
+          <p>{{ $t("pages.payment.bankTransfer.branch") }} สำนักงานใหญ่สีลม</p>
           <p class="mt-4 text-sm text-gray-600">
-            Please upload your payment slip below:
+            {{ $t("pages.payment.bankTransfer.uploadInstruction") }}
           </p>
 
           <!-- File upload with preview -->
@@ -138,7 +176,11 @@
               for="payment-slip"
               class="block w-full cursor-pointer text-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
             >
-              {{ paymentSlip ? "Change Payment Slip" : "Select Payment Slip" }}
+              {{
+                paymentSlip
+                  ? $t("pages.payment.bankTransfer.changeSlip")
+                  : $t("pages.payment.bankTransfer.selectSlip")
+              }}
             </label>
 
             <!-- File preview -->
@@ -146,13 +188,13 @@
               <div class="relative">
                 <img
                   :src="paymentSlipPreview"
-                  alt="Payment Slip Preview"
+                  :alt="$t('pages.payment.bankTransfer.selectSlip')"
                   class="max-w-full h-auto max-h-64 mx-auto border rounded-md"
                 />
                 <button
                   @click="removePaymentSlip"
                   class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                  title="Remove payment slip"
+                  :title="$t('pages.payment.bankTransfer.removeSlip')"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +229,7 @@
         >
           <div v-if="stripeLoading" class="text-center py-4">
             <div class="spinner mb-2"></div>
-            <p>Loading payment system...</p>
+            <p>{{ $t("pages.payment.creditCard.loadingPayment") }}</p>
           </div>
 
           <div v-else>
@@ -196,20 +238,20 @@
                 class="block text-gray-700 text-sm font-bold mb-2"
                 for="card-holder-name"
               >
-                Cardholder Name
+                {{ $t("pages.payment.creditCard.cardholderName") }}
               </label>
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="card-holder-name"
                 type="text"
-                placeholder="Name on card"
+                :placeholder="$t('pages.payment.creditCard.nameOnCard')"
                 v-model="cardDetails.name"
               />
             </div>
 
             <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2">
-                Card Information
+                {{ $t("pages.payment.creditCard.cardInformation") }}
               </label>
               <div
                 id="payment-element"
@@ -221,8 +263,7 @@
                 {{ stripeError }}
               </div>
               <p class="text-sm text-gray-500 mt-2">
-                Your card information is securely processed by Stripe. We never
-                store your full card details.
+                {{ $t("pages.payment.creditCard.securityNotice") }}
               </p>
             </div>
           </div>
@@ -233,7 +274,7 @@
             class="w-full bg-[#7ECAD1] hover:bg-[#6BB8BF] text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline"
             @click="confirmPayment"
           >
-            Confirm
+            {{ $t("pages.payment.buttons.confirm") }}
           </button>
         </div>
       </div>
@@ -244,6 +285,7 @@
 <script setup>
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { serverTimestamp } from "firebase/firestore";
 import {
   getStorage,
@@ -255,6 +297,7 @@ import { useDonationStore } from "@/stores/donationStore";
 import { useShipmentStore } from "@/stores/shipmentStore";
 import { loadStripe } from "@stripe/stripe-js";
 
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const donationStore = useDonationStore();
@@ -533,7 +576,7 @@ const handleFileUpload = async (event) => {
   const validTypes = ["image/jpeg", "image/png"];
 
   if (!validTypes.includes(file.type)) {
-    fileError.value = "Please upload only JPG or PNG files";
+    fileError.value = t("pages.payment.fileUpload.errorInvalidType");
     return;
   }
 
@@ -545,14 +588,14 @@ const handleFileUpload = async (event) => {
   );
 
   if (!hasValidExtension) {
-    fileError.value = "Invalid file type. Please use only JPG or PNG files.";
+    fileError.value = t("pages.payment.fileUpload.errorInvalidExtension");
     return;
   }
 
   // Validate file size (max 1MB for initial upload)
   const maxSize = 1 * 1024 * 1024; // 1MB
   if (file.size > maxSize) {
-    fileError.value = "File size should not exceed 1MB";
+    fileError.value = t("pages.payment.fileUpload.errorFileSize");
     return;
   }
 
@@ -561,7 +604,8 @@ const handleFileUpload = async (event) => {
     try {
       await validateImageContent(file);
     } catch (error) {
-      fileError.value = error.message || "Invalid image file";
+      fileError.value =
+        error.message || t("pages.payment.fileUpload.errorInvalidImage");
       return;
     }
   }
@@ -572,11 +616,12 @@ const handleFileUpload = async (event) => {
   // Compress image if it's over 250KB and is an image
   if (file.type.startsWith("image/") && file.size > 250 * 1024) {
     try {
-      fileError.value = "Compressing image...";
+      fileError.value = t("pages.payment.fileUpload.compressing");
       fileToUpload = await compressImage(file);
-      fileError.value = `Image compressed from ${formatFileSize(
-        file.size
-      )} to ${formatFileSize(fileToUpload.size)}`;
+      fileError.value = t("pages.payment.fileUpload.compressed", {
+        originalSize: formatFileSize(file.size),
+        newSize: formatFileSize(fileToUpload.size),
+      });
       setTimeout(() => {
         fileError.value = "";
       }, 3000);
@@ -827,12 +872,12 @@ const processStripePayment = async () => {
 // Modify confirmPayment to handle PromptPay
 const confirmPayment = async () => {
   if (!paymentMethod.value) {
-    alert("Please select a payment method");
+    alert(t("pages.payment.messages.selectPaymentMethod"));
     return;
   }
 
   if (paymentMethod.value === "bank-transfer" && !paymentSlip.value) {
-    fileError.value = "Please upload your payment slip";
+    fileError.value = t("pages.payment.messages.uploadPaymentSlip");
     return;
   }
 
@@ -842,7 +887,7 @@ const confirmPayment = async () => {
   try {
     // Update the existing donation record with payment details
     if (!donationId.value) {
-      throw new Error("Donation ID not found");
+      throw new Error(t("pages.payment.messages.donationIdNotFound"));
     }
 
     // Prepare payment data
@@ -875,7 +920,7 @@ const confirmPayment = async () => {
           paymentData.paymentSlipUrl = slipUrl;
         } catch (error) {
           console.error("Error uploading payment slip:", error);
-          alert("Failed to upload payment slip. Please try again.");
+          alert(t("pages.payment.messages.errorUploadSlip"));
           loading.value = false;
           return;
         }
@@ -889,7 +934,7 @@ const confirmPayment = async () => {
     );
 
     if (!success) {
-      throw new Error("Failed to update donation payment information");
+      throw new Error(t("pages.payment.messages.errorUpdatePayment"));
     }
 
     // Create shipment only if payment is confirmed/completed
@@ -1020,20 +1065,16 @@ const confirmPayment = async () => {
 
     // Show success message
     if (paymentMethod.value === "stripe-payment") {
-      alert(
-        "Thank you for your donation! Your payment has been processed successfully."
-      );
+      alert(t("pages.payment.messages.paymentProcessed"));
     } else {
-      alert(
-        "Thank you for your donation! Your payment is pending verification."
-      );
+      alert(t("pages.payment.messages.paymentPending"));
     }
 
     // Redirect to a thank you page
     router.push("/thank-you");
   } catch (error) {
     console.error("Error updating donation payment:", error);
-    alert("There was an error processing your donation. Please try again.");
+    alert(t("pages.payment.messages.errorProcessing"));
   } finally {
     loading.value = false;
   }

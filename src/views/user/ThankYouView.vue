@@ -3,30 +3,32 @@
     <div class="container mx-auto p-8 font-thai">
       <div class="max-w-2xl mx-auto">
         <div class="text-center mb-8">
-          <h1 class="text-4xl font-bold text-black">Thank You!</h1>
+          <h1 class="text-4xl font-bold text-black">
+            {{ $t("pages.thankYou.title") }}
+          </h1>
           <div class="divider divider-info w-1/2 mx-auto"></div>
           <p class="text-xl mt-4">
-            Your donation has been received and is greatly appreciated.
+            {{ $t("pages.thankYou.subtitle") }}
           </p>
         </div>
 
         <div v-if="loading" class="text-center py-8">
           <div class="spinner mb-4"></div>
-          <p>Loading donation details...</p>
+          <p>{{ $t("pages.thankYou.loading") }}</p>
         </div>
 
         <div
           v-else-if="error"
           class="bg-red-100 p-4 rounded-lg text-red-700 mb-8"
         >
-          <h2>Oops! Something went wrong</h2>
+          <h2>{{ $t("pages.thankYou.error.title") }}</h2>
           <p>{{ errorMessage }}</p>
           <div class="action-buttons">
             <button @click="goToDonation" class="primary-button">
-              Make a New Donation
+              {{ $t("pages.thankYou.buttons.newDonation") }}
             </button>
             <button @click="goToHome" class="secondary-button">
-              Return to Home
+              {{ $t("pages.thankYou.buttons.returnHome") }}
             </button>
           </div>
         </div>
@@ -39,31 +41,39 @@
           <div :class="['p-4 text-white text-center font-bold', statusClass]">
             {{
               donationData.paymentStatus === "completed"
-                ? "Payment Completed"
+                ? $t("pages.thankYou.status.completed")
                 : donationData.paymentStatus === "pending"
-                ? "Payment Pending"
-                : "Payment Failed"
+                ? $t("pages.thankYou.status.pending")
+                : $t("pages.thankYou.status.failed")
             }}
           </div>
 
           <!-- Donation Details -->
           <div class="p-6">
-            <h2 class="text-2xl font-bold mb-4">Donation Details</h2>
+            <h2 class="text-2xl font-bold mb-4">
+              {{ $t("pages.thankYou.donationDetails.title") }}
+            </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
-                <h3 class="font-semibold text-gray-700">Donation ID</h3>
+                <h3 class="font-semibold text-gray-700">
+                  {{ $t("pages.thankYou.donationDetails.donationId") }}
+                </h3>
                 <p class="text-gray-900">{{ donationId }}</p>
               </div>
               <div>
-                <h3 class="font-semibold text-gray-700">Date</h3>
+                <h3 class="font-semibold text-gray-700">
+                  {{ $t("pages.thankYou.donationDetails.date") }}
+                </h3>
                 <p class="text-gray-900">
                   {{ donationData.createdAt || "N/A" }}
                 </p>
               </div>
               <div>
-                <h3 class="font-semibold text-gray-700">Amount</h3>
-                <p class="text-gray-900 font-bold text-[#7ECAD1]">
+                <h3 class="font-semibold text-gray-700">
+                  {{ $t("pages.thankYou.donationDetails.amount") }}
+                </h3>
+                <p class="text-gray-900 font-bold">
                   {{
                     donationData.amount
                       ? donationStore.formatCurrency(donationData.amount)
@@ -72,7 +82,9 @@
                 </p>
               </div>
               <div>
-                <h3 class="font-semibold text-gray-700">Payment Method</h3>
+                <h3 class="font-semibold text-gray-700">
+                  {{ $t("pages.thankYou.donationDetails.paymentMethod") }}
+                </h3>
                 <p class="text-gray-900">
                   {{
                     donationStore.formatPaymentMethod(
@@ -82,35 +94,52 @@
                 </p>
               </div>
               <div>
-                <h3 class="font-semibold text-gray-700">Status</h3>
+                <h3 class="font-semibold text-gray-700">
+                  {{ $t("pages.thankYou.donationDetails.status") }}
+                </h3>
                 <p class="text-gray-900">
                   {{ donationStore.formatStatus(donationData.paymentStatus) }}
                 </p>
               </div>
               <div>
-                <h3 class="font-semibold text-gray-700">Quantity</h3>
-                <p class="text-gray-900">{{ donationData.quantity }} sets</p>
+                <h3 class="font-semibold text-gray-700">
+                  {{ $t("pages.thankYou.donationDetails.quantity") }}
+                </h3>
+                <p class="text-gray-900">
+                  {{ donationData.quantity }}
+                  {{ $t("pages.thankYou.donationDetails.sets") }}
+                </p>
               </div>
             </div>
 
             <!-- Donor Information -->
             <div class="mb-6">
-              <h3 class="text-xl font-semibold mb-2">Donor Information</h3>
+              <h3 class="text-xl font-semibold mb-2">
+                {{ $t("pages.thankYou.donorInformation.title") }}
+              </h3>
               <div class="bg-gray-50 p-4 rounded">
                 <p>
-                  <span class="font-semibold">Name:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.donorInformation.name")
+                  }}</span>
                   {{ donationData.name }}
                 </p>
                 <p v-if="donationData.email">
-                  <span class="font-semibold">Email:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.donorInformation.email")
+                  }}</span>
                   {{ donationData.email }}
                 </p>
                 <p v-if="donationData.telephone">
-                  <span class="font-semibold">Phone:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.donorInformation.phone")
+                  }}</span>
                   {{ donationData.telephone }}
                 </p>
                 <p v-if="donationData.address">
-                  <span class="font-semibold">Address:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.donorInformation.address")
+                  }}</span>
                   {{ donationData.address }}
                 </p>
               </div>
@@ -118,7 +147,9 @@
 
             <!-- Recipients Information -->
             <div class="mb-6">
-              <h3 class="text-xl font-semibold mb-2">Recipients</h3>
+              <h3 class="text-xl font-semibold mb-2">
+                {{ $t("pages.thankYou.recipients.title") }}
+              </h3>
 
               <!-- Multiple Recipients (new format) -->
               <div
@@ -132,24 +163,36 @@
                   class="bg-gray-50 p-4 rounded mb-2"
                 >
                   <h4 class="font-semibold text-lg mb-2">
-                    Recipient #{{ index + 1 }}
+                    {{
+                      $t("pages.thankYou.recipients.recipientNumber", {
+                        number: index + 1,
+                      })
+                    }}
                   </h4>
                   <p>
-                    <span class="font-semibold">Name:</span>
+                    <span class="font-semibold">{{
+                      $t("pages.thankYou.recipients.name")
+                    }}</span>
                     {{ recipient.recipientName }}
                   </p>
                   <p>
-                    <span class="font-semibold">Category:</span>
+                    <span class="font-semibold">{{
+                      $t("pages.thankYou.recipients.category")
+                    }}</span>
                     <span class="capitalize">{{
                       recipient.recipientCategory
                     }}</span>
                   </p>
                   <p>
-                    <span class="font-semibold">Region:</span>
+                    <span class="font-semibold">{{
+                      $t("pages.thankYou.recipients.region")
+                    }}</span>
                     {{ recipient.recipientRegion }}
                   </p>
                   <p>
-                    <span class="font-semibold">Address:</span>
+                    <span class="font-semibold">{{
+                      $t("pages.thankYou.recipients.address")
+                    }}</span>
                     {{ recipient.recipientAddress }}
                   </p>
                 </div>
@@ -161,36 +204,48 @@
                 class="bg-gray-50 p-4 rounded"
               >
                 <p>
-                  <span class="font-semibold">Name:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.recipients.name")
+                  }}</span>
                   {{ donationData.recipientName }}
                 </p>
                 <p>
-                  <span class="font-semibold">Category:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.recipients.category")
+                  }}</span>
                   <span class="capitalize">{{
                     donationData.recipientCategory
                   }}</span>
                 </p>
                 <p v-if="donationData.recipientRegion">
-                  <span class="font-semibold">Region:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.recipients.region")
+                  }}</span>
                   {{ donationData.recipientRegion }}
                 </p>
                 <p v-if="donationData.recipientAddress">
-                  <span class="font-semibold">Address:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.recipients.address")
+                  }}</span>
                   {{ donationData.recipientAddress }}
                 </p>
               </div>
 
               <div v-else class="bg-gray-50 p-4 rounded">
-                <p>No recipient information available.</p>
+                <p>{{ $t("pages.thankYou.recipients.noRecipients") }}</p>
               </div>
             </div>
 
             <!-- Payment Information -->
             <div class="mb-6">
-              <h3 class="text-xl font-semibold mb-2">Payment Information</h3>
+              <h3 class="text-xl font-semibold mb-2">
+                {{ $t("pages.thankYou.paymentInformation.title") }}
+              </h3>
               <div class="bg-gray-50 p-4 rounded">
                 <p>
-                  <span class="font-semibold">Method:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.paymentInformation.method")
+                  }}</span>
                   {{
                     donationStore.formatPaymentMethod(
                       donationData.paymentMethod
@@ -198,26 +253,32 @@
                   }}
                 </p>
                 <p>
-                  <span class="font-semibold">Status:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.paymentInformation.status")
+                  }}</span>
                   {{ donationStore.formatStatus(donationData.paymentStatus) }}
                 </p>
                 <p v-if="donationData.paymentDate">
-                  <span class="font-semibold">Date:</span>
+                  <span class="font-semibold">{{
+                    $t("pages.thankYou.paymentInformation.date")
+                  }}</span>
                   {{ donationData.formattedPaymentDate }}
                 </p>
 
                 <!-- Payment Slip Image (if available) -->
                 <div v-if="donationData.paymentSlipUrl" class="mt-4">
-                  <p class="font-semibold mb-2">Payment Slip:</p>
+                  <p class="font-semibold mb-2">
+                    {{ $t("pages.thankYou.paymentInformation.paymentSlip") }}
+                  </p>
                   <img
                     :src="donationData.paymentSlipUrl"
-                    alt="Payment Slip"
+                    :alt="$t('pages.thankYou.paymentInformation.paymentSlip')"
                     class="max-w-full h-auto max-h-64 border rounded"
                     @click="openImageInFullscreen(donationData.paymentSlipUrl)"
                     style="cursor: pointer"
                   />
                   <p class="text-sm text-gray-500 mt-1">
-                    Click on the image to view in full size
+                    {{ $t("pages.thankYou.paymentInformation.clickToView") }}
                   </p>
                 </div>
 
@@ -228,11 +289,16 @@
                   "
                 >
                   <p>
-                    <span class="font-semibold">Card:</span> **** **** ****
+                    <span class="font-semibold">{{
+                      $t("pages.thankYou.paymentInformation.card")
+                    }}</span>
+                    **** **** ****
                     {{ donationData.cardDetails.last4 }}
                   </p>
                   <p v-if="donationData.cardDetails.brand">
-                    <span class="font-semibold">Card Type:</span>
+                    <span class="font-semibold">{{
+                      $t("pages.thankYou.paymentInformation.cardType")
+                    }}</span>
                     {{ donationData.cardDetails.brand }}
                   </p>
                 </div>
@@ -241,18 +307,17 @@
 
             <!-- Next Steps -->
             <div class="bg-blue-50 p-4 rounded mb-6">
-              <h3 class="text-xl font-semibold mb-2">Next Steps</h3>
+              <h3 class="text-xl font-semibold mb-2">
+                {{ $t("pages.thankYou.nextSteps.title") }}
+              </h3>
               <p v-if="donationData.paymentStatus === 'completed'">
-                Your donation has been processed successfully. You will receive
-                a confirmation email shortly.
+                {{ $t("pages.thankYou.nextSteps.completed") }}
               </p>
               <p v-else-if="donationData.paymentStatus === 'pending'">
-                Your donation is pending confirmation. We will notify you once
-                the payment has been verified.
+                {{ $t("pages.thankYou.nextSteps.pending") }}
               </p>
               <p v-else>
-                There was an issue with your payment. Please contact our support
-                team for assistance.
+                {{ $t("pages.thankYou.nextSteps.failed") }}
               </p>
             </div>
 
@@ -261,19 +326,19 @@
                 to="/"
                 class="bg-[#7ECAD1] hover:bg-[#6BB8BF] text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline inline-block"
               >
-                Return to Home
+                {{ $t("pages.thankYou.buttons.returnHome") }}
               </router-link>
             </div>
           </div>
         </div>
 
         <div v-else class="text-center py-8">
-          <p>No donation information found. Please try again later.</p>
+          <p>{{ $t("pages.thankYou.noInformation") }}</p>
           <router-link
             to="/"
             class="bg-[#7ECAD1] hover:bg-[#6BB8BF] text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline inline-block mt-4"
           >
-            Return to Home
+            {{ $t("pages.thankYou.buttons.returnHome") }}
           </router-link>
         </div>
       </div>
@@ -283,9 +348,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
 import { useDonationStore } from "@/stores/donationStore";
 import { useRouter } from "vue-router";
 
+const { t } = useI18n();
 const donationStore = useDonationStore();
 const donationId = ref("");
 const donationData = ref({});
@@ -328,8 +395,7 @@ onMounted(async () => {
 
     if (!storedDonationId) {
       error.value = true;
-      errorMessage.value =
-        "No donation information found. Please make a new donation.";
+      errorMessage.value = t("pages.thankYou.error.noDonation");
       loading.value = false;
       return;
     }
@@ -388,15 +454,13 @@ onMounted(async () => {
           : "N/A",
       };
     } else {
-      error.value =
-        donationStore.error ||
-        "Donation not found. Please contact support for assistance.";
+      errorMessage.value =
+        donationStore.error || t("pages.thankYou.error.notFound");
     }
   } catch (err) {
     console.error("Error fetching donation:", err);
     error.value = true;
-    errorMessage.value =
-      "Error loading donation details. Please try again later.";
+    errorMessage.value = t("pages.thankYou.error.loadingError");
   } finally {
     loading.value = false;
   }
