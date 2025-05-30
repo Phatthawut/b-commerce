@@ -290,7 +290,81 @@
       "goHome": "กลับไปหน้าแรก"
     },
     "bookDetails": {
-      "exploreSeriesTitle": "สำรวจชุดหนังสือ"
+      "dharmoscience": {
+        "title": "Dharmoscience",
+        "shortDescription": "วิทยาศาสตร์สมัยใหม่ถือเป็นจุดสูงสุดของการแสวงหาทางปัญญาของมนุษย์ ด้วยความก้าวหน้าที่รวดเร็วภายในเวลาไม่กี่ศตวรรษที่ทำทำให้วิทยาศาสตร์มีอิทธิพลอย่างมหาศาลต่อมุมมองของเราต่อโลก อย่างไรก็ตาม ความเชื่อมั่นในศักยภาพของตนที่เพิ่มขึ้นนี้ได้ทำให้วิทยาศาสตร์มองข้ามภูมิปัญญาเก่าแก่ของศาสนาและอภิปรัชญา",
+        "description": "คำว่า \"ธรรมะ\" ในภาษาสันสกฤตดั้งเดิมหมายถึง \"ธรรมชาติ\" แก่นแท้ของศาสนาตะวันออก เช่น พุทธ เต๋า เซน และฮินดู ล้วนเป็นการแสวงหาความเข้าใจในกฎแห่งธรรมชาติ เพื่อให้เราบรรลุถึงการตรัสรู้และการหลุดพ้น ซึ่งเป้าหมายสูงสุดนี้เองก็เป็นพันธกิจสำคัญของวิทยาศาสตร์เช่นกัน กล่าวอีกนัยหนึ่ง ธรรมะคิอวิทยาศาสตร์และวิทยาศาสตร์ก็คือ ธรรมะ",
+        "additionalInfo1": "หนังสือชุด Dharmoscience Tetralogy ได้หลอมรวมวิทยาศาสตร์สมัยใหม่กับธรรมะให้เป็นองค์ความรู้ที่สมบูรณ์ยิ่งขึ้น \"Dharmoscience\" จึงถูกรวบรวมเพื่ออธิบายความจริงสูงสุดของธรรมชาติ เป็นความพยายามในการอธิบายธรรมะด้วยวิทยาศาสตร์ และในขณะเดียวกันก็ขยายขอบเขตของวิทยาศาสตร์ ซึ่งเน้นวัตถุนิยมให้กว้างเกินกว่าขอบเขตของโลกวัตถุ หนังสือชุดทั้ง 4 เล่มนี้ได้แก่ Neodharma, Dharmoscience, Sankhara, Nirvana โดยทั้ง 4 เล่มนี้เป็นการเชื่อมโยงวิทยาศาสตร์และธรรมะเข้าด้วยกัน เพื่อนำไปสู่ความเข้าใจที่ลึกซึ้งยิ่งขึ้นเกี่ยวกับธรรมชาติและสัจธรรมของชีวิต",
+        "additionalInfo2": "",
+        "series": "ชุด Dharmoscience"
+      },
+      "neodharma": {
+        "title": "Neodharma",
+        "shortDescription": "",
+        "description": "อธิบายถึงการกำเนิดจักรวาล กาแล็กซี และระบบสุริยจักรวาล จนถึงการกำเนิดและวิวัฒนาการของชีวิต พืช สัตว์ และมนุษย์ โดยผูกโยงมาถึงธรรมะและสังสารวัฎ หรือ การเวียนว่ายตายเกิด ตลอดจนถึงการบรรลุมรรคผลนิพพาน",
+        "additionalInfo1": "",
+        "additionalInfo2": "",
+        "series": "ชุด Dharmoscience"
+      },
+      "sankhara": {
+        "title": "Sankhara",
+        "shortDescription": "",
+        "description": "อธิบายถึงพื้นฐานและองค์ประกอบของธรรมชาติ ด้วยแนวคิดอันสำคัญในพุทธศาสนาที่เรียกกันว่า \"สังขาร\" ซึ่งแตกต่างจากวิธีคิดวิเคราะห์แบบแยกส่วนและเน้นเรื่องวัตถุธาตุเป็นหลักของวิทยาศาสตร์สมัยใหม่",
+        "additionalInfo1": "",
+        "additionalInfo2": "",
+        "series": "ชุด Dharmoscience"
+      },
+      "nirvana": {
+        "title": "Nirvana",
+        "shortDescription": "",
+        "description": "อธิบายถึงการตรัสรู้ทางจิตวิญญาณ หรือ “นิพพาน” ซึ่งเป็นเป้าหมายสูงสุดของหลายศาสนาที่มีการรวบรวมแนวคิดและมุมมองจากศาสนาต่างๆ และวิทยาศาสตร์สมัยใหม่ เพื่อสร้างกรอบแนวคิดร่วมกันและเขียนเป็นแผนที่สำหรับการเดินทางสู่นิพพาน",
+        "additionalInfo1": "",
+        "additionalInfo2": "",
+        "series": "ชุด Dharmoscience"
+      },
+      "drawYourThoughts": {
+        "title": "Draw Your Thoughts",
+        "shortDescription": "ภายในหนังสือเล่มนี้ มีการใช้ ภาพ แผนผัง และสัญลักษณ์ทางความคิด (ที่เรียกว่า visual language) อย่างกว้างขวางและกลมกลืน เพื่อช่วย อธิบาย วิเคราะห์ ตั้งคำถาม คิดอย่างเป็นระบบ และแก้ปัญหา ในหลากหลายสาขา ตั้งแต่ เศรษฐศาสตร์ การบริหารธุรกิจ บัญชี การจัดการโครงการ วิทยาศาสตร์การตัดสินใจ นโยบายสาธารณะ การคลัง การเมือง ไปจนถึงเรื่องที่น่าประหลาดใจอย่าง ศาสนา และ อภิปรัชญา",
+        "description": "Draw Your Thoughts เป็นคู่มือที่ใช้งานได้จริงสำหรับการใช้ประโยชน์จากวิธีการคิดเชิงภาพเพื่อเพิ่มประสิทธิภาพการแก้ปัญหาและการวิเคราะห์เชิงสร้างสรรคในสาขาวิชาและสถานการณ์ชีวิตหลากหลาย",
+        "additionalInfo1": "เปรียบเสมือน คู่มือการคิดด้วยภาพ ที่จะช่วยให้ผู้อ่าน มองโลกเดิมในมุมใหม่ เปิดมุมมองกว้างขึ้น และยกระดับทั้งความคิด การทำงาน และคุณภาพชีวิตในภาพรวม",
+        "additionalInfo2": "ไม่ว่าคุณจะอ่านหนังสือเล่มนี้เดี่ยว ๆ หรือใช้ควบคู่กับการอบรม \"Draw Your Thought\" ก็จะเป็นเครื่องมือสำคัญในการพัฒนาวิธีคิดอย่างเป็นระบบและสร้างสรรค์",
+        "series": "เล่มเดี่ยว"
+      },
+      "tyrantHandbook": {
+        "title": "คู่มือสำหรับทรราช",
+        "shortDescription": "",
+        "description": "\"หนังสือเล่มนี้จะเป็นบันทึกทางประวัติศาสตร์ทางการเมืองที่สำคัญที่สุดอีกเล่มหนึ่ง ซึ่งสะท้อนสภาพทางการสังคม เศรษฐกิจ และการเมืองไทยในยุคการเปลี่ยนผ่าน ที่การปล้นชาติกระทำได้ภายใต้ระบอบประชาธิปไตย ในนามของความชอบธรรมและเพื่อสาธารณประโยชน์\"",
+        "additionalInfo1": "ส่วนหนึ่งจากคำนิยมของ ศาสตราจารย์ ดร. ชัยธนันท์ สมุทวนิช",
+        "additionalInfo2": "",
+        "series": "ชุดการเมืองและนโยบายสาธารณะ"
+      },
+      "theWayOut": {
+        "title": "คู่มือการฟื้นฟูประเทศไทย",
+        "shortDescription": "A comprehensive roadmap for national recovery and sustainable development in Thailand.",
+        "description": "This handbook provides detailed strategies and actionable solutions for addressing Thailand's complex socio-economic challenges through systematic reform and policy innovation.",
+        "additionalInfo1": "Based on thorough analysis of successful recovery models from around the world, adapted specifically for Thailand's unique cultural and economic context.",
+        "additionalInfo2": "An essential resource for policy makers, business leaders, and citizens committed to Thailand's sustainable development and prosperity.",
+        "series": "ชุดการเมืองและนโยบายสาธารณะ"
+      },
+      "cleaningUpThailandBook1": {
+        "title": "ทำความสะอาดประเทศไทย (เล่ม 1)",
+        "shortDescription": "Comprehensive analysis of political systems and effective governance.",
+        "description": "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
+        "additionalInfo1": "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
+        "additionalInfo2": "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
+        "series": "ชุดการเมืองและนโยบายสาธารณะ"
+      },
+      "cleaningUpThailandBook2": {
+        "title": "ทำความสะอาดประเทศไทย (เล่ม 2)",
+        "shortDescription": "The continuation of comprehensive reforms for Thailand's political and social transformation.",
+        "description": "Building on the foundation laid in Book 1, this volume delves deeper into implementation strategies and long-term solutions for sustainable governance reform.",
+        "additionalInfo1": "Advanced frameworks for institutional reform, transparency measures, and citizen engagement that build upon the foundational concepts from the first volume.",
+        "additionalInfo2": "Critical for understanding the complete transformation process and ensuring successful implementation of comprehensive reforms across all levels of governance.",
+        "series": "ชุดการเมืองและนโยบายสาธารณะ"
+      }
+    },
+    "bookDetail": {
+      "exploreSeriesTitle": "Explore Series"
     },
     "contact": {
       "title": "ติดต่อเรา",

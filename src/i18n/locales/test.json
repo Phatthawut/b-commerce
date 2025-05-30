@@ -1,309 +1,505 @@
 {
-    "nav": {
-      "home": "หน้าแรก",
-      "about": "เกี่ยวกับเรา",
-      "ourBooks": "หนังสือของเรา",
-      "ourServices": "บริการของเรา",
-      "donationCampaign": "แคมเปญบริจาค",
-      "contactUs": "ติดต่อเรา"
-    },
-    "common": {
-      "language": "ภาษา",
-      "english": "อังกฤษ",
-      "thai": "ไทย",
-      "close": "ปิด",
-      "menu": "เมนู",
-      "loading": "กำลังโหลด...",
-      "error": "ข้อผิดพลาด",
-      "success": "สำเร็จ",
-      "welcome": "ยินดีต้อนรับ",
-      "search": "ค้นหา",
-      "login": "เข้าสู่ระบบ",
-      "logout": "ออกจากระบบ",
-      "register": "สมัครสมาชิก"
-    },
-    "buttons": {
-      "learnMore": "เรียนรู้เพิ่มเติม",
-      "readMore": "อ่านเพิ่มเติม",
-      "viewAll": "ดูทั้งหมด",
-      "submit": "ส่ง",
-      "cancel": "ยกเลิก",
-      "save": "บันทึก",
-      "delete": "ลบ",
-      "edit": "แก้ไข",
-      "back": "กลับ",
-      "next": "ถัดไป",
-      "donateNow": "บริจาค"
-    },
-    "pages": {
-      "home": {
-        "title": "ยินดีต้อนรับสู่ Woody Prieb",
-        "subtitle": "ค้นพบหนังสือและบริการที่น่าตื่นตาตื่นใจ",
-        "heroQuote": "Discover the wisdom in learning about how science and dharma beautifully intertwine.",
-        "books": {
-          "dharmoscience": {
-            "date": "15 พฤษภาคม 2020",
-            "title": "Dharmoscience Series",
-            "description": "“Dharmoscience Tetralogy” ได้หลอมรวมวิทยาศาสตร์สมัยใหม่กับธรรมะ ให้เป็นองค์ความรู้ที่สมบูรณ์ยิ่งขึ้น “Dharmoscience” ถูกรวบรวมเพื่ออธิบายความจริงสูงสุดของธรรมชาติ เป็นความพยายามในการอธิบายธรรมะด้วยวิทยาศาสตร์ และในขณะเดียวกันก็ขยายขอบเขตของวิทยาศาสตร์ ซึ่งเน้นวัตถุนิยมให้กว้างเกินกว่าขอบเขตของโลกวัตถุ"
-          },
-          "drawYourThoughts": {
-            "date": "15 พฤษภาคม 2020",
-            "title": "Draw Your Thoughts",
-            "description": "“Draw Your Thought” คือหนังสือที่เปิดประตูสู่พลังของ การคิดเป็นภาพ (Visual Thinking) ซึ่งช่วยให้เราแก้ปัญหาได้อย่างสร้างสรรค์ในหลากหลายสาขา ไม่ว่าจะเป็น ธุรกิจ การเมือง หรือแม้แต่ปรัชญาเหนือโลก\n\nหนังสือเล่มนี้มอบมุมมองใหม่ ๆ ที่ช่วยให้ตัดสินใจได้อย่างชัดเจนยิ่งขึ้นพร้อมทั้งเสริมคุณภาพทั้งในด้าน การทำงาน และ การใช้ชีวิต"
-          },
-          "politicsPublicPolicy": {
-            "date": "15 พฤษภาคม 2020",
-            "title": "ชุดการเมืองและนโยบายสาธารณะ",
-            "description": "“หนังสือเล่มนี้จะเป็นบันทึกทางประวัติศาสตร์ทางการเมืองที่สำคัญที่สุดอีกเล่มหนึ่ง ซึ่งสะท้อนสภาพทางการสังคม เศรษฐกิจ และการเมืองไทยในยุคการเปลี่ยนผ่าน ที่การปล้นชาติกระทำได้ภายใต้ระบอบประชาธิปไตย ในนามของความชอบธรรมและเพื่อสาธารณประโยชน์”\n\nส่วนหนึ่งจากคำนิยมของ ศาสตราจารย์ ดร. ชัยธนันท์ สมุทวนิช"
-          }
+  "nav": {
+    "home": "หน้าแรก",
+    "about": "เกี่ยวกับเรา",
+    "ourBooks": "หนังสือของเรา",
+    "ourServices": "บริการของเรา",
+    "donationCampaign": "แคมเปญบริจาค",
+    "contactUs": "ติดต่อเรา"
+  },
+  "common": {
+    "language": "ภาษา",
+    "english": "อังกฤษ",
+    "thai": "ไทย",
+    "close": "ปิด",
+    "menu": "เมนู",
+    "loading": "กำลังโหลด...",
+    "error": "ข้อผิดพลาด",
+    "success": "สำเร็จ",
+    "welcome": "ยินดีต้อนรับ",
+    "search": "ค้นหา",
+    "login": "เข้าสู่ระบบ",
+    "logout": "ออกจากระบบ",
+    "register": "สมัครสมาชิก"
+  },
+  "buttons": {
+    "learnMore": "เรียนรู้เพิ่มเติม",
+    "readMore": "อ่านเพิ่มเติม",
+    "viewAll": "ดูทั้งหมด",
+    "submit": "ส่ง",
+    "cancel": "ยกเลิก",
+    "save": "บันทึก",
+    "delete": "ลบ",
+    "edit": "แก้ไข",
+    "back": "กลับ",
+    "next": "ถัดไป",
+    "donateNow": "บริจาค"
+  },
+  "pages": {
+    "home": {
+      "title": "ยินดีต้อนรับสู่ Woody Prieb",
+      "subtitle": "ค้นพบหนังสือและบริการที่น่าตื่นตาตื่นใจ",
+      "heroQuote": "Discover the wisdom in learning about how science and dharma beautifully intertwine.",
+      "books": {
+        "dharmoscience": {
+          "date": "15 พฤษภาคม 2020",
+          "title": "Dharmoscience Series",
+          "description": "\"Dharmoscience Tetralogy\" ได้หลอมรวมวิทยาศาสตร์สมัยใหม่กับธรรมะ ให้เป็นองค์ความรู้ที่สมบูรณ์ยิ่งขึ้น \"Dharmoscience\" ถูกรวบรวมเพื่ออธิบายความจริงสูงสุดของธรรมชาติ เป็นความพยายามในการอธิบายธรรมะด้วยวิทยาศาสตร์ และในขณะเดียวกันก็ขยายขอบเขตของวิทยาศาสตร์ ซึ่งเน้นวัตถุนิยมให้กว้างเกินกว่าขอบเขตของโลกวัตถุ"
         },
-        "author": {
-          "name": "Woody Prieb",
-          "fullName": "( Dr. Vuthiphong Priebjrivat )",
-          "organization": "Knowledge Square"
+        "drawYourThoughts": {
+          "date": "15 พฤษภาคม 2020",
+          "title": "Draw Your Thoughts",
+          "description": "\"Draw Your Thought\" คือหนังสือที่เปิดประตูสู่พลังของ การคิดเป็นภาพ (Visual Thinking) ซึ่งช่วยให้เราแก้ปัญหาได้อย่างสร้างสรรค์ในหลากหลายสาขา ไม่ว่าจะเป็น ธุรกิจ การเมือง หรือแม้แต่ปรัชญาเหนือโลก\n\nหนังสือเล่มนี้มอบมุมมองใหม่ ๆ ที่ช่วยให้ตัดสินใจได้อย่างชัดเจนยิ่งขึ้นพร้อมทั้งเสริมคุณภาพทั้งในด้าน การทำงาน และ การใช้ชีวิต"
         },
-        "donation": {
-          "title": "Join Our Donation Campaign",
-          "subtitle": "Learn about the why, where and how of our book donation"
+        "politicsPublicPolicy": {
+          "date": "15 พฤษภาคม 2020",
+          "title": "ชุดการเมืองและนโยบายสาธารณะ",
+          "description": "\"หนังสือเล่มนี้จะเป็นบันทึกทางประวัติศาสตร์ทางการเมืองที่สำคัญที่สุดอีกเล่มหนึ่ง ซึ่งสะท้อนสภาพทางการสังคม เศรษฐกิจ และการเมืองไทยในยุคการเปลี่ยนผ่าน ที่การปล้นชาติกระทำได้ภายใต้ระบอบประชาธิปไตย ในนามของความชอบธรรมและเพื่อสาธารณประโยชน์\"\n\nส่วนหนึ่งจากคำนิยมของ ศาสตราจารย์ ดร. ชัยธนันท์ สมุทวนิช"
         }
       },
-      "about": {
-        "title": "เกี่ยวกับเรา",
-        "subtitle": "เรียนรู้เพิ่มเติมเกี่ยวกับพันธกิจและวิสัยทัศน์ของเรา",
-        "authorSection": {
-          "heading": "เกี่ยวกับผู้เขียน",
-          "name": "วู้ดดี้ เพรียบ",
-          "fullName": "( ดร.วุฒิพงษ์ เพรียบจริยวัฒน์ )",
-          "biography": {
-            "paragraph1": "ในปี พ.ศ. 2513 ดร. วุฒิพงษ์ สอบได้ที่หนึ่งของประเทศไทยในแผนกวิทยาศาสตร์ ได้รับทุนเล่าเรียนหลวง (2513-2518) และทุนร็อคกี้เฟลเลอร์ (2520-2527) เพื่อศึกษาต่อที่ประเทศสหรัฐอเมริกา และได้จบปริญญาตรีสาขาวิศวกรรมโยธา (2518) มาจากสถาบันเทคโนโลยีแห่งแมสสาชูเสตต์ หรือ เอ็มไอที (Massachusetts Institute of Technology, MIT) ปริญญาโทสาขาวิศวกรรมสิ่งแวดล้อม (2519) จากมหาวิทยาลัยแสตนฟอร์ด (Stanford University) ปริญญาโทสาขาบริหารธุรกิจ (2522) และจบปริญญาเอกด้านเศรษฐศาสตร์และบริหารรัฐกิจ (2527) จากมหาวิทยาลัยชิคาโก (University of Chicago)\n\nดร. วุฒิพงษ์ เริ่มชีวิตการทำงานด้วยการเป็นอาจารย์ที่มหาวิทยาลัยธรรมศาสตร์ (2520-2529) และเป็นอาจารย์พิเศษที่มหาวิทยาลัยนอร์ธแคโรไลน่า (University of North Carolina) ในปี 2535 และ 2541 นอกจากกสอนหนังสือในมหาวิทยาลัยแล้ว ดร. วุฒิพงษ์ ยังได้ผลิตบทความทางวิชาการในด้านเศรษฐศาสตร์ การเงิน การคลัง การบริหารธุรกิจ และนโยบายสาธารณะ\n\nหลังจากการทำงานในแวดวงวิชาการมากว่าหนึ่งทศวรรษ ดร. วุฒิพงษ์ ก้าวสู่วงการธุรกิจ ในตำแหน่งผู้จัดการฝ่ายแผนงาน ธนาคารกรุงเทพ (2531-2535) ต่อมาได้ร่วมก่อตั้งและเป็นกรรมการผู้จัดการคนแรกของ บริษัท ไทยเรทติ้บงแอนด์อินฟอร์เมชั่นเซอร์วิส จำกัด หรือที่เรียกว่า “ทริส” (2536-2541)\n\nนอกจากนั้น ดร. วุฒิพงษ์ ยังเป็นที่ปรึกษาให้กับหน่วยงานระหว่างประเทศ ราชการ รัฐวิสาหกิจและเอกชนหลายแห่ง เช่น ธนาคารโลก สภาผู้แทนราษฎร สำนักงานคณะกรรมการพัฒนาการเศรษฐกิจและสังคมแห่งชาต (สศช.) สำนักงาน ก.พ. องค์การโทรศัพท์แห่งประเทศไทย (ทศท.) การไฟฟ้าฝ่ายผลิตแห่งประเทศไทย (กฟผ.) องค์การเภสัชกรรม และ บริษัทหลักทรัพย์สินเอเซีย จำกัด รวมถึงได้เป็นกรรมของ บมจ. ผาแดงอินดัสทรี",
-            "paragraph2": "ความสนใจในหลายศาสตร์ของ ดร. วุฒิพงษ์ ได้สะท้อนออกมาในหนังสือหลายเล่มที่เขาได้เขียนขึ้น ซึ่งประกอบด้วยหนังสือที่โด่งดังชื่อ คู่มือทรราช (2543) ที่ได้รับการยอมรับว่าเป็หนังสือเสียดสีประชดประชันการเมืองที่ดีที่สุดเล่มหนึ่ง นอกจากเรื่องการเมืองแล้ว ดร. วุฒิพงษ์ ยังสนใจเรื่องศาสนาและปรัชญา เขาได้นำเอาธรรมะมาหลอมรวมกับวิทยาศาสตร์จนเกิดเป็นหนังสือธรรมะภาษาอังกฤษในแนวพุทธวิทยาศาสตร์หลายเล่ม ได้แก่ Dharmodynamics (2547) รวมถึงหนังสือชุดสี่เล่ม Neodharma (2555 และ 2563) Dharmoscience (2555 และ 2563) Sankhara (2557 และ 2563) และ Nirvana (2567) หนังสือธรรมะเหล่านี้ได้รับการตอบรับอย่างกว้างขวาง และในทุกวันนี้ ดร. วุฒิพงษ์ ยังได้บรรยายในเรื่องดังกล่าวนี้แก่ทั้งสงฆ์และฆราวาสทั้งในและต่างประเทศ\n\nการที่ ดร. วุฒิพงษ์ ประสบความสำเร็จอย่างสูงในหลากหลายสาขาอาชีพทั้งสอบได้เป็๋นที่หนึ่งของประเทศไทย และการได้รับทุนเล่าเรียนหลวง ตลอดจนสำเร็จการศึกษาในมหาวิทยาลัยชั้นนำของโลกหลายแห่งในสาขาวิชาที่แตกต่างกัน เป็นเพราะความสามารถในการคิดวิเคราะห์และถ่ายทอดความคิดเหล่านั้นให้ออกมาเป็นภาพ (Visual Thinking)\n\nเขาจึงได้รวบรวมเทคนิคในการคิดวิเคราะห์ดังกล่าว มาเรียบเรียงเป็นหนังสือภาษาอังกฤษชื่อว่า Draw Your Thoughts (2557 และ 2565) เพื่อสอนวิธีการคิดด้วยภาพและถ่ายทอดเทคนิควิธีการคิดวิเคราะห์ดังกล่าวที่เขาได้ใช้มาตลอดชีวิต ทั้งในช่วยการศึกษาและการทำงานเพื่อหวังถ่ายทอดองค์ความรู้แก่ผู้บริหารธุรกิจและองค์กรต่างๆ ตลอดจจนคนรุ่นหลังที่สนในต่อไป"
-          }
-        }
-      },
-      "ourBooks": {
-        "title": "หนังสือของเรา",
-        "buyDownload": "ซื้อ / ดาวน์โหลดได้ที่",
-        "series": {
-          "dharmoscience": {
-            "title": "Dharmoscience Series",
-            "description": "เนื้อหาหลักของชุดหนังสือนี้ (4 เล่ม) อธิบายว่าโดยแท้แล้ว \"ธรรมะคือวิทยาศาสตร์ และวิทยาศาสตร์คือธรรมะ\" โดยหลอมรวมวิทยาศาสตร์สมัยใหม่เข้ากับปัญญาโบราณของธรรมะให้เป็นองค์รวม เรียกองค์ความรู้ใหม่นี้ว่า \"Dharmoscience\" ซึ่งจะช่วยให้ผู้อ่านเข้าใจความจริงสูงสุดของธรรมชาติได้อย่างลึกซึ้งและรอบด้าน",
-            "books": {
-              "neodharma": {
-                "title": "Neodharma",
-                "subtitle": "จากอะตอมสู่อนัตตา"
-              },
-              "dharmoscience": {
-                "title": "Dharmoscience",
-                "subtitle": "การหลอมรวมวิทยาศาสตร์และธรรมะ"
-              },
-              "sankhara": {
-                "title": "Sankhara",
-                "subtitle": "ทฤษฎีแห่งทุกสิ่งและความว่าง"
-              },
-              "nirvana": {
-                "title": "Nirvana",
-                "subtitle": "แผนที่สู่การตรัสรู้ทางจิตวิญญาณ"
-              }
-            }
-          },
-          "drawYourThoughts": {
-            "title": "Draw Your Thoughts",
-            "description": "ปลดล็อกพลังของการคิดเชิงภาพเพื่อแก้ปัญหาในสาขาต่างๆ ตั้งแต่ธุรกิจและการเมืองไปจนถึงอภิปรัชญา หนังสือเล่มนี้นำเสนอมุมมองใหม่ ช่วยเพิ่มประสิทธิภาพการตัดสินใจและเสริมสร้างทั้งการทำงานและชีวิต",
-            "books": {
-              "drawYourThoughts": {
-                "title": "Draw Your Thoughts"
-              }
-            }
-          },
-          "politicsPublicPolicy": {
-            "title": "ชุดการเมืองและนโยบายสาธารณะ",
-            "description": "เนื้อหาหลักของชุดหนังสือนี้ (4 เล่ม) อธิบายว่าโดยแท้แล้ว \"ธรรมะคือวิทยาศาสตร์ และวิทยาศาสตร์คือธรรมะ\" โดยหลอมรวมวิทยาศาสตร์สมัยใหม่เข้ากับปัญญาดั้งเดิมของธรรมะให้เป็นองค์รวม เรียกองค์ความรู้ใหม่นี้ว่า \"Dharmoscience\" ซึ่งจะช่วยให้ผู้อ่านเข้าใจความจริงของธรรมชาติได้อย่างลึกซึ้งและรอบด้าน",
-            "books": {
-              "tyrantHandbook": {
-                "title": "คู่มือสำหรับทรราช"
-              },
-              "theWayOut": {
-                "title": "คู่มือการฟื้นฟูประเทศไทย"
-              },
-              "cleaningUpThailandBook1": {
-                "title": "ทำความสะอาดประเทศไทย (เล่ม 1)"
-              },
-              "cleaningUpThailandBook2": {
-                "title": "ทำความสะอาดประเทศไทย (เล่ม 2)"
-              }
-            }
-          }
-        }
-      },
-      "bookDetail": {
-        "exploreSeriesTitle": "สำรวจชุดหนังสือ"
-      },
-      "services": {
-        "title": "บริการของเรา",
-        "talks": {
-          "title": "การบรรยาย",
-          "subtitle": "บรรยาย / สัมมนา / กิจกรรม",
-          "description": "การบรรยายที่น่าสนใจและกระตุ้นความคิด ออกแบบมาเพื่อสร้างแรงบันดาลใจและวิธีคิดใหม่ ผ่านการเล่าเรื่องที่ทรงพลังและข้อมูลเชิงลึก สำรวจผลกระทบของการจัดการความคิดต่อการเติบโตส่วนบุคคล ภาวะผู้นำ และการเปลี่ยนแปลงกรอบความคิด แต่ละครั้งจะสร้างมุมมองใหม่และแรงจูงใจเพื่อการเปลี่ยนแปลงในทางบวก"
-        },
-        "workshops": {
-          "title": "เวิร์กช็อป",
-          "subtitle": "Visual Thinking / กลยุทธ์ธุรกิจ / การเมืองและกลยุทธ์",
-          "description": "เวิร์กช็อปที่เน้นการปฏิบัติและการมีส่วนร่วม นำเสนอเครื่องมือที่ใช้งานได้จริงเพื่อเชี่ยวชาญการจัดการความคิด ผู้เข้าร่วมจะได้มีส่วนร่วมในแบบฝึกหัดที่เสริมสร้างความชัดเจน การตัดสินใจ และความยืดหยุ่น ด้วยกลยุทธ์ที่ใช้งานได้จริง พวกเขาจะได้เรียนรู้วิธีเพิ่มประสิทธิภาพ ความคิดสร้างสรรค์ และความฉลาดทางอารมณ์ในทั้งชีวิตส่วนตัวและการทำงาน"
-        },
-        "contact": {
-          "title": "ติดต่อเรา",
-          "form": {
-            "namePlaceholder": "ชื่อของคุณ",
-            "emailPlaceholder": "your.email@example.com",
-            "subjectPlaceholder": "หัวข้อข้อความ",
-            "messagePlaceholder": "ข้อความของคุณ",
-            "sendButton": "ส่งข้อความ"
-          }
-        }
-      },
-      "donationCampaign": {
-        "title": "แคมเปญบริจาคหนังสือ",
-        "subtitle": "เพื่อการเผยแพร่ธรรมะทั่วโลก",
-        "objectives": {
-          "title": "วัตถุประสงค์ของเรา",
-          "objective1": {
-            "title": "การแบ่งปันความรู้ทั่วโลก",
-            "description": "มีให้ในภาษาอังกฤษสำหรับผู้รับทั่วโลก"
-          },
-          "objective2": {
-            "title": "การแลกเปลี่ยนทางวัฒนธรรมและความเข้าใจ",
-            "description": "ใช้ภาษาที่เข้าใจง่าย ตัวอย่างที่เป็นสากล และการค้นพบทางวิทยาศาสตร์ เพื่อช่วยให้ผู้อ่านจากทุกวัฒนธรรมสามารถนำคำสอนไปประยุกต์ใช้ในชีวิตประจำวัน"
-          },
-          "objective3": {
-            "title": "ทรัพยากรการศึกษา",
-            "description": "เครื่องมือการเรียนรู้ที่ทำให้ธรรมะเข้าถึงได้สำหรับทุกคน ช่วยให้ผู้คนนำไปประยุกต์ใช้ในชีวิตประจำวัน"
-          }
-        },
-        "dharmoscienceSeries": {
-          "title": "บริจาคชุด Dharmoscience",
-          "subtitle": "จุดที่วิทยาศาสตร์สมัยใหม่และธรรมะมาบรรจบ",
-          "description": "แนวคิดหลักของชุดหนังสือสี่เล่มนี้คือแนวคิดที่ว่า \"ธรรมะคือวิทยาศาสตร์ และวิทยาศาสตร์คือธรรมะ\" โดยบูรณาการวิทยาศาสตร์สมัยใหม่เข้ากับปัญญาโบราณของธรรมะให้เป็นองค์รวม เรียกองค์ความรู้ใหม่นี้ว่า \"Dharmoscience\" กรอบใหม่นี้ช่วยให้ผู้อ่านได้รับความเข้าใจที่ลึกซึ้งและครอบคลุมเกี่ยวกับความจริงสูงสุดของธรรมชาติ"
-        }
+      "author": {
+        "name": "Woody Prieb",
+        "fullName": "( Dr. Vuthiphong Priebjrivat )",
+        "organization": "Knowledge Square"
       },
       "donation": {
-        "form": {
-          "title": "แบบฟอร์มผู้บริจาค",
-          "name": "ชื่อ:",
-          "address": "ที่อยู่:",
-          "telephone": "เบอร์โทรศัพท์:",
-          "email": "อีเมล:",
-          "amount": "จำนวน:",
-          "total": "รวม",
-          "recipient": "ผู้รับ",
-          "specified": "ระบุ",
-          "unspecified": "ไม่ระบุ",
-          "sets": "ชุด",
-          "category": "หมวดหมู่",
-          "region": "ภูมิภาค",
-          "country": "ประเทศ",
-          "institution": "สถาบัน",
-          "customRegion": "ภูมิภาคกำหนดเอง",
-          "customCountry": "ประเทศกำหนดเอง",
-          "customAddress": "ที่อยู่กำหนดเอง",
-          "placeholders": {
-            "donorName": "ชื่อผู้บริจาค",
-            "donorAddress": "ที่อยู่ผู้บริจาค (ไม่บังคับ)",
-            "telephone": "เบอร์โทรศัพท์",
-            "email": "อีเมล (จำเป็น)",
-            "amount": "จำนวน",
-            "total": "รวม (บาท)"
-          },
-          "messages": {
-            "selectRecipients": "คุณสามารถเลือกผู้รับได้ {count} รายการ",
-            "specifyDistribution": "กรุณาระบุวิธีการแจกจ่ายการบริจาคของคุณ {count} ชุด",
-            "totalSetsMismatch": "จำนวนชุดรวมต้องเท่ากับ {total} ปัจจุบันจัดสรรแล้ว: {allocated} ชุด",
-            "categoriesTitle": "หมวดหมู่สำหรับการบริจาคไม่ระบุ",
-            "selectCategories": "กรุณาเลือกหมวดหมู่ที่คุณต้องการให้แจกจ่ายการบริจาคที่ไม่ระบุของคุณ:",
-            "setsLabel": "ชุด:",
-            "selectAtLeastOne": "กรุณาเลือกอย่างน้อยหนึ่งหมวดหมู่สำหรับการบริจาคที่ไม่ระบุของคุณ",
-            "allocatedSets": "คุณได้จัดสรร {allocated} จาก {total} ชุด ส่วนที่เหลือ {remaining} ชุดจะถูกแจกจ่ายตามหมวดหมู่ที่คุณเลือก",
-            "tooManySets": "คุณได้จัดสรรชุดเกินไป ({allocated} จาก {total}) กรุณาลดการจัดสรรให้ตรงกับจำนวนการบริจาคที่ไม่ระบุของคุณ",
-            "specifiedRecipientsTitle": "ผู้รับที่ระบุ",
-            "provideDetails": "กรุณาระบุรายละเอียดสำหรับผู้รับที่ระบุ {count} รายการของคุณ",
-            "recipientDetailsTitle": "รายละเอียดผู้รับ #{number}",
-            "institutionsAvailable": "มีสถาบัน {count} แห่งใน {country}",
-            "typeMoreResults": "พิมพ์เพิ่มเติมเพื่อจำกัดผลลัพธ์",
-            "institutionAlreadySelected": "สถาบันนี้ได้ถูกเลือกสำหรับผู้รับอื่นแล้ว กรุณาเลือกสถาบันอื่น",
-            "noMatchingInstitutions": "ไม่พบสถาบันที่ตรงกันหรือสถาบันทั้งหมดถูกเลือกแล้ว",
-            "oneInstitutionFound": "พบสถาบัน 1 แห่ง",
-            "multipleInstitutionsFound": "พบสถาบัน {count} แห่ง",
-            "completedDonationPrompt": "คุณมีการบริจาคที่เสร็จสิ้นแล้ว คุณต้องการดูหรือไม่? คลิก 'ตกลง' เพื่อดูการบริจาคที่เสร็จสิ้นหรือ 'ยกเลิก' เพื่อเริ่มใหม่",
-            "pendingDonationPrompt": "คุณมีการบริจาคที่รอดำเนินการ คุณต้องการดำเนินการต่อหรือไม่? คลิก 'ตกลง' เพื่อดำเนินการต่อหรือ 'ยกเลิก' เพื่อเริ่มใหม่",
-            "donationCompletedPrompt": "การบริจาคของคุณเสร็จสิ้นแล้ว คุณต้องการดูหรือไม่? คลิก 'ตกลง' เพื่อดูการบริจาคที่เสร็จสิ้นหรือ 'ยกเลิก' เพื่อเริ่มใหม่",
-            "checkingPreviousDonations": "กำลังตรวจสอบการบริจาคก่อนหน้า...",
-            "completeRequiredFields": "กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบริจาค",
-            "completeRecipientDetails": "อย่าลืมกรอกรายละเอียดผู้รับให้ครบถ้วน"
-          },
-          "recipientTypes": {
-            "selectType": "เลือกประเภทผู้รับ",
-            "university": "มหาวิทยาลัย",
-            "library": "ห้องสมุด",
-            "religious": "องค์กรทางศาสนา",
-            "church": "โบสถ์",
-            "wat": "วัด",
-            "culturecenter": "ศูนย์วัฒนธรรม",
-            "custom": "ผู้รับกำหนดเอง",
-            "other": "อื่นๆ"
-          },
-          "unspecifiedCategories": {
-            "university": "มหาวิทยาลัย",
-            "library": "ห้องสมุด",
-            "church": "โบสถ์",
-            "wat": "วัด",
-            "religious": "องค์กรทางศาสนา",
-            "culturecenter": "ศูนย์วัฒนธรรม",
-            "other": "อื่นๆ"
-          },
-          "customRecipient": {
-            "name": "ชื่อผู้รับกำหนดเอง",
-            "namePlaceholder": "ป้อนชื่อผู้รับ",
-            "countryPlaceholder": "ป้อนประเทศ",
-            "addressPlaceholder": "ป้อนที่อยู่ที่สมบูรณ์"
-          },
-          "adminSelection": {
-            "note": "หมายเหตุ:",
-            "description": "ทีมงานของเราจะเลือกผู้รับที่เหมาะสมสำหรับการบริจาคของคุณ หากคุณมีความต้องการหรือคำขอเฉพาะ กรุณาระบุด้านล่าง",
-            "notesLabel": "หมายเหตุสำหรับการเลือก (ไม่บังคับ)",
-            "notesPlaceholder": "ความต้องการสำหรับการบริจาคของคุณ? (เช่น 'กรุณาเลือกโรงเรียนในชนบท')"
-          },
-          "search": {
-            "placeholder": "ค้นหาและเลือกสถาบัน...",
-            "selectRegion": "เลือกภูมิภาค",
-            "selectCountry": "เลือกประเทศ"
-          },
-          "institutionAddress": "ที่อยู่สถาบัน",
-          "buttons": {
-            "clearForm": "ล้างฟอร์ม",
-            "donate": "บริจาค"
-          },
-          "loading": "กำลังโหลด..."
+        "title": "Join Our Donation Campaign",
+        "subtitle": "Learn about the why, where and how of our book donation"
+      }
+    },
+    "about": {
+      "title": "เกี่ยวกับเรา",
+      "subtitle": "เรียนรู้เพิ่มเติมเกี่ยวกับพันธกิจและวิสัยทัศน์ของเรา",
+      "authorSection": {
+        "heading": "เกี่ยวกับผู้เขียน",
+        "name": "วู้ดดี้ เพรียบ",
+        "fullName": "( ดร.วุฒิพงษ์ เพรียบจริยวัฒน์ )",
+        "biography": {
+          "paragraph1": "ในปี พ.ศ. 2513 ดร. วุฒิพงษ์ สอบได้ที่หนึ่งของประเทศไทยในแผนกวิทยาศาสตร์ ได้รับทุนเล่าเรียนหลวง (2513-2518) และทุนร็อคกี้เฟลเลอร์ (2520-2527) เพื่อศึกษาต่อที่ประเทศสหรัฐอเมริกา และได้จบปริญญาตรีสาขาวิศวกรรมโยธา (2518) มาจากสถาบันเทคโนโลยีแห่งแมสสาชูเสตต์ หรือ เอ็มไอที (Massachusetts Institute of Technology, MIT) ปริญญาโทสาขาวิศวกรรมสิ่งแวดล้อม (2519) จากมหาวิทยาลัยแสตนฟอร์ด (Stanford University) ปริญญาโทสาขาบริหารธุรกิจ (2522) และจบปริญญาเอกด้านเศรษฐศาสตร์และบริหารรัฐกิจ (2527) จากมหาวิทยาลัยชิคาโก (University of Chicago)\n\nดร. วุฒิพงษ์ เริ่มชีวิตการทำงานด้วยการเป็นอาจารย์ที่มหาวิทยาลัยธรรมศาสตร์ (2520-2529) และเป็นอาจารย์พิเศษที่มหาวิทยาลัยนอร์ธแคโรไลน่า (University of North Carolina) ในปี 2535 และ 2541 นอกจากกสอนหนังสือในมหาวิทยาลัยแล้ว ดร. วุฒิพงษ์ ยังได้ผลิตบทความทางวิชาการในด้านเศรษฐศาสตร์ การเงิน การคลัง การบริหารธุรกิจ และนโยบายสาธารณะ\n\nหลังจากการทำงานในแวดวงวิชาการมากว่าหนึ่งทศวรรษ ดร. วุฒิพงษ์ ก้าวสู่วงการธุรกิจ ในตำแหน่งผู้จัดการฝ่ายแผนงาน ธนาคารกรุงเทพ (2531-2535) ต่อมาได้ร่วมก่อตั้งและเป็นกรรมการผู้จัดการคนแรกของ บริษัท ไทยเรทติ้บงแอนด์อินฟอร์เมชั่นเซอร์วิส จำกัด หรือที่เรียกว่า \"ทริส\" (2536-2541)\n\nนอกจากนั้น ดร. วุฒิพงษ์ ยังเป็นที่ปรึกษาให้กับหน่วยงานระหว่างประเทศ ราชการ รัฐวิสาหกิจและเอกชนหลายแห่ง เช่น ธนาคารโลก สภาผู้แทนราษฎร สำนักงานคณะกรรมการพัฒนาการเศรษฐกิจและสังคมแห่งชาต (สศช.) สำนักงาน ก.พ. องค์การโทรศัพท์แห่งประเทศไทย (ทศท.) การไฟฟ้าฝ่ายผลิตแห่งประเทศไทย (กฟผ.) องค์การเภสัชกรรม และ บริษัทหลักทรัพย์สินเอเซีย จำกัด รวมถึงได้เป็นกรรมของ บมจ. ผาแดงอินดัสทรี",
+          "paragraph2": "ความสนใจในหลายศาสตร์ของ ดร. วุฒิพงษ์ ได้สะท้อนออกมาในหนังสือหลายเล่มที่เขาได้เขียนขึ้น ซึ่งประกอบด้วยหนังสือที่โด่งดังชื่อ คู่มือทรราช (2543) ที่ได้รับการยอมรับว่าเป็หนังสือเสียดสีประชดประชันการเมืองที่ดีที่สุดเล่มหนึ่ง นอกจากเรื่องการเมืองแล้ว ดร. วุฒิพงษ์ ยังสนใจเรื่องศาสนาและปรัชญา เขาได้นำเอาธรรมะมาหลอมรวมกับวิทยาศาสตร์จนเกิดเป็นหนังสือธรรมะภาษาอังกฤษในแนวพุทธวิทยาศาสตร์หลายเล่ม ได้แก่ Dharmodynamics (2547) รวมถึงหนังสือชุดสี่เล่ม Neodharma (2555 และ 2563) Dharmoscience (2555 และ 2563) Sankhara (2557 และ 2563) และ Nirvana (2567) หนังสือธรรมะเหล่านี้ได้รับการตอบรับอย่างกว้างขวาง และในทุกวันนี้ ดร. วุฒิพงษ์ ยังได้บรรยายในเรื่องดังกล่าวนี้แก่ทั้งสงฆ์และฆราวาสทั้งในและต่างประเทศ\n\nการที่ ดร. วุฒิพงษ์ ประสบความสำเร็จอย่างสูงในหลากหลายสาขาอาชีพทั้งสอบได้เป็๋นที่หนึ่งของประเทศไทย และการได้รับทุนเล่าเรียนหลวง ตลอดจนสำเร็จการศึกษาในมหาวิทยาลัยชั้นนำของโลกหลายแห่งในสาขาวิชาที่แตกต่างกัน เป็นเพราะความสามารถในการคิดวิเคราะห์และถ่ายทอดความคิดเหล่านั้นให้ออกมาเป็นภาพ (Visual Thinking)\n\nเขาจึงได้รวบรวมเทคนิคในการคิดวิเคราะห์ดังกล่าว มาเรียบเรียงเป็นหนังสือภาษาอังกฤษชื่อว่า Draw Your Thoughts (2557 และ 2565) เพื่อสอนวิธีการคิดด้วยภาพและถ่ายทอดเทคนิควิธีการคิดวิเคราะห์ดังกล่าวที่เขาได้ใช้มาตลอดชีวิต ทั้งในช่วยการศึกษาและการทำงานเพื่อหวังถ่ายทอดองค์ความรู้แก่ผู้บริหารธุรกิจและองค์กรต่างๆ ตลอดจจนคนรุ่นหลังที่สนในต่อไป"
         }
+      }
+    },
+    "ourBooks": {
+      "title": "หนังสือของเรา",
+      "buyDownload": "ซื้อ / ดาวน์โหลดได้ที่",
+      "series": {
+        "dharmoscience": {
+          "title": "Dharmoscience Series",
+          "description": "เนื้อหาหลักของชุดหนังสือนี้ (4 เล่ม) อธิบายว่าโดยแท้แล้ว \"ธรรมะคือวิทยาศาสตร์ และวิทยาศาสตร์คือธรรมะ\" โดยหลอมรวมวิทยาศาสตร์สมัยใหม่เข้ากับปัญญาโบราณของธรรมะให้เป็นองค์รวม เรียกองค์ความรู้ใหม่นี้ว่า \"Dharmoscience\" ซึ่งจะช่วยให้ผู้อ่านเข้าใจความจริงสูงสุดของธรรมชาติได้อย่างลึกซึ้งและรอบด้าน",
+          "books": {
+            "neodharma": {
+              "title": "Neodharma",
+              "subtitle": "จากอะตอมสู่อนัตตา"
+            },
+            "dharmoscience": {
+              "title": "Dharmoscience",
+              "subtitle": "การหลอมรวมวิทยาศาสตร์และธรรมะ"
+            },
+            "sankhara": {
+              "title": "Sankhara",
+              "subtitle": "ทฤษฎีแห่งทุกสิ่งและความว่าง"
+            },
+            "nirvana": {
+              "title": "Nirvana",
+              "subtitle": "แผนที่สู่การตรัสรู้ทางจิตวิญญาณ"
+            }
+          }
+        },
+        "drawYourThoughts": {
+          "title": "Draw Your Thoughts",
+          "description": "ปลดล็อกพลังของการคิดเชิงภาพเพื่อแก้ปัญหาในสาขาต่างๆ ตั้งแต่ธุรกิจและการเมืองไปจนถึงอภิปรัชญา หนังสือเล่มนี้นำเสนอมุมมองใหม่ ช่วยเพิ่มประสิทธิภาพการตัดสินใจและเสริมสร้างทั้งการทำงานและชีวิต",
+          "books": {
+            "drawYourThoughts": {
+              "title": "Draw Your Thoughts"
+            }
+          }
+        },
+        "politicsPublicPolicy": {
+          "title": "ชุดการเมืองและนโยบายสาธารณะ",
+          "description": "เนื้อหาหลักของชุดหนังสือนี้ (4 เล่ม) อธิบายว่าโดยแท้แล้ว \"ธรรมะคือวิทยาศาสตร์ และวิทยาศาสตร์คือธรรมะ\" โดยหลอมรวมวิทยาศาสตร์สมัยใหม่เข้ากับปัญญาดั้งเดิมของธรรมะให้เป็นองค์รวม เรียกองค์ความรู้ใหม่นี้ว่า \"Dharmoscience\" ซึ่งจะช่วยให้ผู้อ่านเข้าใจความจริงของธรรมชาติได้อย่างลึกซึ้งและรอบด้าน",
+          "books": {
+            "tyrantHandbook": {
+              "title": "คู่มือสำหรับทรราช"
+            },
+            "theWayOut": {
+              "title": "คู่มือการฟื้นฟูประเทศไทย"
+            },
+            "cleaningUpThailandBook1": {
+              "title": "ทำความสะอาดประเทศไทย (เล่ม 1)"
+            },
+            "cleaningUpThailandBook2": {
+              "title": "ทำความสะอาดประเทศไทย (เล่ม 2)"
+            }
+          }
+        }
+      }
+    },
+    "bookDetail": {
+      "exploreSeriesTitle": "สำรวจชุดหนังสือ"
+    },
+    "services": {
+      "title": "บริการของเรา",
+      "talks": {
+        "title": "การบรรยาย",
+        "subtitle": "บรรยาย / สัมมนา / กิจกรรม",
+        "description": "เปิดรับงานบรรยายสาธารณะ — ธรรมะ x วิทยาศาสตร์ x ภาวะผู้นำ\n\nจุดประกายวิธีคิดใหม่ เพื่อการเปลี่ยนแปลงอย่างแท้จริง\n\nอีกหนึ่งบริการจากทาง ดร. วุฒิพงษ์ คือ งานบรรยายในที่สาธารณะ ทั้งในประเทศและต่างประเทศ ไม่ว่าจะเป็นองค์กร ภาคการศึกษา หน่วยงานภาครัฐ หรือเวทีเปิดเพื่อสังคม\n\nหัวข้อการบรรยายเน้นการ จัดการความคิด (Thought Management) ผสานธรรมะ วิทยาศาสตร์ และภาวะผู้นำอย่างลุ่มลึก\n\nทุกการบรรยายมุ่งหวังให้ผู้ฟัง \"คิดได้มากขึ้น เห็นได้ไกลขึ้น และเข้าใจตัวเองลึกขึ้น\"\n\nหากคุณกำลังมองหาเวทีที่จะปลุกพลังทางปัญญาในองค์กรหรือชุมชนของคุณเรายินดีร่วมสร้างพื้นที่แห่งการเรียนรู้กับคุณ"
       },
-      "notFound": {
-        "title": "ไม่พบหน้าที่ต้องการ",
-        "message": "หน้าที่คุณกำลังมองหาไม่มีอยู่",
-        "goHome": "กลับไปหน้าแรก"
-      },
-      "bookDetails": {
-        "exploreSeriesTitle": "สำรวจชุดหนังสือ"
+      "workshops": {
+        "title": "Workshops",
+        "subtitle": "ฝึกคิดอย่างเป็นระบบ โดย ดร.วุฒิพงษ์",
+        "description": "อีกหนึ่งบริการจาก ดร.วุฒิพงษ์ คือ การจัดเวิร์กช็อปแบบลงมือทำจริง (Hands-on) เน้นการมีส่วนร่วมอย่างเต็มที่ พร้อมเครื่องมือฝึกฝนที่นำไปใช้ได้จริง เพื่อเสริมทักษะในการจัดการความคิด (Thought Management) อย่างเป็นระบบ\n\nผู้เข้าร่วมจะได้ทำกิจกรรมที่ช่วยพัฒนา\n\nความชัดเจนในการคิด\n\nทักษะการตัดสินใจ\n\nความยืดหยุ่นทางอารมณ์\n\nนอกจากนี้ ยังได้เรียนรู้กลยุทธ์ที่สามารถนำไปใช้ได้ทันที เพื่อเพิ่ม\n\nประสิทธิภาพการทำงาน\n\nความคิดสร้างสรรค์\n\nความฉลาดทางอารมณ์ (EQ) ทั้งในชีวิตส่วนตัวและในสายอาชีพ"
       },
       "contact": {
         "title": "ติดต่อเรา",
-        "subtitle": "ติดต่อเราได้ที่นี่"
+        "form": {
+          "namePlaceholder": "ชื่อของคุณ",
+          "emailPlaceholder": "อีเมลของคุณ",
+          "subjectPlaceholder": "หัวข้อข้อความ",
+          "messagePlaceholder": "ข้อความของคุณ",
+          "sendButton": "ส่งข้อความ"
+        }
       }
     },
-    "forms": {
-      "name": "ชื่อ",
-      "email": "อีเมล",
-      "phone": "เบอร์โทร",
-      "message": "ข้อความ",
-      "required": "จำเป็นต้องกรอกข้อมูลนี้",
-      "invalidEmail": "กรุณากรอกอีเมลที่ถูกต้อง"
+    "donationCampaign": {
+      "title": "แคมเปญบริจาคหนังสือ",
+      "subtitle": "เพื่อการเผยแพร่ธรรมะทั่วโลก",
+      "objectives": {
+        "title": "วัตถุประสงค์ของเรา",
+        "objective1": {
+          "title": "Global Knowledge Sharing",
+          "description": "จัดทำในรูปแบบภาษาอังกฤษ เพื่อส่งไปยังห้องสมุดของเมืองต่างๆ ตลอดจนมหาวิทยาลัยในหลากหลายประเทศ เพื่อเผยแพร่คำสอนธรรมะแนววิทยาศาสตร์ที่มีความเกี่ยวเนื่องกับการดำเนินชิวิตในสังคมปัจจุบัน"
+        },
+        "objective2": {
+          "title": "Cultural Exchange & Understanding",
+          "description": "สร้างทรัพยากรที่เอื้อต่อความเข้าใจ ไม่ว่าจะเป็นชนชาติหรือวัฒนธรรมใด ด้วยหนังสือที่มีการใช้ภาษาที่ไม่ซับซ้อน มีเรื่องราวและตัวอย่างที่เป็นสากล อีกทั้งยังเชื่อมโยงกับการค้่นพบทางวิทยาศาสตร์"
+        },
+        "objective3": {
+          "title": "Educational Resource",
+          "description": "สร้างทรัพยากรทางการศึกษาที่มีคุณค่าให้กับสถาบันการศึกษา รวมถึงบุคคลทั่วไป ซึ่ช่วยใหห้สามารถเรียนรู้ธรรมะและสามารถนำไปปรับใช้ในชีวิตประจำวันได้"
+        }
+      },
+      "dharmoscienceSeries": {
+        "title": "บริจาค Dharmoscience Series",
+        "subtitle": "จุดที่วิทยาศาสตร์สมัยใหม่และธรรมะมาบรรจบ",
+        "description": "หนังสือชุด Dharmoscience Tetralogy ได้หลอมรวมวิทยาศาสตร์สมัยใหม่กับธรรมะให้เป็นองค์ความรู้ที่สมบูรณ์ยิ่งขึ้น \"Dharmoscience\" จึงถูกรวบรวมเพื่ออธิบายความจริงสูงสุดของธรรมชาติ เป็นความพยายามในการอธิบายธรรมะด้วยวิทยาศาสตร์ และในขณะเดียวกันก็ขยายขอบเขตของวิทยาศาสตร์ ซึ่งเน้นวัตถุนิยมให้กว้างเกินกว่าขอบเขตของโลกวัตถุ หนังสือชุดทั้ง 4 เล่มนี้ได้แก่ Neodharma, Dharmoscience, Sankhara, Nirvana โดยทั้ง 4 เล่มนี้เป็นการเชื่อมโยงวิทยาศาสตร์และธรรมะเข้าด้วยกัน เพื่อนำไปสู่ความเข้าใจที่ลึกซึ้งยิ่งขึ้นเกี่ยวกับธรรมชาติและสัจธรรมของชีวิต"
+      }
+    },
+    "donation": {
+      "form": {
+        "title": "แบบฟอร์มผู้บริจาค",
+        "name": "ชื่อ:",
+        "address": "ที่อยู่:",
+        "telephone": "เบอร์โทรศัพท์:",
+        "email": "อีเมล:",
+        "amount": "จำนวน:",
+        "total": "รวม",
+        "recipient": "ผู้รับ",
+        "specified": "ระบุ",
+        "unspecified": "ไม่ระบุ",
+        "sets": "ชุด",
+        "category": "หมวดหมู่",
+        "region": "ภูมิภาค",
+        "country": "ประเทศ",
+        "institution": "สถาบัน",
+        "customRegion": "ภูมิภาคกำหนดเอง",
+        "customCountry": "ประเทศกำหนดเอง",
+        "customAddress": "ที่อยู่กำหนดเอง",
+        "placeholders": {
+          "donorName": "ชื่อผู้บริจาค",
+          "donorAddress": "ที่อยู่ผู้บริจาค (ไม่บังคับ)",
+          "telephone": "เบอร์โทรศัพท์",
+          "email": "อีเมล (จำเป็น)",
+          "amount": "จำนวน",
+          "total": "รวม (บาท)"
+        },
+        "messages": {
+          "selectRecipients": "คุณสามารถเลือกผู้รับได้ {count} รายการ",
+          "specifyDistribution": "กรุณาระบุวิธีการแจกจ่ายการบริจาคของคุณ {count} ชุด",
+          "totalSetsMismatch": "จำนวนชุดรวมต้องเท่ากับ {total} ปัจจุบันจัดสรรแล้ว: {allocated} ชุด",
+          "categoriesTitle": "หมวดหมู่สำหรับการบริจาคไม่ระบุ",
+          "selectCategories": "กรุณาเลือกหมวดหมู่ที่คุณต้องการให้แจกจ่ายการบริจาคที่ไม่ระบุของคุณ:",
+          "setsLabel": "ชุด:",
+          "selectAtLeastOne": "กรุณาเลือกอย่างน้อยหนึ่งหมวดหมู่สำหรับการบริจาคที่ไม่ระบุของคุณ",
+          "allocatedSets": "คุณได้จัดสรร {allocated} จาก {total} ชุด ส่วนที่เหลือ {remaining} ชุดจะถูกแจกจ่ายตามหมวดหมู่ที่คุณเลือก",
+          "tooManySets": "คุณได้จัดสรรชุดเกินไป ({allocated} จาก {total}) กรุณาลดการจัดสรรให้ตรงกับจำนวนการบริจาคที่ไม่ระบุของคุณ",
+          "specifiedRecipientsTitle": "ผู้รับที่ระบุ",
+          "provideDetails": "กรุณาระบุรายละเอียดสำหรับผู้รับที่ระบุ {count} รายการของคุณ",
+          "recipientDetailsTitle": "รายละเอียดผู้รับ #{number}",
+          "institutionsAvailable": "มีสถาบัน {count} แห่งใน {country}",
+          "typeMoreResults": "พิมพ์เพิ่มเติมเพื่อจำกัดผลลัพธ์",
+          "institutionAlreadySelected": "สถาบันนี้ได้ถูกเลือกสำหรับผู้รับอื่นแล้ว กรุณาเลือกสถาบันอื่น",
+          "noMatchingInstitutions": "ไม่พบสถาบันที่ตรงกันหรือสถาบันทั้งหมดถูกเลือกแล้ว",
+          "oneInstitutionFound": "พบสถาบัน 1 แห่ง",
+          "multipleInstitutionsFound": "พบสถาบัน {count} แห่ง",
+          "completedDonationPrompt": "คุณมีการบริจาคที่เสร็จสิ้นแล้ว คุณต้องการดูหรือไม่? คลิก 'ตกลง' เพื่อดูการบริจาคที่เสร็จสิ้นหรือ 'ยกเลิก' เพื่อเริ่มใหม่",
+          "pendingDonationPrompt": "คุณมีการบริจาคที่รอดำเนินการ คุณต้องการดำเนินการต่อหรือไม่? คลิก 'ตกลง' เพื่อดำเนินการต่อหรือ 'ยกเลิก' เพื่อเริ่มใหม่",
+          "donationCompletedPrompt": "การบริจาคของคุณเสร็จสิ้นแล้ว คุณต้องการดูหรือไม่? คลิก 'ตกลง' เพื่อดูการบริจาคที่เสร็จสิ้นหรือ 'ยกเลิก' เพื่อเริ่มใหม่",
+          "checkingPreviousDonations": "กำลังตรวจสอบการบริจาคก่อนหน้า...",
+          "completeRequiredFields": "กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วนก่อนบริจาค",
+          "completeRecipientDetails": "อย่าลืมกรอกรายละเอียดผู้รับให้ครบถ้วน"
+        },
+        "recipientTypes": {
+          "selectType": "เลือกประเภทผู้รับ",
+          "university": "มหาวิทยาลัย",
+          "library": "ห้องสมุด",
+          "religious": "องค์กรทางศาสนา",
+          "church": "โบสถ์",
+          "wat": "วัด",
+          "culturecenter": "ศูนย์วัฒนธรรม",
+          "custom": "ผู้รับกำหนดเอง",
+          "other": "อื่นๆ"
+        },
+        "unspecifiedCategories": {
+          "university": "มหาวิทยาลัย",
+          "library": "ห้องสมุด",
+          "church": "โบสถ์",
+          "wat": "วัด",
+          "religious": "องค์กรทางศาสนา",
+          "culturecenter": "ศูนย์วัฒนธรรม",
+          "other": "อื่นๆ"
+        },
+        "customRecipient": {
+          "name": "ชื่อผู้รับกำหนดเอง",
+          "namePlaceholder": "ป้อนชื่อผู้รับ",
+          "countryPlaceholder": "ป้อนประเทศ",
+          "addressPlaceholder": "ป้อนที่อยู่ที่สมบูรณ์"
+        },
+        "adminSelection": {
+          "note": "หมายเหตุ:",
+          "description": "ทีมงานของเราจะเลือกผู้รับที่เหมาะสมสำหรับการบริจาคของคุณ หากคุณมีความต้องการหรือคำขอเฉพาะ กรุณาระบุด้านล่าง",
+          "notesLabel": "หมายเหตุสำหรับการเลือก (ไม่บังคับ)",
+          "notesPlaceholder": "ความต้องการสำหรับการบริจาคของคุณ? (เช่น 'กรุณาเลือกโรงเรียนในชนบท')"
+        },
+        "search": {
+          "placeholder": "ค้นหาและเลือกสถาบัน...",
+          "selectRegion": "เลือกภูมิภาค",
+          "selectCountry": "เลือกประเทศ"
+        },
+        "institutionAddress": "ที่อยู่สถาบัน",
+        "buttons": {
+          "clearForm": "ล้างฟอร์ม",
+          "donate": "บริจาค"
+        },
+        "loading": "กำลังโหลด..."
+      }
+    },
+    "notFound": {
+      "title": "ไม่พบหน้าที่ต้องการ",
+      "message": "หน้าที่คุณกำลังมองหาไม่มีอยู่",
+      "goHome": "กลับไปหน้าแรก"
+    },
+    "bookDetails": {
+      "dharmoscience": {
+        "title": "Dharmascience",
+        "shortDescription": "Modern science, without a doubt, can be regarded as the pinnacle of human intellectual pursuit. Considering its recent emergence of only four or five hundred years since Galileo or Copernicus, science certainly has made remarkable progress and impact when compared to other intellectual traditions, either religious or secular. Aside from countless products and artifacts only made possible by modern technology, our way of looking at the world is also profoundly influenced by science. With this enormous success, science has become so confident in itself (sometimes bordering on arrogance) that it tends to overlook what other intellectual or spiritual traditions --particularly the age-old wisdom of religions and metaphysics – have to say.",
+        "description": "In another vein, the word dharma in Sanskrit, in its original and strictest sense, does not mean ethics or morality as commonly understood nowadays; but it means nature. The spiritual core of various eastern religions--particularly Buddhism, Taoism, Jainism and Hinduism-- is in fact the pursuit of true understanding of nature and its immutable laws in order for us to reach spiritual enlightenment and liberation. This is also the ultimate mission of science. In this sense, dharma is science; and science is dharma.",
+        "additionalInfo1": "This four-book set is an effort to combine and integrate modern science and age-old dharma into one fuller body of knowledge --dharmoscience-- in order to better describe the ultimate reality of nature. In other words, this is a novel attempt to scientifically formulate dharma; and at the same time broaden the horizon of modern science beyond the confines of the material realm.",
+        "additionalInfo2": "The four books making up this dharmoscience tetralogy are as follows: (1) Neodharma, (2) Dharmascience, (3) Sankhara, and (4) Nirvana. Within these books is where modern science and dharma converge.",
+        "series": "Dharmoscience Series"
+      },
+      "neodharma": {
+        "title": "Neodharma",
+        "shortDescription": "2Neodharma represents a revolutionary synthesis of ancient wisdom and modern scientific understanding, bridging the gap between traditional dharma teachings and contemporary knowledge.",
+        "description": "This foundational work explores how fundamental scientific principles align with dharmic wisdom, creating a new framework for understanding reality that encompasses both material and spiritual dimensions.",
+        "additionalInfo1": "Through careful analysis of quantum physics, consciousness studies, and ancient texts, Neodharma presents a unified theory that validates both scientific inquiry and spiritual insight.",
+        "additionalInfo2": "Essential for readers seeking to understand the convergence of modern science with timeless wisdom traditions, this book lays the groundwork for the entire Dharmoscience series.",
+        "series": "Dharmoscience Series"
+      },
+      "sankhara": {
+        "title": "Sankhara",
+        "shortDescription": "An exploration of the Buddhist concept of Sankhara through the lens of modern physics and systems theory, revealing the interconnected nature of all phenomena.",
+        "description": "Sankhara examines the formations and constructions that shape our reality, both at the quantum level and in consciousness, demonstrating how ancient Buddhist insights align with cutting-edge scientific discoveries.",
+        "additionalInfo1": "This volume delves deep into the nature of conditioned existence, using both scientific methodology and contemplative analysis to understand how reality is constructed.",
+        "additionalInfo2": "Readers will discover how the principle of Sankhara operates across multiple scales, from subatomic particles to cosmic structures, revealing the unified nature of existence.",
+        "series": "Dharmoscience Series"
+      },
+      "nirvana": {
+        "title": "Nirvana",
+        "shortDescription": "The culminating volume that presents Nirvana not as a mystical concept but as a scientifically understandable state of consciousness and being.",
+        "description": "Nirvana bridges the final gap between scientific understanding and spiritual realization, presenting liberation as both a psychological and physical phenomenon that can be approached through rigorous inquiry.",
+        "additionalInfo1": "Using insights from neuroscience, quantum physics, and meditation research, this book demonstrates how the state of Nirvana represents the natural conclusion of both scientific and spiritual investigation.",
+        "additionalInfo2": "This final volume synthesizes all previous insights into a comprehensive understanding of ultimate reality and the path to complete understanding and liberation.",
+        "series": "Dharmoscience Series"
+      },
+      "drawYourThoughts": {
+        "title": "Draw Your Thoughts",
+        "shortDescription": "Unlocks the power of visual thinking to solve problems across diverse fields, from business and politics to metaphysics. This book offers fresh perspectives, enhancing decision-making and enriching both work and life.",
+        "description": "Draw Your Thoughts is a practical guide to harnessing visual thinking methodologies for enhanced problem-solving and creative analysis across multiple disciplines and life situations.",
+        "additionalInfo1": "Through proven techniques and real-world applications, readers learn to translate complex concepts into visual representations that facilitate deeper understanding and more effective communication.",
+        "additionalInfo2": "This comprehensive approach to visual thinking has been successfully applied in business strategy, policy development, and personal growth, making it an invaluable tool for professionals and lifelong learners.",
+        "series": "Standalone"
+      },
+      "tyrantHandbook": {
+        "title": "Handbook for Tyrants",
+        "shortDescription": "Comprehensive analysis of political systems and effective governance.",
+        "description": "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
+        "additionalInfo1": "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
+        "additionalInfo2": "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
+        "series": "Politics & Public Policy Series"
+      },
+      "theWayOut": {
+        "title": "Handbook for Thailand Recovery",
+        "shortDescription": "A comprehensive roadmap for national recovery and sustainable development in Thailand.",
+        "description": "This handbook provides detailed strategies and actionable solutions for addressing Thailand's complex socio-economic challenges through systematic reform and policy innovation.",
+        "additionalInfo1": "Based on thorough analysis of successful recovery models from around the world, adapted specifically for Thailand's unique cultural and economic context.",
+        "additionalInfo2": "An essential resource for policy makers, business leaders, and citizens committed to Thailand's sustainable development and prosperity.",
+        "series": "Politics & Public Policy Series"
+      },
+      "cleaningUpThailandBook1": {
+        "title": "Clean Up Thailand (Book 1)",
+        "shortDescription": "Comprehensive analysis of political systems and effective governance.",
+        "description": "This insightful series examines contemporary political challenges and solutions through a lens of ethical governance and sustainable policy development.",
+        "additionalInfo1": "Drawing from extensive research and real-world case studies, these books offer practical frameworks for addressing complex societal issues.",
+        "additionalInfo2": "Essential reading for policy makers, public administrators, students of political science, and engaged citizens seeking to understand and improve governance systems.",
+        "series": "Politics & Public Policy Series"
+      },
+      "cleaningUpThailandBook2": {
+        "title": "Clean Up Thailand (Book 2)",
+        "shortDescription": "The continuation of comprehensive reforms for Thailand's political and social transformation.",
+        "description": "Building on the foundation laid in Book 1, this volume delves deeper into implementation strategies and long-term solutions for sustainable governance reform.",
+        "additionalInfo1": "Advanced frameworks for institutional reform, transparency measures, and citizen engagement that build upon the foundational concepts from the first volume.",
+        "additionalInfo2": "Critical for understanding the complete transformation process and ensuring successful implementation of comprehensive reforms across all levels of governance.",
+        "series": "Politics & Public Policy Series"
+      }
+    },
+    "bookDetail": {
+      "exploreSeriesTitle": "Explore Series"
+    },
+    "contact": {
+      "title": "ติดต่อเรา",
+      "subtitle": "ติดต่อเราได้ที่นี่"
+    },
+    "payment": {
+      "title": "การชำระเงิน",
+      "donationSummary": {
+        "title": "สรุปการบริจาค",
+        "donor": "ผู้บริจาค:",
+        "quantity": "จำนวน:",
+        "totalAmount": "จำนวนเงินรวม:",
+        "recipients": "ผู้รับ",
+        "recipient": "ผู้รับ:",
+        "recipientNumber": "ผู้รับ #{number}",
+        "category": "หมวดหมู่:",
+        "region": "ภูมิภาค:"
+      },
+      "paymentMethod": {
+        "title": "วิธีการชำระเงิน:",
+        "bankTransfer": "โอนเงินผ่านธนาคาร",
+        "creditCard": "บัตรเครดิต / พร้อมเพย์"
+      },
+      "bankTransfer": {
+        "title": "ข้อมูลการโอนเงินผ่านธนาคาร",
+        "bank": "ธนาคาร:",
+        "accountName": "ชื่อบัญชี:",
+        "accountNumber": "เลขที่บัญชี:",
+        "branch": "สาขา:",
+        "uploadInstruction": "กรุณาอัปโหลดสลิปการโอนเงินด้านล่าง:",
+        "selectSlip": "เลือกสลิปการโอนเงิน",
+        "changeSlip": "เปลี่ยนสลิปการโอนเงิน",
+        "removeSlip": "ลบสลิปการโอนเงิน"
+      },
+      "creditCard": {
+        "cardholderName": "ชื่อผู้ถือบัตร",
+        "nameOnCard": "ชื่อในบัตร",
+        "cardInformation": "ข้อมูลบัตร",
+        "securityNotice": "ข้อมูลบัตรของคุณได้รับการประมวลผลอย่างปลอดภัยโดย Stripe เราไม่เก็บข้อมูลบัตรของคุณทั้งหมด",
+        "loadingPayment": "กำลังโหลดระบบการชำระเงิน..."
+      },
+      "buttons": {
+        "confirm": "ยืนยัน"
+      },
+      "loading": "กำลังโหลด...",
+      "fileUpload": {
+        "errorInvalidType": "กรุณาอัปโหลดไฟล์ JPG หรือ PNG เท่านั้น",
+        "errorInvalidExtension": "ประเภทไฟล์ไม่ถูกต้อง กรุณาใช้ไฟล์ JPG หรือ PNG เท่านั้น",
+        "errorFileSize": "ขนาดไฟล์ไม่ควรเกิน 1MB",
+        "errorInvalidImage": "ไฟล์ดูเหมือนจะไม่ถูกต้องหรือเสียหาย อนุญาตเฉพาะไฟล์ JPG และ PNG เท่านั้น",
+        "errorReadFailed": "ไม่สามารถอ่านไฟล์ได้",
+        "compressing": "กำลังบีบอัดรูปภาพ...",
+        "compressed": "บีบอัดรูปภาพจาก {originalSize} เป็น {newSize}"
+      },
+      "messages": {
+        "selectPaymentMethod": "กรุณาเลือกวิธีการชำระเงิน",
+        "uploadPaymentSlip": "กรุณาอัปโหลดสลิปการโอนเงิน",
+        "donationIdNotFound": "ไม่พบรหัสการบริจาค",
+        "paymentProcessed": "ขอบคุณสำหรับการบริจาค! การชำระเงินของคุณได้รับการประมวลผลเรียบร้อยแล้ว",
+        "paymentPending": "ขอบคุณสำหรับการบริจาค! การชำระเงินของคุณอยู่ระหว่างการตรวจสอบ",
+        "errorProcessing": "เกิดข้อผิดพลาดในการประมวลผลการบริจาคของคุณ กรุณาลองใหม่อีกครั้ง",
+        "errorUploadSlip": "ไม่สามารถอัปโหลดสลิปการโอนเงินได้ กรุณาลองใหม่อีกครั้ง",
+        "errorUpdatePayment": "ไม่สามารถอัปเดตข้อมูลการชำระเงินการบริจาคได้"
+      }
+    },
+    "thankYou": {
+      "title": "ขอบคุณ!",
+      "subtitle": "เราได้รับการบริจาคของคุณแล้วและขอขอบคุณอย่างยิ่ง",
+      "loading": "กำลังโหลดรายละเอียดการบริจาค...",
+      "error": {
+        "title": "อุ๊ปส์! มีบางอย่างผิดพลาด",
+        "noDonation": "ไม่พบข้อมูลการบริจาค กรุณาทำการบริจาคใหม่",
+        "loadingError": "เกิดข้อผิดพลาดในการโหลดรายละเอียดการบริจาค กรุณาลองใหม่อีกครั้งในภายหลัง",
+        "notFound": "ไม่พบการบริจาค กรุณาติดต่อฝ่ายสนับสนุนเพื่อขอความช่วยเหลือ"
+      },
+      "buttons": {
+        "newDonation": "ทำการบริจาคใหม่",
+        "returnHome": "กลับสู่หน้าแรก"
+      },
+      "status": {
+        "completed": "การชำระเงินเสร็จสิ้น",
+        "pending": "การชำระเงินรอดำเนินการ",
+        "failed": "การชำระเงินล้มเหลว"
+      },
+      "donationDetails": {
+        "title": "รายละเอียดการบริจาค",
+        "donationId": "รหัสการบริจาค",
+        "date": "วันที่",
+        "amount": "จำนวนเงิน",
+        "paymentMethod": "วิธีการชำระเงิน",
+        "status": "สถานะ",
+        "quantity": "จำนวน",
+        "sets": "ชุด"
+      },
+      "donorInformation": {
+        "title": "ข้อมูลผู้บริจาค",
+        "name": "ชื่อ:",
+        "email": "อีเมล:",
+        "phone": "โทรศัพท์:",
+        "address": "ที่อยู่:"
+      },
+      "recipients": {
+        "title": "ผู้รับ",
+        "recipientNumber": "ผู้รับ #{number}",
+        "name": "ชื่อ:",
+        "category": "หมวดหมู่:",
+        "region": "ภูมิภาค:",
+        "address": "ที่อยู่:",
+        "noRecipients": "ไม่มีข้อมูลผู้รับ"
+      },
+      "paymentInformation": {
+        "title": "ข้อมูลการชำระเงิน",
+        "method": "วิธีการ:",
+        "status": "สถานะ:",
+        "date": "วันที่:",
+        "paymentSlip": "สลิปการโอนเงิน:",
+        "clickToView": "คลิกที่รูปภาพเพื่อดูในขนาดเต็ม",
+        "card": "บัตร:",
+        "cardType": "ประเภทบัตร:"
+      },
+      "nextSteps": {
+        "title": "ขั้นตอนถัดไป",
+        "completed": "การบริจาคของคุณได้รับการประมวลผลเรียบร้อยแล้ว คุณจะได้รับอีเมลยืนยันในไม่ช้า",
+        "pending": "การบริจาคของคุณอยู่ระหว่างการยืนยัน เราจะแจ้งให้คุณทราบเมื่อการชำระเงินได้รับการตรวจสอบแล้ว",
+        "failed": "มีปัญหากับการชำระเงินของคุณ กรุณาติดต่อทีมสนับสนุนของเราเพื่อขอความช่วยเหลือ"
+      },
+      "noInformation": "ไม่พบข้อมูลการบริจาค กรุณาลองใหม่อีกครั้งในภายหลัง"
     }
+  },
+  "forms": {
+    "name": "ชื่อ",
+    "email": "อีเมล",
+    "phone": "เบอร์โทร",
+    "message": "ข้อความ",
+    "required": "จำเป็นต้องกรอกข้อมูลนี้",
+    "invalidEmail": "กรุณากรอกอีเมลที่ถูกต้อง"
   }
-  
+}
