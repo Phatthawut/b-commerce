@@ -27,7 +27,7 @@ VITE_FIREBASE_APP_ID=your-app-id
 VITE_STRIPE_PUBLIC_KEY=pk_live_your-live-public-key
 
 # API URL (will be your Firebase Functions URL)
-VITE_API_URL=https://us-central1-your-project-id.cloudfunctions.net/api
+VITE_API_URL=https://asia-southeast1-your-project-id.cloudfunctions.net/api
 ```
 
 ## Step 2: Firebase Functions Setup
@@ -78,7 +78,7 @@ firebase deploy --only functions
 
 1. Go to Stripe Dashboard → Developers → Webhooks
 2. Click "Add endpoint"
-3. URL: `https://us-central1-your-project-id.cloudfunctions.net/api/webhook`
+3. URL: `https://asia-southeast1-your-project-id.cloudfunctions.net/api/webhook`
 4. Events to send:
    - `payment_intent.succeeded`
    - `payment_intent.payment_failed`
@@ -178,7 +178,7 @@ Update your production environment variables:
 
 ```env
 # Production API URL
-VITE_API_URL=https://us-central1-your-project-id.cloudfunctions.net/api
+VITE_API_URL=https://asia-southeast1-your-project-id.cloudfunctions.net/api
 
 # Production Stripe keys
 VITE_STRIPE_PUBLIC_KEY=pk_live_your-live-public-key

@@ -386,128 +386,76 @@ const goToHome = () => {
 };
 
 onMounted(async () => {
-  loading.value = true;
-  error.value = false;
-
-  try {
-    // Get donation ID from localStorage
-    const storedDonationId = localStorage.getItem("donationId");
-
-    if (!storedDonationId) {
-      error.value = true;
-      errorMessage.value = t("pages.thankYou.error.noDonation");
-      loading.value = false;
-      return;
-    }
-
-    donationId.value = storedDonationId;
-
-    // Fetch donation details using the store
-    await donationStore.fetchDonationById(donationId.value);
-
-    if (donationStore.currentDonation) {
-      // Format the data for display
-      const data = donationStore.currentDonation;
-
-      console.log("Donation data from Firestore:", data);
-      console.log("Donation amount:", data.amount);
-      console.log("Donation created date:", data.createdAt);
-
-      // Check if the payment is in a valid state to show the thank you page
-      const validPaymentStatuses = ["completed", "pending", "processing"];
-      const validDonationStatuses = [
-        "completed",
-        "pending",
-        "processing",
-        "received",
-      ];
-
-      if (
-        !validPaymentStatuses.includes(data.paymentStatus) ||
-        !validDonationStatuses.includes(data.status)
-      ) {
-        console.log(
-          "Payment not completed or pending. Redirecting to payment page."
-        );
-        // Payment not completed, redirect to payment page
-        localStorage.setItem("pendingDonationId", donationId.value);
-        localStorage.removeItem("donationId");
-        router.push(`/payment?donationId=${donationId.value}`);
-        return;
-      }
-
-      donationData.value = {
-        ...data,
-        // Convert Firestore timestamps to readable format if needed
-        paymentDate: data.paymentDate
-          ? donationStore.formatDate(data.paymentDate)
-          : "N/A",
-        createdAt: data.createdAt
-          ? donationStore.formatDate(data.createdAt)
-          : "N/A",
-        // Add formatted date and amount for display
-        formattedDate: data.createdAt
-          ? donationStore.formatDate(data.createdAt)
-          : "N/A",
-        formattedTotal: data.amount
-          ? donationStore.formatCurrency(data.amount)
-          : "N/A",
-      };
-    } else {
-      errorMessage.value =
-        donationStore.error || t("pages.thankYou.error.notFound");
-    }
-  } catch (err) {
-    console.error("Error fetching donation:", err);
-    error.value = true;
-    errorMessage.value = t("pages.thankYou.error.loadingError");
-  } finally {
-    loading.value = false;
-  }
+  await loadDonationData();
 });
 
-// Format the donation data for display
-const formatDonationData = (data) => {
-  // Format dates
-  if (data.createdAt && data.createdAt.toDate) {
-    data.formattedDate = data.createdAt.toDate().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+const loadDonationData = async () => {
+  const donationId = localStorage.getItem("donationId");
+
+  if (donationId) {
+    try {
+      loading.value = true;
+      await donationStore.fetchDonationById(donationId);
+
+      if (donationStore.currentDonation) {
+        const data = donationStore.currentDonation;
+        donationData.value = {
+          id: donationId,
+          amount: data.amount,
+          formattedAmount: formatCurrency(data.amount),
+          donorName: data.donorName,
+          donorEmail: data.donorEmail,
+          donorPhone: data.donorPhone,
+          quantity: data.quantity || 1,
+          recipients: data.recipients || [],
+          recipientName: data.recipientName,
+          recipientCategory: data.recipientCategory,
+          recipientRegion: data.recipientRegion,
+          paymentMethod: data.paymentMethod,
+          paymentStatus: data.paymentStatus,
+          status: data.status,
+          createdAt: data.createdAt,
+        };
+
+        // Format the creation date
+        if (data.createdAt) {
+          try {
+            // Handle both Firestore Timestamp and regular Date
+            let date;
+            if (data.createdAt.toDate) {
+              date = data.createdAt.toDate();
+            } else {
+              date = new Date(data.createdAt);
+            }
+            donationData.value.formattedDate = date.toLocaleDateString(
+              "th-TH",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            );
+          } catch (dateError) {
+            donationData.value.formattedDate = "ไม่ระบุ";
+          }
+        }
+      } else {
+        alert(t("pages.thankYou.errors.donationNotFound"));
+        router.push("/donation");
+      }
+    } catch (err) {
+      console.error("Error fetching donation:", err);
+      alert(t("pages.thankYou.errors.loadingError"));
+      router.push("/donation");
+    } finally {
+      loading.value = false;
+    }
+  } else {
+    alert(t("pages.thankYou.errors.noDonationData"));
+    router.push("/donation");
   }
-
-  if (data.paymentDate && data.paymentDate.toDate) {
-    data.formattedPaymentDate = data.paymentDate
-      .toDate()
-      .toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-  }
-
-  return data;
-};
-
-// Helper function to format date
-const formatDate = (timestamp) => {
-  if (!timestamp) return "N/A";
-
-  // Handle Firestore Timestamp objects
-  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 };
 
 // Helper function to format currency

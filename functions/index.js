@@ -7,10 +7,19 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-const functions = require("firebase-functions");
+const { onRequest } = require("firebase-functions/v2/https");
+const { setGlobalOptions } = require("firebase-functions/v2");
+const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const express = require("express");
 const cors = require("cors");
+const Stripe = require("stripe");
+
+// Set global options for all functions - deploy to asia-southeast1 region
+setGlobalOptions({
+  region: "asia-southeast1",
+  maxInstances: 10,
+});
 
 // Initialize Firebase Admin (no need for service account in Functions)
 if (!admin.apps.length) {
@@ -19,8 +28,12 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-// Initialize Stripe with the secret key from Firebase Functions config
-const stripe = require("stripe")(functions.config().stripe.secret_key);
+// Define secrets for Stripe configuration (v6 modern approach)
+const stripeSecretKey = defineSecret("STRIPE_SECRET_KEY");
+const stripeWebhookSecret = defineSecret("STRIPE_WEBHOOK_SECRET");
+
+// Initialize Stripe - will be loaded at runtime
+let stripe;
 
 // Create Express app
 const app = express();
@@ -37,12 +50,31 @@ app.use((req, res, next) => {
   }
 });
 
+// Initialize Stripe lazily with proper secret handling
+const getStripe = () => {
+  if (!stripe) {
+    const secretKey = stripeSecretKey.value();
+    if (!secretKey) {
+      throw new Error("Stripe secret key not configured");
+    }
+
+    // Clean the secret key of any potential whitespace or invalid characters
+    const cleanSecretKey = secretKey.toString().trim();
+
+    console.log("Initializing Stripe with cleaned secret key");
+    stripe = new Stripe(cleanSecretKey);
+  }
+  return stripe;
+};
+
 // Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).send({
     status: "ok",
-    stripe: functions.config().stripe?.secret_key ? "configured" : "missing",
+    region: "asia-southeast1",
+    stripe: stripeSecretKey.value() ? "configured" : "missing",
     firebase: "configured",
+    version: "v6.3.2",
   });
 });
 
@@ -91,7 +123,7 @@ app.post("/create-payment-intent", async (req, res) => {
     }
 
     // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create(
+    const paymentIntent = await getStripe().paymentIntents.create(
       paymentIntentOptions
     );
 
@@ -123,7 +155,7 @@ app.post("/create-promptpay-payment", async (req, res) => {
     );
 
     // Create a PaymentIntent with the PromptPay payment method
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntent = await getStripe().paymentIntents.create({
       amount: Math.round(amount * 100), // Stripe expects amount in cents
       currency: currency.toLowerCase(),
       payment_method_types: ["promptpay"],
@@ -159,7 +191,9 @@ app.get("/check-payment-status", async (req, res) => {
     console.log(`Checking payment status for intent: ${paymentIntentId}`);
 
     // Retrieve the payment intent from Stripe
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    const paymentIntent = await getStripe().paymentIntents.retrieve(
+      paymentIntentId
+    );
 
     console.log(`Payment status: ${paymentIntent.status}`);
 
@@ -180,13 +214,17 @@ app.post(
   express.raw({ type: "application/json" }),
   async (req, res) => {
     const sig = req.headers["stripe-signature"];
-    const endpointSecret = functions.config().stripe?.webhook_secret;
+    const endpointSecret = stripeWebhookSecret.value();
 
     let event;
 
     try {
       // Use the raw request body for signature verification
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      event = getStripe().webhooks.constructEvent(
+        req.body,
+        sig,
+        endpointSecret
+      );
     } catch (err) {
       console.error(`Webhook Error: ${err.message}`);
       return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -260,7 +298,7 @@ async function handleSuccessfulPayment(paymentIntent) {
 
     // Create a shipment record automatically
     try {
-      await createShipmentFromDonation(donationId, donationData);
+      await createShipmentFromDonation(donationData, donationId);
     } catch (shipmentError) {
       console.error("Error creating shipment:", shipmentError);
     }
@@ -329,7 +367,7 @@ async function handleProcessingPayment(paymentIntent) {
 }
 
 // Helper function to create a shipment from a donation
-async function createShipmentFromDonation(donationId, donationData) {
+async function createShipmentFromDonation(donationData, donationId) {
   try {
     console.log(`Creating shipment for donation ${donationId}`);
 
@@ -420,5 +458,11 @@ async function createShipmentFromDonation(donationId, donationData) {
   }
 }
 
-// Export the API as a Firebase Function
-exports.api = functions.https.onRequest(app);
+// Export the API as a Firebase Function in asia-southeast1 region with secrets
+exports.api = onRequest(
+  {
+    secrets: [stripeSecretKey, stripeWebhookSecret],
+    maxInstances: 10,
+  },
+  app
+);

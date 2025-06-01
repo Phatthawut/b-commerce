@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview",
     "generate-data": "node src/scripts/generateTestData.js"
   },
@@ -31,6 +32,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.2",
     "tailwindcss": "^4.0.6",
+    "terser": "^5.40.0",
     "vite": "^6.2.1"
   }
 }

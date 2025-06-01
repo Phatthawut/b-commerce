@@ -123,8 +123,7 @@
               $t("pages.payment.paymentMethod.bankTransfer")
             }}</label>
           </div>
-          <!-- Stripe Payment (Credit Card + PromptPay) - DISABLED FOR BANK TRANSFER ONLY VERSION -->
-          <!-- 
+          <!-- Stripe Payment (Credit Card + PromptPay) -->
           <div class="flex items-center">
             <input
               type="radio"
@@ -135,10 +134,9 @@
               class="mr-3 h-5 w-5 accent-button-blue"
             />
             <label for="stripe-payment" class="text-lg flex items-center">
-              {{ $t('pages.payment.paymentMethod.creditCard') }}
+              {{ $t("pages.payment.paymentMethod.creditCard") }}
             </label>
           </div>
-          -->
         </div>
 
         <!-- Bank transfer details (shown when bank transfer is selected) -->
@@ -323,7 +321,7 @@ const stripeError = ref("");
 // Stripe configuration
 const STRIPE_PUBLIC_KEY =
   import.meta.env.VITE_STRIPE_PUBLIC_KEY ||
-  "pk_test_51R1VDH01oGcDuhY0GoareBWdcQMmp4ai7AQbtydydt3MCL1BnvXVEEb3jxSX5QOk1apFMBmldRmtXgu3KAcMGv8f00NpBQeJZM"; // Fallback to test key
+  "pk_test_51RM3AP4YgBLDaOj1WkhhF6PPtyIkk2AvyOOWDLlIJaSjfkGIYsnAI4KOQqPidvs43MvGpaPYBrZz6mlvhcEPRNYa00KLcIIC1X"; // Fallback to test key
 const stripe = ref(null);
 const elements = ref(null);
 const paymentElement = ref(null);
@@ -355,7 +353,7 @@ const initializeStripe = async () => {
     const response = await fetch(
       `${
         import.meta.env.VITE_API_URL ||
-        "https://your-project-id-default-rtdb.asia-southeast1.firebasedatabase.app/api"
+        "https://asia-southeast1-b-commerce-78c1f.cloudfunctions.net/api"
       }/create-payment-intent`,
       {
         method: "POST",
@@ -431,6 +429,13 @@ const initializeStripe = async () => {
   }
 };
 
+// Watch for payment method changes to initialize Stripe
+watch(paymentMethod, async (newMethod) => {
+  if (newMethod === "stripe-payment" && !stripe.value) {
+    await initializeStripe();
+  }
+});
+
 // Load donation data from localStorage or URL query parameter on component mount
 onMounted(async () => {
   // Check if we have a donationId in the URL query parameters
@@ -457,9 +462,6 @@ onMounted(async () => {
             donationStatus === "processing" ||
             donationStatus === "received")
         ) {
-          console.log(
-            "Payment already processed. Redirecting to thank you page."
-          );
           // Store the donationId in localStorage for the thank you page
           localStorage.setItem("donationId", donationId.value);
           // Redirect to thank you page
@@ -504,7 +506,6 @@ onMounted(async () => {
 
     // If there's a completed donation ID, redirect to thank you page
     if (completedDonationId) {
-      console.log("Completed donation found. Redirecting to thank you page.");
       router.push("/thank-you");
       return;
     }
@@ -533,11 +534,6 @@ onMounted(async () => {
           router.push("/donation");
           return;
         }
-
-        console.log(
-          "Fetched donation from Firestore:",
-          donationStore.currentDonation
-        );
 
         // Initialize Stripe - DISABLED FOR BANK TRANSFER ONLY VERSION
         // if (!stripe.value) {
@@ -799,15 +795,6 @@ const uploadPaymentSlip = async (file, donationId) => {
 
     const fileRef = storageRef(storage, fileName);
 
-    // For files still over 250KB after compression, show a warning
-    if (file.size > 250 * 1024) {
-      console.warn(
-        `Uploading large file (${formatFileSize(
-          file.size
-        )}). This may affect performance.`
-      );
-    }
-
     // Set appropriate metadata
     const metadata = {
       contentType: file.type,
@@ -940,25 +927,17 @@ const confirmPayment = async () => {
     // Create shipment only if payment is confirmed/completed
     if (paymentData.paymentStatus === "completed") {
       try {
-        console.log("Payment confirmed, creating shipment...");
-
         // Ensure we have recipient information
         if (
           !donationStore.currentDonation.recipients ||
           donationStore.currentDonation.recipients.length === 0
         ) {
-          console.log("No recipients found, creating from donation data");
-
           // Create recipients array from donationData
           if (
             donationData.value &&
             donationData.value.recipients &&
             donationData.value.recipients.length > 0
           ) {
-            console.log(
-              "Using recipients from donationData:",
-              donationData.value.recipients
-            );
             donationStore.currentDonation.recipients =
               donationData.value.recipients.map((recipient) => ({
                 recipientName: recipient.recipientName || "",
@@ -969,9 +948,6 @@ const confirmPayment = async () => {
               }));
           } else if (donationData.value && donationData.value.recipientName) {
             // Create a recipients array from the single recipient
-            console.log(
-              "Creating recipients array from single recipient in donationData"
-            );
             donationStore.currentDonation.recipients = [
               {
                 recipientName: donationData.value.recipientName || "",
@@ -984,9 +960,6 @@ const confirmPayment = async () => {
             ];
           } else if (donationStore.currentDonation.recipientName) {
             // Create a recipients array from direct properties in the donation
-            console.log(
-              "Creating recipients array from direct properties in donation"
-            );
             donationStore.currentDonation.recipients = [
               {
                 recipientName:
@@ -1002,7 +975,6 @@ const confirmPayment = async () => {
             ];
           } else {
             // Last resort: create a recipient using donor information
-            console.log("Creating recipients array from donor information");
             donationStore.currentDonation.recipients = [
               {
                 recipientName: donationStore.currentDonation.donorName || "",
@@ -1013,16 +985,6 @@ const confirmPayment = async () => {
               },
             ];
           }
-
-          console.log(
-            "Created recipients array:",
-            donationStore.currentDonation.recipients
-          );
-        } else {
-          console.log(
-            "Donation already has recipients:",
-            donationStore.currentDonation.recipients
-          );
         }
 
         // Create a shipment from the donation
@@ -1035,25 +997,12 @@ const confirmPayment = async () => {
           const shipmentIds = Array.isArray(shipmentResult)
             ? shipmentResult
             : [shipmentResult];
-          console.log(
-            "Shipment(s) created successfully with IDs:",
-            shipmentIds
-          );
-        } else {
-          console.error(
-            "Failed to create shipment for donation:",
-            donationId.value
-          );
         }
       } catch (shipmentError) {
         console.error("Error creating shipment:", shipmentError);
         // Don't throw error here, as we still want to proceed to thank you page
         // even if shipment creation fails
       }
-    } else {
-      console.log(
-        "Payment not yet confirmed, shipment will be created after admin approval"
-      );
     }
 
     // Clear localStorage after successful payment
