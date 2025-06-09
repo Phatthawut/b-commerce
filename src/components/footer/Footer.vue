@@ -21,10 +21,10 @@
                 >About</router-link
               >
               <router-link to="/our-book" class="link link-hover"
-                >Our Book</router-link
+                >Our Books</router-link
               >
               <router-link to="/service" class="link link-hover"
-                >Our Service</router-link
+                >Our Services</router-link
               >
               <router-link to="/donation-campaign" class="link link-hover"
                 >Donation Campaign</router-link

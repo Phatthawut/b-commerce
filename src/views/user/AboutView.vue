@@ -26,7 +26,7 @@
 
             <!-- Content -->
             <div
-              class="flex flex-col gap-6 justify-center items-center py-12 px-4 bg-mainbg max-w-[1300px] mx-auto"
+              class="flex flex-col gap-6 text-justify justify-center items-center py-12 px-8 bg-mainbg max-w-[1300px] mx-auto"
             >
               <h2 :class="`text-2xl ${titleClasses}`">
                 {{ $t("pages.about.authorSection.name") }}

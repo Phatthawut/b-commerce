@@ -28,12 +28,12 @@
         </div>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:flex md:items-center md:space-x-4 pb-4">
-          <ul class="flex xl:space-x-16">
+        <div class="hidden md:flex pb-4">
+          <ul class="flex xl:gap-6 gap-4 text-xs">
             <li>
               <router-link
                 to="/"
-                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
+                class="text-sm text-gray-600 xl:px-6 py-3 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 {{ $t("nav.home") }}
               </router-link>
@@ -41,7 +41,7 @@
             <li>
               <router-link
                 to="/about"
-                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
+                class="text-sm text-gray-600 xl:px-6 py-3 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 {{ $t("nav.about") }}
               </router-link>
@@ -49,7 +49,7 @@
             <li>
               <router-link
                 to="/our-book"
-                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
+                class="text-sm text-gray-600 xl:px-6 py-3 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 {{ $t("nav.ourBooks") }}
               </router-link>
@@ -57,7 +57,7 @@
             <li>
               <router-link
                 to="/service"
-                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
+                class="text-sm text-gray-600 xl:px-6 py-3 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 {{ $t("nav.ourServices") }}
               </router-link>
@@ -65,7 +65,7 @@
             <li>
               <router-link
                 to="/donation-campaign"
-                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
+                class="text-sm text-gray-600 xl:px-6 py-3 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 {{ $t("nav.donationCampaign") }}
               </router-link>
@@ -73,7 +73,7 @@
             <li>
               <router-link
                 to="/contact"
-                class="text-sm text-gray-600 py-3 px-4 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
+                class="text-sm text-gray-600 xl:px-6 py-3 rounded-sm font-semibold hover:bg-[#81c1c6] hover:text-white hover:border-none"
               >
                 {{ $t("nav.contactUs") }}
               </router-link>

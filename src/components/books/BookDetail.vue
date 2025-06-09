@@ -19,7 +19,7 @@
           class="flex flex-col items-center gap-4 w-full sm:w-1/2 md:mr-16 mx-auto"
         >
           <p
-            :class="`text-black w-[60%] preserve-whitespace ${bodyClassesWithAlignment}`"
+            :class="`text-black w-[80%] preserve-whitespace ${bodyClassesWithAlignment}`"
           >
             {{ bookData.shortDescription }}
           </p>
