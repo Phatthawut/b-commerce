@@ -139,7 +139,7 @@
         <div class="gradient-background-red py-16 px-4">
           <div class="max-w-3xl mx-auto">
             <p
-              :class="`text-gray-700 text-center mb-8 preserve-whitespace ${bodyClassesWithAlignment}`"
+              :class="`text-gray-700 text-center px-6 mb-8 preserve-whitespace ${bodyClassesWithAlignment}`"
             >
               {{ $t("pages.donationCampaign.dharmoscienceSeries.description") }}
             </p>

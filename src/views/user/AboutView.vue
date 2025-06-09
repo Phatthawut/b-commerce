@@ -26,7 +26,7 @@
 
             <!-- Content -->
             <div
-              class="flex flex-col gap-6 text-justify justify-center items-center py-12 px-8 bg-mainbg max-w-[1300px] mx-auto"
+              class="flex flex-col gap-6 items-center py-12 px-8 bg-mainbg max-w-[1300px] mx-auto"
             >
               <h2 :class="`text-2xl ${titleClasses}`">
                 {{ $t("pages.about.authorSection.name") }}
@@ -35,12 +35,12 @@
                 {{ $t("pages.about.authorSection.fullName") }}
               </h3>
               <p
-                :class="`px-4 text-sm md:text-lg preserve-whitespace ${bodyClasses}`"
+                :class="`px-4 text-sm md:text-lg preserve-whitespace ${bodyClassesWithAlignment}`"
               >
                 {{ $t("pages.about.authorSection.biography.paragraph1") }}
               </p>
               <p
-                :class="`px-4 text-sm md:text-lg preserve-whitespace ${bodyClasses}`"
+                :class="`px-4 text-sm md:text-lg preserve-whitespace ${bodyClassesWithAlignment}`"
               >
                 {{ $t("pages.about.authorSection.biography.paragraph2") }}
               </p>
@@ -57,5 +57,6 @@ import Hero from "@/components/hero/Hero.vue";
 import heroImage from "@/assets/images/Dr-Vuthiphong-Priebjrivat.webp";
 import { useDynamicFont } from "@/composables/useDynamicFont";
 
-const { titleClasses, headingClasses, bodyClasses } = useDynamicFont();
+const { titleClasses, headingClasses, bodyClasses, bodyClassesWithAlignment } =
+  useDynamicFont();
 </script>
