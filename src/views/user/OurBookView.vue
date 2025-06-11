@@ -32,7 +32,10 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p :class="bookTitleClass">
+            <p
+              class="flex flex-col items-center w-full"
+              :class="bookTitleClass"
+            >
               {{
                 $t("pages.ourBooks.series.dharmoscience.books.neodharma.title")
               }}<br />
@@ -53,7 +56,10 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p :class="bookTitleClass">
+            <p
+              class="flex flex-col items-center w-full"
+              :class="bookTitleClass"
+            >
               {{
                 $t(
                   "pages.ourBooks.series.dharmoscience.books.dharmoscience.title"
@@ -76,7 +82,10 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p :class="bookTitleClass">
+            <p
+              class="flex flex-col items-center w-full"
+              :class="bookTitleClass"
+            >
               {{ $t("pages.ourBooks.series.dharmoscience.books.sankhara.title")
               }}<br />
               <span class="text-sm font-normal" :class="bookSubtitleClass">
@@ -96,7 +105,10 @@
                 class="w-40 h-auto"
               />
             </router-link>
-            <p :class="bookTitleClass">
+            <p
+              class="flex flex-col items-center w-full"
+              :class="bookTitleClass"
+            >
               {{ $t("pages.ourBooks.series.dharmoscience.books.nirvana.title")
               }}<br />
               <span class="text-sm font-normal" :class="bookSubtitleClass">
