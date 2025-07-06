@@ -1,6 +1,6 @@
-# B-Commerce - Vue.js E-commerce Platform
+# Woody Prieb Dharmoscience Series Book Donation Campaign
 
-A modern e-commerce platform built with Vue.js, Firebase, and Tailwind CSS.
+A donation-based platform for distributing Buddhist books and educational materials to recipients in need worldwide. Built with Vue.js, Firebase, and Tailwind CSS.
 
 ## Features
 
@@ -48,6 +48,7 @@ npm install
    - Create a Firebase project at [https://console.firebase.google.com/](https://console.firebase.google.com/)
    - Enable Authentication (Email/Password), Firestore, and Storage
    - Update the Firebase configuration in `src/firebase/config.js` with your project details
+   - Deploy to [https://woodyprieb.com/](https://woodyprieb.com/)
 
 4. Run the development server:
 

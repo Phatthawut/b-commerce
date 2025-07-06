@@ -1,4 +1,4 @@
-# Firebase Deployment Guide for B-Commerce
+# Firebase Deployment Guide for Woody Prieb Dharmoscience Series Book Donation Campaign
 
 ## Overview
 

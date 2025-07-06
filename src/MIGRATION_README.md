@@ -1,6 +1,6 @@
 # Migrating from Firebase to Local Storage
 
-This guide explains the migration from Firebase Firestore to local JSON files for storing recipient data in the B-Commerce application.
+This guide explains the migration from Firebase Firestore to local JSON files for storing recipient data in the Woody Prieb Dharmoscience Series Book Donation Campaign application.
 
 ## Overview
 

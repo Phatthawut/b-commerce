@@ -2,8 +2,12 @@
   <div class="login-view">
     <div class="login-container">
       <div class="logo-container">
-        <img src="@/assets/logo.webp" alt="B-Commerce Logo" class="logo" />
-        <h1>B-Commerce</h1>
+        <img
+          src="@/assets/logo.webp"
+          alt="Woody Prieb Dharmoscience Series Logo"
+          class="logo"
+        />
+        <h1>Woody Prieb Dharmoscience Series</h1>
         <p class="tagline">Donate with purpose, track with ease</p>
       </div>
 

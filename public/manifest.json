@@ -1,0 +1,23 @@
+{
+  "name": "Woody Prieb Dharmoscience Series Book Donation Campaign",
+  "short_name": "Dharmoscience Series",
+  "description": "Support the distribution of Buddhist books and educational materials to recipients in need across Thailand",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7ECAD1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "books", "charity"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false
+}

@@ -1,6 +1,6 @@
 {
-  "name": "b-commerce-functions",
-  "description": "Firebase Functions for B-Commerce donation system",
+  "name": "woody-prieb-dharmoscience-functions",
+  "description": "Firebase Functions for Woody Prieb Dharmoscience Series Book Donation Campaign",
   "scripts": {
     "build": "echo 'No build required'",
     "serve": "firebase emulators:start --only functions",
