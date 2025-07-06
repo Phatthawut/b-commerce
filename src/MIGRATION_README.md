@@ -55,7 +55,7 @@ Due to budget constraints, we've migrated the storage of recipient data from Fir
 
 2. **Firebase import paths**: We've changed imports from `@/services/...` to `../services/...` to avoid path resolution issues. If you encounter import errors, check the path structure.
 
-3. **Server-side code**: The Firebase removal only affects client-side recipient handling. Server-side code (like in `server/index.js`) may still need Firebase for other features.
+3. **Server-side code**: The Firebase removal only affects client-side recipient handling. Server-side Firebase Functions may still need Firebase for other features.
 
 ## Remaining Firebase Dependencies
 
