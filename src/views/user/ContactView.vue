@@ -101,7 +101,12 @@ const formData = ref({
 
 const handleSubmit = () => {
   // Handle form submission here
-  console.log("Form submitted:", formData.value);
+  console.log("Form submitted:", {
+    formType: "contact",
+    hasEmail: !!formData.value.email,
+    hasName: !!formData.value.name,
+    timestamp: new Date().toISOString(),
+  });
   // Reset form after submission
   formData.value = {
     name: "",

@@ -174,7 +174,12 @@ export const useDonationStore = defineStore("donation", () => {
         throw new Error("Failed to process donor information");
       }
 
-      console.log(`Creating donation for donor: ${donor.id} (${donor.name})`);
+      console.log(`Creating donation for donor: ${donor.id}`, {
+        donorId: donor.id,
+        donorName: donor.name ? "***" : "Not provided",
+        amount: donationData.amount,
+        timestamp: new Date().toISOString(),
+      });
 
       // Create donation document with minimal required fields
       const donationRef = await addDoc(collection(db, "donations"), {
@@ -360,7 +365,12 @@ export const useDonationStore = defineStore("donation", () => {
         throw new Error("Failed to process donor information");
       }
 
-      console.log(`Creating donation for donor: ${donor.id} (${donor.name})`);
+      console.log(`Creating donation for donor: ${donor.id}`, {
+        donorId: donor.id,
+        donorName: donor.name ? "***" : "Not provided",
+        amount: donationData.amount,
+        timestamp: new Date().toISOString(),
+      });
 
       // Create donation document
       const donationRef = await addDoc(collection(db, "donations"), {

@@ -224,7 +224,13 @@ export const useDonorStore = defineStore("donor", () => {
         // Create a new donor document with auto-generated ID
         const newDonorRef = doc(collection(db, "donors"));
         donorId = newDonorRef.id;
-        console.log(`Creating new donor with ID: ${donorId}`);
+        console.log(`Creating new donor with ID: ${donorId}`, {
+          donorId: donorId,
+          hasName: !!donorData.name,
+          hasEmail: !!donorData.email,
+          hasPhone: !!donorData.telephone,
+          timestamp: new Date().toISOString(),
+        });
       }
 
       const donorRef = doc(db, "donors", donorId);

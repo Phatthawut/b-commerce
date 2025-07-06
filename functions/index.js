@@ -61,7 +61,7 @@ const getStripe = () => {
     // Clean the secret key of any potential whitespace or invalid characters
     const cleanSecretKey = secretKey.toString().trim();
 
-    console.log("Initializing Stripe with cleaned secret key");
+    console.log("Initializing Stripe with secret key");
     stripe = new Stripe(cleanSecretKey);
   }
   return stripe;

@@ -66,7 +66,7 @@
                   {{ $t("pages.thankYou.donationDetails.date") }}
                 </h3>
                 <p class="text-gray-900">
-                  {{ donationData.createdAt || "N/A" }}
+                  {{ formattedDate }}
                 </p>
               </div>
               <div>
@@ -347,12 +347,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDonationStore } from "@/stores/donationStore";
 import { useRouter } from "vue-router";
+import { formatDateByLocale } from "@/utils/dateUtils";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const donationStore = useDonationStore();
 const donationId = ref("");
 const donationData = ref({});
@@ -374,6 +375,14 @@ const statusClass = computed(() => {
   return "";
 });
 
+// Reactive formatted date that updates when locale changes
+const formattedDate = computed(() => {
+  if (donationData.value.createdAt) {
+    return formatDateByLocale(donationData.value.createdAt, locale.value);
+  }
+  return locale.value === "th" ? "ไม่ระบุ" : "N/A";
+});
+
 // Navigation functions
 const goToDonation = () => {
   // Clear the donationId from localStorage before navigating
@@ -390,17 +399,18 @@ onMounted(async () => {
 });
 
 const loadDonationData = async () => {
-  const donationId = localStorage.getItem("donationId");
+  const storedDonationId = localStorage.getItem("donationId");
 
-  if (donationId) {
+  if (storedDonationId) {
+    donationId.value = storedDonationId;
     try {
       loading.value = true;
-      await donationStore.fetchDonationById(donationId);
+      await donationStore.fetchDonationById(storedDonationId);
 
       if (donationStore.currentDonation) {
         const data = donationStore.currentDonation;
         donationData.value = {
-          id: donationId,
+          id: storedDonationId,
           amount: data.amount,
           formattedAmount: formatCurrency(data.amount),
           donorName: data.donorName,
@@ -417,30 +427,8 @@ const loadDonationData = async () => {
           createdAt: data.createdAt,
         };
 
-        // Format the creation date
-        if (data.createdAt) {
-          try {
-            // Handle both Firestore Timestamp and regular Date
-            let date;
-            if (data.createdAt.toDate) {
-              date = data.createdAt.toDate();
-            } else {
-              date = new Date(data.createdAt);
-            }
-            donationData.value.formattedDate = date.toLocaleDateString(
-              "th-TH",
-              {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              }
-            );
-          } catch (dateError) {
-            donationData.value.formattedDate = "ไม่ระบุ";
-          }
-        }
+        // Store the raw createdAt for the computed property to use
+        // (No need to format here since we have a reactive computed property)
       } else {
         alert(t("pages.thankYou.errors.donationNotFound"));
         router.push("/donation");

@@ -1781,7 +1781,13 @@ const handleSubmit = async () => {
       message: "", // Optional message field
     };
 
-    console.log("Submitting donation data:", donationData);
+    console.log("Submitting donation data:", {
+      donorName: donationData.donorName ? "***" : "Not provided",
+      amount: donationData.amount,
+      recipientCount: donationData.recipients?.length || 0,
+      donationId: donationData.donationId,
+      timestamp: new Date().toISOString(),
+    });
 
     // Use the donation store to create donor and donation
     const result = await donationStore.createDonorAndDonation(

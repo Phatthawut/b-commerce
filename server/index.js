@@ -76,13 +76,7 @@ app.use((req, res, next) => {
 // Log configuration on startup
 console.log(`Server starting with configuration:
 - PORT: ${port}
-- STRIPE_SECRET_KEY: ${
-  process.env.STRIPE_SECRET_KEY
-    ? "Configured (starts with " +
-      process.env.STRIPE_SECRET_KEY.substring(0, 7) +
-      "...)"
-    : "Missing"
-}
+- STRIPE_SECRET_KEY: ${process.env.STRIPE_SECRET_KEY ? "Configured" : "Missing"}
 - STRIPE_WEBHOOK_SECRET: ${
   process.env.STRIPE_WEBHOOK_SECRET ? "Configured" : "Missing"
 }

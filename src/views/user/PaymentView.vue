@@ -482,10 +482,10 @@ onMounted(async () => {
           cardDetails.value.name = donationStore.currentDonation.donorName;
         }
 
-        // Initialize Stripe if needed - DISABLED FOR BANK TRANSFER ONLY VERSION
-        // if (!stripe.value) {
-        //   initializeStripe();
-        // }
+        // Initialize Stripe if needed
+        if (!stripe.value) {
+          initializeStripe();
+        }
       } else {
         // Donation not found, show error
         alert("Donation not found. Please try again.");
@@ -535,10 +535,10 @@ onMounted(async () => {
           return;
         }
 
-        // Initialize Stripe - DISABLED FOR BANK TRANSFER ONLY VERSION
-        // if (!stripe.value) {
-        //   initializeStripe();
-        // }
+        // Initialize Stripe
+        if (!stripe.value) {
+          initializeStripe();
+        }
       } catch (error) {
         console.error("Error loading donation data:", error);
         alert("Error loading donation data. Please try again.");
@@ -553,12 +553,12 @@ onMounted(async () => {
     }
   }
 
-  // Initialize Stripe when payment method is set to credit card - DISABLED FOR BANK TRANSFER ONLY VERSION
-  // watch(paymentMethod, (newValue) => {
-  //   if (newValue === "stripe-payment") {
-  //     initializeStripe();
-  //   }
-  // });
+  // Initialize Stripe when payment method is set to credit card
+  watch(paymentMethod, (newValue) => {
+    if (newValue === "stripe-payment") {
+      initializeStripe();
+    }
+  });
 });
 
 const handleFileUpload = async (event) => {

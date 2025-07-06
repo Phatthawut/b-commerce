@@ -1076,7 +1076,12 @@ const selectInstitution = (institution) => {
     recipientAddress: institution.address,
   };
 
-  console.log("Selected institution:", institution);
+  console.log("Selected institution:", {
+    institutionId: institution.id,
+    institutionName: institution.name,
+    country: institution.country,
+    timestamp: new Date().toISOString(),
+  });
 };
 
 // Clear selected institution
@@ -1262,7 +1267,12 @@ const saveAddressEdit = async () => {
 
 // View shipment details
 const viewShipmentDetails = async (shipment) => {
-  console.log("Viewing shipment details:", shipment);
+  console.log("Viewing shipment details:", {
+    shipmentId: shipment.id,
+    status: shipment.status,
+    recipientCount: shipment.recipients?.length || 0,
+    timestamp: new Date().toISOString(),
+  });
 
   // Reset the selected recipient index
   selectedRecipientIndex.value = 0;
@@ -1278,7 +1288,12 @@ const viewShipmentDetails = async (shipment) => {
         ...shipmentDoc.data(),
       };
 
-      console.log("Fetched shipment data:", shipmentData);
+      console.log("Fetched shipment data:", {
+        shipmentId: shipmentData.id,
+        status: shipmentData.status,
+        recipientCount: shipmentData.recipients?.length || 0,
+        timestamp: new Date().toISOString(),
+      });
 
       // Update the selected shipment with the latest data
       selectedShipment.value = shipmentData;

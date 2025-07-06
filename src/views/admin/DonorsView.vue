@@ -298,7 +298,13 @@ const viewDonorDonations = (donor) => {
 const editDonor = (donor) => {
   // This would typically open an edit form or modal
   // For now, we'll just log it
-  console.log("Edit donor:", donor);
+  console.log("Edit donor:", {
+    donorId: donor.id,
+    hasName: !!donor.name,
+    hasEmail: !!donor.email,
+    hasPhone: !!donor.telephone,
+    timestamp: new Date().toISOString(),
+  });
   alert("Donor editing functionality will be implemented in a future update.");
 };
 

@@ -705,7 +705,13 @@ const createShipmentFromDonation = async (donation) => {
   try {
     if (!donation) return;
 
-    console.log("Creating shipment from donation:", donation);
+    console.log("Creating shipment from donation:", {
+      donationId: donation.id,
+      amount: donation.amount,
+      donorName: donation.donorName ? "***" : "Not provided",
+      recipientCount: donation.recipients?.length || 0,
+      timestamp: new Date().toISOString(),
+    });
 
     // Use the shipmentStore's createShipmentFromDonation function
     // which now handles duplicate prevention and recipient processing

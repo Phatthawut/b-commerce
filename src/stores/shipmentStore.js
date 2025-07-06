@@ -62,7 +62,12 @@ export const useShipmentStore = defineStore("shipment", () => {
 
       querySnapshot.forEach((doc) => {
         const shipmentData = doc.data();
-        console.log(`Shipment ${doc.id} data:`, shipmentData);
+        console.log(`Shipment ${doc.id} data:`, {
+          shipmentId: doc.id,
+          status: shipmentData.status,
+          recipientCount: shipmentData.recipients?.length || 0,
+          timestamp: new Date().toISOString(),
+        });
 
         // Extract recipient information from recipients array if it exists
         let recipientInfo = { name: "N/A", address: "N/A", phone: "N/A" };
@@ -264,7 +269,12 @@ export const useShipmentStore = defineStore("shipment", () => {
       };
 
       shipments.value.unshift(newShipment);
-      console.log("Created new shipment:", newShipment);
+      console.log("Created new shipment:", {
+        shipmentId: newShipment.id,
+        status: newShipment.status,
+        recipientCount: newShipment.recipients?.length || 0,
+        timestamp: new Date().toISOString(),
+      });
 
       return shipmentRef.id;
     } catch (err) {

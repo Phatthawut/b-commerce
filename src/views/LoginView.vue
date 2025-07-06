@@ -34,12 +34,20 @@ const mode = ref(route.query.mode || "login");
 
 // Handle successful login
 const handleLoginSuccess = (user) => {
-  console.log("Login successful:", user);
+  console.log("Login successful:", {
+    userId: user.uid,
+    email: user.email ? "***" : "Not provided",
+    timestamp: new Date().toISOString(),
+  });
 };
 
 // Handle successful registration
 const handleRegisterSuccess = (user) => {
-  console.log("Registration successful:", user);
+  console.log("Registration successful:", {
+    userId: user.uid,
+    email: user.email ? "***" : "Not provided",
+    timestamp: new Date().toISOString(),
+  });
 };
 
 // Check if user is already logged in
